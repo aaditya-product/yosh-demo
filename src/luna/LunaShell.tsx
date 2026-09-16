@@ -4,6 +4,7 @@ import { ProductRoot } from '../productRoot';
 import { Icon } from '../ui';
 import { NavPanel } from './NavPanel';
 import { RequestsBoard } from './RequestsBoard';
+import { Workload } from './Workload';
 import { ToastHost } from './ToastHost';
 
 // The live build has no persistent nav column. The board runs full width and
@@ -17,6 +18,7 @@ export function LunaShell({ root = '/' }: { root?: string }) {
         <Routes>
           <Route index element={<Navigate to="requests" replace />} />
           <Route path="requests" element={<RequestsBoard />} />
+          <Route path="workload" element={<Workload />} />
           <Route path="*" element={<RequestsBoard />} />
         </Routes>
 

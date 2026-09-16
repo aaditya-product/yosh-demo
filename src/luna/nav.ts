@@ -9,6 +9,7 @@ export const navGroups: { group: string; items: NavItem[] }[] = [
     items: [
       { id: 'requests', label: 'Requests', to: '/requests' },
       { id: 'my-requests', label: 'My requests' },
+      { id: 'workload', label: 'Workload', to: '/workload' },
       { id: 'archive', label: 'Archive' },
     ],
   },

@@ -115,6 +115,7 @@ export const control = {
   tagRow:    56,   // Select tags row, measured
   tagCheck:  32,
   modalBtn:  54,
+  bar:       12,   // workload bar
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
