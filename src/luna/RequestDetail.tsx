@@ -247,7 +247,7 @@ export function RequestDetail({ request }: { request: Request }) {
 export function EmptyDetail() {
   return (
     <div className="flex h-full items-center justify-center">
-      <span className="text-body text-textMuted">Pick a request to see it</span>
+      <span className="text-body">Pick a request to see it</span>
     </div>
   );
 }

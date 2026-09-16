@@ -12,6 +12,7 @@ export type ChipProps = {
   'data-id': string;
 };
 
+// Sizes and colours measured on luna-dev.crossbo.com/tasks.
 export function Chip({
   variant = 'filter',
   selected = false,
@@ -21,33 +22,45 @@ export function Chip({
   onClick,
   ...rest
 }: ChipProps) {
-  const base = 'inline-flex items-center gap-sm rounded-pill h-chip px-md text-bodyMed';
+  const shape =
+    variant === 'property'
+      ? 'h-propChip px-md gap-sm'
+      : variant === 'filter'
+        ? 'h-chip px-sm gap-sm'
+        : 'h-chip px-md gap-sm';
 
   const look =
     variant === 'property'
       ? selected
-        ? 'bg-primary text-textOnPrimary'
-        : 'bg-surface border border-border text-text'
+        ? 'bg-primary text-textOnPrimary border border-primaryBorder'
+        : 'bg-surface text-text border border-primaryBorder'
       : variant === 'field'
         ? `bg-primaryFill text-primary ${
-            lowConfidence ? 'border border-dashed border-primaryBorderStrong' : 'border border-primaryBorder'
+            lowConfidence
+              ? 'border border-dashed border-primaryBorderStrong'
+              : 'border border-primaryBorder'
           } hover:border-primaryBorderStrong`
         : selected
-          ? 'bg-chipSelected text-text'
-          : 'bg-surface border border-border text-text';
+          ? 'bg-primary text-textOnPrimary border border-primaryBorderStrong'
+          : 'bg-surface text-text border border-primaryBorderStrong';
 
   return (
-    <button type="button" onClick={onClick} className={`${base} ${look}`} {...rest}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex shrink-0 items-center rounded-pill text-bodyMed ${shape} ${look}`}
+      {...rest}
+    >
       {variant === 'filter' && count !== undefined && (
         <span
-          className={`inline-flex h-count w-count items-center justify-center rounded-circle text-meta ${
-            selected ? 'bg-primary text-textOnPrimary' : 'bg-primaryFill text-primary'
+          className={`inline-flex h-count w-count items-center justify-center rounded-circle text-bodyMed text-text ${
+            selected ? 'bg-surface' : 'bg-page'
           }`}
         >
           {count}
         </span>
       )}
-      {children}
+      <span className={variant === 'filter' ? 'pr-sm' : ''}>{children}</span>
     </button>
   );
 }

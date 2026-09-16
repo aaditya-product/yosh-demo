@@ -71,7 +71,7 @@ function ActionCardPanel() {
   );
 }
 
-export function NavPanel() {
+export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const go = useGo();
   const location = useLocation();
   const engine = useDemo();
@@ -86,7 +86,19 @@ export function NavPanel() {
   };
 
   return (
-    <div className="flex h-full w-navPanel shrink-0 flex-col border-r border-border bg-surface">
+    <div className={`absolute inset-0 z-overlay ${open || actionCard ? '' : 'pointer-events-none'}`}>
+      <div
+        data-id={`${ID}/scrim`}
+        onClick={onClose}
+        className={`absolute inset-0 bg-scrim transition-opacity duration-overlay ${
+          open || actionCard ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <div
+        className={`absolute inset-y-0 left-0 flex w-navPanel flex-col border-r border-border bg-surface transition-transform duration-sheet ease-out ${
+          open || actionCard ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
       <div className="min-h-0 flex-1 overflow-y-auto">
         {actionCard ? (
           <ActionCardPanel />
@@ -113,7 +125,7 @@ export function NavPanel() {
         )}
       </div>
 
-      <div className="shrink-0 border-t border-border p-lg">
+        <div className="shrink-0 border-t border-border p-lg">
         <div className="flex items-end gap-sm">
           <span className="min-w-0 flex-1">
             <Field
@@ -148,6 +160,7 @@ export function NavPanel() {
             </span>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

@@ -25,11 +25,7 @@ export function Card({
 }: CardProps) {
   const look = [
     selected ? 'bg-chipSelected' : 'bg-surface',
-    escalated
-      ? 'border border-statusEscalated'
-      : bordered
-        ? 'border border-border'
-        : '',
+    escalated ? 'border border-statusEscalated' : bordered ? 'border border-border' : '',
     selected ? 'border-l-edge border-l-primaryBorderStrong' : '',
   ]
     .filter(Boolean)

@@ -1,7 +1,6 @@
 import { GenieShell } from './GenieShell';
 
-// The frame on its own page, for building and screenshotting Genie screens
-// outside the /demo harness.
+// Genie renders in a fixed 1280x800 frame, centred on the page.
 export function GenieStandalone() {
   return (
     <div className="flex h-full items-center justify-center bg-page">

@@ -64,6 +64,8 @@ export default {
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
       boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)' },
+      zIndex: { overlay: '40' },
+      borderColor: { divider: color.divider },
       borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),
     },
   },

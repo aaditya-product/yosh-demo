@@ -12,7 +12,7 @@ import {
   useDispatch,
   type Request,
 } from '../store';
-import { Avatar, Card, Chip, Icon, ListRow, SegmentedControl, StatusBadge } from '../ui';
+import { Card, Chip, Icon, SegmentedControl, StatusBadge } from '../ui';
 import { useNow } from '../useNow';
 import { EmptyDetail, RequestDetail } from './RequestDetail';
 import { typeIcon } from './typeIcon';
@@ -28,8 +28,8 @@ function SlaChip({ request, now }: { request: Request; now: number }) {
   return (
     <span
       data-id={`${ID}/card-${request.id}/sla`}
-      className={`inline-flex items-center rounded-pill px-sm py-xs text-meta ${
-        state === 'ok' ? 'bg-surfaceMuted text-textMuted' : 'bg-statusEscalated text-textOnPrimary'
+      className={`inline-flex items-center rounded-card px-sm py-sm text-bodyMed ${
+        state === 'ok' ? 'bg-page text-text' : 'bg-statusEscalated text-textOnPrimary'
       }`}
     >
       {formatSla(request, now)}
@@ -60,37 +60,41 @@ function RequestCard({
   return (
     <Card
       data-id={`${ID}/card-${request.id}`}
+      bordered={false}
       selected={selected}
       escalated={request.priority === 'escalated'}
       onClick={onSelect}
     >
-      <ListRow
-        data-id={`${ID}/card-${request.id}/row`}
-        leading={
-          assigneeInitials ? (
-            <Avatar initials={assigneeInitials} />
-          ) : (
-            <span className="flex h-avatarMd w-avatarMd items-center justify-center rounded-circle bg-primaryFill text-primary">
-              <Icon name={typeIcon[request.type]} size={18} />
+      <div className="px-lg py-lg">
+        <div className="flex items-center gap-md">
+          <span className="flex h-leading w-leading shrink-0 items-center justify-center rounded-circle bg-surfaceAlt text-text">
+            {assigneeInitials ? (
+              <span className="text-metaBold text-primary">{assigneeInitials}</span>
+            ) : (
+              <Icon name={typeIcon[request.type]} size={20} />
+            )}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-title">{request.title}</span>
+            <span className="mt-xs block text-body text-textMuted">
+              {request.ref} · {relativeTime(request.createdAt)}
             </span>
-          )
-        }
-        title={request.title}
-        subtitle={`${request.ref} · ${relativeTime(request.createdAt)}`}
-        trailing={
+          </span>
           <StatusBadge
             status={request.priority === 'escalated' ? 'escalated' : request.status}
             data-id={`${ID}/card-${request.id}/status`}
           />
-        }
-        body={
-          chips.length === 0 ? undefined : (
-          <div className="flex flex-wrap items-center gap-sm">
+        </div>
+
+        {chips.length > 0 && (
+          <>
+            <hr className="my-lg border-0 border-t border-divider" />
+            <div className="flex flex-wrap items-center gap-sm">
             <SlaChip request={request} now={now} />
             {request.eta && !CLOSED.includes(request.status) && (
               <span
                 data-id={`${ID}/card-${request.id}/eta`}
-                className="inline-flex items-center rounded-pill bg-primaryFill px-sm py-xs text-meta text-primary"
+                className="inline-flex items-center rounded-card bg-page px-sm py-sm text-bodyMed text-text"
               >
                 Arriving {clockTime(request.eta)}
               </span>
@@ -98,15 +102,15 @@ function RequestCard({
             {request.external && (
               <span
                 data-id={`${ID}/card-${request.id}/external`}
-                className="inline-flex items-center rounded-pill border border-border px-sm py-xs text-meta text-textMuted"
+                className="inline-flex items-center rounded-card bg-page px-sm py-sm text-bodyMed text-text"
               >
                 {request.external.system} · {request.external.ref}
               </span>
             )}
-          </div>
-          )
-        }
-      />
+            </div>
+          </>
+        )}
+      </div>
     </Card>
   );
 }
@@ -124,7 +128,7 @@ export function RequestsBoard() {
 
   return (
     <div className="flex h-full flex-col bg-page">
-      <div className="flex gap-sm overflow-x-auto px-lg pt-lg">
+      <div className="flex gap-sm overflow-x-auto px-xl pt-xl">
         {properties.map((p) => (
           <Chip
             key={p.id}
@@ -138,7 +142,7 @@ export function RequestsBoard() {
         ))}
       </div>
 
-      <div className="flex items-center gap-lg px-lg pt-lg">
+      <div className="flex items-center gap-lg px-xl pt-lg">
         <span className="text-title">Requests</span>
         <SegmentedControl
           idPrefix={ID}
@@ -150,16 +154,24 @@ export function RequestsBoard() {
           ]}
         />
         <span className="ml-auto flex items-center gap-sm text-textMuted">
-          <button type="button" data-id={`${ID}/search`} className="flex h-touch w-touch items-center justify-center">
-            <Icon name="search" size={20} />
+          <button
+            type="button"
+            data-id={`${ID}/search`}
+            className="flex h-iconBtn w-iconBtn items-center justify-center rounded-circle bg-primaryFill text-primary"
+          >
+            <Icon name="search" size={18} />
           </button>
-          <button type="button" data-id={`${ID}/add`} className="flex h-touch w-touch items-center justify-center">
-            <Icon name="add" size={20} />
+          <button
+            type="button"
+            data-id={`${ID}/add`}
+            className="flex h-iconBtn w-iconBtn items-center justify-center rounded-circle bg-primaryFill text-primary"
+          >
+            <Icon name="add" size={18} />
           </button>
         </span>
       </div>
 
-      <div className="flex gap-sm px-lg pt-md">
+      <div className="flex gap-sm px-xl pt-md">
         {boardFilters.map((f) => (
           <Chip
             key={f}
@@ -173,8 +185,8 @@ export function RequestsBoard() {
         ))}
       </div>
 
-      <div className="flex min-h-0 flex-1 gap-lg p-lg">
-        <div data-id={`${ID}/list`} className="flex w-boardList shrink-0 flex-col gap-sm overflow-y-auto">
+      <div className="flex min-h-0 flex-1 gap-lg p-xl">
+        <div data-id={`${ID}/list`} className="scrollbar-none flex w-boardList shrink-0 flex-col gap-lg overflow-y-auto">
           {visible.map((r) => (
             <RequestCard
               key={r.id}
@@ -189,7 +201,9 @@ export function RequestsBoard() {
 
         <div
           data-id={`${ID}/detail`}
-          className="min-w-0 flex-1 overflow-hidden rounded-card border border-border bg-surface"
+          className={`min-w-0 flex-1 overflow-hidden rounded-card ${
+            selected ? 'bg-surface' : ''
+          }`}
         >
           {selected ? <RequestDetail request={selected} /> : <EmptyDetail />}
         </div>

@@ -13,6 +13,7 @@ export const color = {
   page:           '#F5F7F9',
   surface:        '#FFFFFF',
   surfaceMuted:   '#F2F2F2',
+  surfaceAlt:     '#F0F0F0',   // card leading circle, measured
   chipSelected:   '#CADFD4',
 
   // text
@@ -22,12 +23,13 @@ export const color = {
 
   // status
   statusLive:     '#26A69A',   // "New" badge
-  statusEscalated:'#E5484D',   // measured from the escalation badge — verify
+  statusEscalated:'#EF4444',   // measured on luna-dev filter count circle
   statusWarning:  'rgba(234, 179, 8, 0.20)',
 
   // lines
   border:         '#E5E7EB',
-  borderMuted:    '#9C9C9C',
+  borderMuted:    '#9C9C9C',   // card status pill outline
+  divider:        '#B3B3B3',   // hairline inside a request card
 
   // scrim behind Sheet, from docs/04-components.md
   scrim:          'rgba(0, 0, 0, 0.25)',
@@ -40,12 +42,13 @@ export const type = {
   body:      { size: 14, weight: 400, leading: 20 },
   bodyMed:   { size: 14, weight: 500, leading: 20 },
   bodyLg:    { size: 16, weight: 400, leading: 24 },
-  title:     { size: 20, weight: 600, leading: 28 },
+  title:     { size: 24, weight: 600, leading: 32 },
+  status:    { size: 12, weight: 600, leading: 16 },
 } as const;
 
 export const radius = {
   pill: 9999,   // dominant — filters, chips, buttons
-  card: 6,
+  card: 8,
   panel: 8,
   circle: 9999,
 } as const;
@@ -65,8 +68,14 @@ export const control = {
   btnMd:  40,
   btnLg:  56,
   touch:  44,   // minimum tappable box anywhere in the app
-  chip:   40,   // not named in 04. Decision: match btnMd.
-  count:  20,   // not named in 04. Decision: the filter chip's count circle.
+  chip:     50,   // filter pill, measured
+  count:    32,   // filter count circle, measured
+  propChip: 46,   // property chip, measured
+  segment:  46,   // segmented control container, measured
+  segmentInner: 44,
+  statusPill:   44,
+  iconBtn:  38,   // circular search / add buttons, measured
+  leading:  48,   // card leading circle, measured
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
