@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { clockTime, relativeTime } from '../data/time';
+import { clockTime, longStamp, relativeTime } from '../data/time';
 import {
   actorName,
   statusOptions,
@@ -8,7 +8,7 @@ import {
   type Request,
   type RequestStatus,
 } from '../store';
-import { Avatar, Button, Card, Field, Icon, Select, Tabs, Timeline } from '../ui';
+import { Avatar, Button, Card, Field, Icon, Select, Tabs } from '../ui';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-02';
@@ -43,7 +43,7 @@ export function RequestDetail({ request }: { request: Request }) {
   };
 
   return (
-    <div className="flex h-full flex-col bg-surface">
+    <div className="flex h-full flex-col bg-page">
       <div className="flex items-center justify-between px-lg pt-lg">
         <button
           type="button"
@@ -58,12 +58,14 @@ export function RequestDetail({ request }: { request: Request }) {
         </span>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-lg pb-lg">
-        <p className="text-title">
-          {property?.name}, {resident?.name ?? 'Operations'}
-        </p>
+      <div className="min-h-0 flex-1 overflow-y-auto px-xl pb-lg">
+        <div className="rounded-sheet bg-surface px-xl py-lg">
+          <p className="text-panelTitle">
+            {property?.name}, {resident?.name ?? 'Operations'}
+          </p>
+        </div>
 
-        <Card data-id={`${ID}/item`} className="mt-md p-lg">
+        <Card data-id={`${ID}/item`} className="mt-lg rounded-panel p-lg">
           <div className="flex items-center gap-md">
             <span className="flex h-avatarLg w-avatarLg items-center justify-center rounded-circle bg-primaryFill text-primary">
               <Icon name={typeIcon[request.type]} size={20} />
@@ -79,7 +81,7 @@ export function RequestDetail({ request }: { request: Request }) {
           </div>
         </Card>
 
-        <div className="mt-md flex items-center gap-sm">
+        <div className="mt-lg flex items-center gap-sm">
           <span className="text-meta text-textMuted">
             {request.ref} | {relativeTime(request.createdAt)}
           </span>
@@ -96,23 +98,35 @@ export function RequestDetail({ request }: { request: Request }) {
               {request.priority === 'escalated' ? 'Escalated' : 'High'}
             </span>
           )}
-          <span className="ml-auto w-statusSelect">
-            <Select
-              data-id={`${ID}/status`}
-              value={request.status}
-              options={statusOptions}
-              onChange={(e) =>
-                dispatch({
-                  kind: 'setStatus',
-                  id: request.id,
-                  status: e.target.value as RequestStatus,
-                })
-              }
-            />
+          <span className="ml-auto">
+            <span className="relative inline-flex h-select items-center gap-md rounded-pill bg-statusLive pl-lg pr-xl text-nav text-textOnPrimary">
+              {statusOptions.find((o) => o.value === request.status)?.label}
+              <span className="pointer-events-none text-textOnPrimary">
+                <Icon name="chevronRight" size={16} />
+              </span>
+              <select
+                data-id={`${ID}/status`}
+                value={request.status}
+                onChange={(e) =>
+                  dispatch({
+                    kind: 'setStatus',
+                    id: request.id,
+                    status: e.target.value as RequestStatus,
+                  })
+                }
+                className="absolute inset-0 cursor-pointer opacity-0"
+              >
+                {statusOptions.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </span>
           </span>
         </div>
 
-        <div className="mt-lg flex items-end gap-sm">
+        <div className="mt-lg flex items-end gap-md">
           <span className="flex-1">
             <Select
               data-id={`${ID}/staff`}
@@ -152,31 +166,58 @@ export function RequestDetail({ request }: { request: Request }) {
           </span>
         </div>
 
-        <button
-          type="button"
-          data-id={`${ID}/timeline`}
-          onClick={() => setTimelineOpen((v) => !v)}
-          className="mt-xl flex w-full items-center gap-sm text-bodyMed"
-        >
-          Request timeline
-          <span className={`ml-auto text-textMuted ${timelineOpen ? 'rotate-90' : ''}`}>
-            <Icon name="chevronRight" size={18} />
-          </span>
-        </button>
+        <div className="mt-lg overflow-hidden rounded-panel bg-surface">
+          <button
+            type="button"
+            data-id={`${ID}/timeline`}
+            onClick={() => setTimelineOpen((v) => !v)}
+            className="flex h-accordion w-full items-center gap-sm px-lg text-bodyMed"
+          >
+            Request timeline
+            <span
+              className={`ml-auto text-textMuted transition-transform duration-overlay ${
+                timelineOpen ? '-rotate-90' : 'rotate-90'
+              }`}
+            >
+              <Icon name="chevronRight" size={18} />
+            </span>
+          </button>
 
-        {timelineOpen && (
-          <div className="mt-md">
-            <Timeline
-              idPrefix={ID}
-              items={events.map((t) => ({
-                at: t.at,
-                actor: actorName(t.actor, people),
-                event: t.event,
-              }))}
-              formatTime={clockTime}
-            />
-          </div>
-        )}
+          {timelineOpen && (
+            <ol className="max-h-timeline overflow-y-auto px-lg pb-lg">
+              {[...events].reverse().map((t, i, arr) => (
+                <li
+                  key={`${t.at}-${i}`}
+                  data-id={`${ID}/timeline-entry-${i}`}
+                  className="flex gap-md"
+                >
+                  <span className="flex flex-col items-center">
+                    <span
+                      className={`flex h-marker w-marker shrink-0 items-center justify-center rounded-circle text-status text-textOnPrimary ${
+                        /escalat|breach/i.test(t.event) ? 'bg-statusEscalated' : 'bg-ink'
+                      }`}
+                    >
+                      {arr.length - i}
+                    </span>
+                    {i < arr.length - 1 && <span className="w-px flex-1 bg-ink" />}
+                  </span>
+                  <span className="flex-1 pb-lg">
+                    <span
+                      className={`block text-event ${
+                        /escalat/i.test(t.event) ? 'text-statusEscalated' : 'text-text'
+                      }`}
+                    >
+                      {t.event}
+                    </span>
+                    <span className="mt-xs block text-meta text-textMuted">
+                      {longStamp(t.at)} · {actorName(t.actor, people)}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
       </div>
 
       <div className="shrink-0">
@@ -231,6 +272,7 @@ export function RequestDetail({ request }: { request: Request }) {
         )}
 
         <Tabs
+          className="rounded-sheet border border-border shadow-tabBar"
           idPrefix={ID}
           value={tab}
           onChange={setTab}

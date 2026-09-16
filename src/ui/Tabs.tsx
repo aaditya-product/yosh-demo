@@ -7,14 +7,16 @@ export function Tabs({
   value,
   onChange,
   idPrefix,
+  className = '',
 }: {
   tabs: Tab[];
   value: string;
   onChange: (value: string) => void;
   idPrefix: string;
+  className?: string;
 }) {
   return (
-    <div className="flex items-stretch border-t border-border bg-surface">
+    <div className={`flex items-stretch bg-surface ${className || 'border-t border-border'}`}>
       {tabs.map((t) => (
         <button
           key={t.value}

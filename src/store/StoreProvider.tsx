@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useReducer, type ReactNode } from 'react';
-import { DEFAULT_PROPERTY_ID, REF_SEED, buildSeed } from '../data/seed';
+import { REF_SEED, buildSeed } from '../data/seed';
 import type { StoreAction } from './actions';
 import { reducer } from './reducer';
 import { initialState, type State } from './state';
@@ -8,7 +8,7 @@ const seeded = (): State =>
   reducer(initialState, {
     kind: 'seed',
     entities: buildSeed(),
-    selectedPropertyId: DEFAULT_PROPERTY_ID,
+    selectedPropertyId: null,
     refSeed: REF_SEED,
   });
 

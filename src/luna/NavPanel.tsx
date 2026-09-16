@@ -3,25 +3,29 @@ import { useLocation } from 'react-router-dom';
 import { useDemo } from '../demo';
 import { useGo } from '../productRoot';
 import { useDispatch, useUi } from '../store';
-import { Button, Chip, Field, Icon, VoiceIndicator } from '../ui';
+import { navGlass } from '../tokens';
+import { Button, Chip, Icon, VoiceIndicator, type IconName } from '../ui';
 import { navGroups } from './nav';
 
 const ID = 'L-03';
 
-// The orb is a live call-handling widget, not the command bar. 02-ia.md is
-// explicit that they stay separate.
-function Orb() {
-  return (
-    <button
-      type="button"
-      data-id={`${ID}/orb`}
-      className="flex h-btnMd w-btnMd shrink-0 items-center justify-center rounded-circle bg-primary text-textOnPrimary"
-      title="Calls"
-    >
-      <Icon name="forum" size={18} />
-    </button>
-  );
-}
+const icons: Record<string, IconName> = {
+  requests: 'description',
+  'my-requests': 'listAlt',
+  archive: 'inventory',
+  registry: 'inventory',
+  inventory: 'basket',
+  fleet: 'badge',
+  inspections: 'checkCircle',
+  'action-plans': 'warning',
+  'client-center': 'person',
+  chat: 'forum',
+  'chat-history': 'history',
+  feedback: 'forum',
+  admin: 'build',
+  profile: 'person',
+  announcements: 'roomService',
+};
 
 function ActionCardPanel() {
   const { actionCard } = useUi();
@@ -30,7 +34,7 @@ function ActionCardPanel() {
   if (!actionCard) return null;
 
   return (
-    <div data-id={`${ID}/action-card`} className="flex flex-col gap-md p-lg">
+    <div data-id={`${ID}/action-card`} className="flex flex-col gap-md">
       <span className="text-title">{actionCard.title}</span>
       <div className="flex flex-col items-start gap-sm">
         {actionCard.fields.map((f) => (
@@ -71,6 +75,9 @@ function ActionCardPanel() {
   );
 }
 
+// Bottom-right floating panel with a frosted-glass ground, matching the live
+// build: three stacked layers, 20px radius, 1px rgba(0,0,0,.06), and the
+// measured drop shadow.
 export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const go = useGo();
   const location = useLocation();
@@ -85,73 +92,91 @@ export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void
     setCommand('');
   };
 
+  const showing = open || Boolean(actionCard);
+
   return (
-    <div className={`absolute inset-0 z-overlay ${open || actionCard ? '' : 'pointer-events-none'}`}>
+    <div
+      data-id={`${ID}/panel`}
+      className={`absolute bottom-xl right-xl z-overlay w-navPanel overflow-hidden rounded-nav border border-panelBorder shadow-nav transition-opacity duration-overlay ${
+        showing ? 'opacity-100' : 'pointer-events-none opacity-0'
+      }`}
+      style={{ backgroundColor: navGlass.base, backdropFilter: navGlass.backdrop }}
+    >
       <div
-        data-id={`${ID}/scrim`}
-        onClick={onClose}
-        className={`absolute inset-0 bg-scrim transition-opacity duration-overlay ${
-          open || actionCard ? 'opacity-100' : 'opacity-0'
-        }`}
+        className="absolute inset-0"
+        style={{ backgroundImage: navGlass.gradient, opacity: navGlass.gradientOpacity }}
       />
-      <div
-        className={`absolute inset-y-0 left-0 flex w-navPanel flex-col border-r border-border bg-surface transition-transform duration-sheet ease-out ${
-          open || actionCard ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="absolute inset-0" style={{ backgroundColor: navGlass.veil }} />
+
+      <div className="relative px-navX pb-navY pt-navTop">
         {actionCard ? (
           <ActionCardPanel />
         ) : (
-          <div className="flex flex-col gap-lg p-lg">
-            {navGroups.map(({ group, items }) => (
+          <div className="flex flex-col gap-xl">
+            {navGroups.map(({ group, items }, i) => (
               <div key={group}>
-                <p className="mb-sm text-meta text-textMuted">{group}</p>
+                {i > 0 && <hr className="mb-xl border-0 border-t border-navDivider" />}
+                <p className="mb-sm text-nav text-navLabel">{group}</p>
                 <div className="flex flex-wrap gap-sm">
-                  {items.map((item) => (
-                    <Chip
-                      key={item.id}
-                      data-id={`${ID}/nav-${item.id}`}
-                      selected={Boolean(item.to && location.pathname.endsWith(item.to))}
-                      onClick={item.to ? () => go(item.to!) : undefined}
-                    >
-                      {item.label}
-                    </Chip>
-                  ))}
+                  {items.map((item) => {
+                    const active = Boolean(item.to && location.pathname.endsWith(item.to));
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        data-id={`${ID}/nav-${item.id}`}
+                        onClick={
+                          item.to
+                            ? () => {
+                                go(item.to!);
+                                onClose();
+                              }
+                            : undefined
+                        }
+                        className={`flex h-navItem items-center gap-xs rounded-nav pl-xs pr-md text-nav text-primary ${
+                          active ? 'bg-navSelected' : 'bg-surface'
+                        }`}
+                      >
+                        <span className="flex h-navIcon w-navIcon items-center justify-center">
+                          <Icon name={icons[item.id] ?? 'description'} size={18} />
+                        </span>
+                        {item.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
 
-        <div className="shrink-0 border-t border-border p-lg">
-        <div className="flex items-end gap-sm">
-          <span className="min-w-0 flex-1">
-            <Field
+        <div className="mt-xl flex items-center gap-md">
+          <div className="flex h-commandRow min-w-0 flex-1 items-center gap-md rounded-pill bg-surface px-xl">
+            <input
               data-id={`${ID}/command-input`}
-              label="What do you need?"
               value={command}
-              placeholder="Assign the AC job to Rahul"
+              placeholder="What do you need?"
               onChange={(e) => setCommand(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && submit('type', command)}
-              trailing={
-                <button
-                  type="button"
-                  data-id={`${ID}/command-mic`}
-                  onClick={() => {
-                    dispatch({ kind: 'setVoiceState', state: 'listening' });
-                    submit('voice', command || 'assign');
-                  }}
-                  className="text-textMuted"
-                >
-                  <Icon name="mic" size={20} />
-                </button>
-              }
+              className="min-w-0 flex-1 bg-transparent text-nav outline-none placeholder:text-textMuted"
             />
+            <button
+              type="button"
+              data-id={`${ID}/command-mic`}
+              onClick={() => {
+                dispatch({ kind: 'setVoiceState', state: 'listening' });
+                submit('voice', command || 'assign');
+              }}
+              className="shrink-0 text-textMuted"
+            >
+              <Icon name="mic" size={18} />
+            </button>
+          </div>
+          <span className="flex h-orb w-orb shrink-0 items-center justify-center rounded-circle bg-primary text-textOnPrimary">
+            <Icon name="forum" size={18} />
           </span>
-          <Orb />
         </div>
+
         {(voiceState === 'listening' || voiceState === 'parsing') && (
           <div className="mt-md flex items-center gap-sm">
             <VoiceIndicator state={voiceState} data-id={`${ID}/voice`} />
@@ -160,7 +185,6 @@ export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void
             </span>
           </div>
         )}
-        </div>
       </div>
     </div>
   );

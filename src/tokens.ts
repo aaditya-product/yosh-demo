@@ -24,12 +24,20 @@ export const color = {
   // status
   statusLive:     '#26A69A',   // "New" badge
   statusEscalated:'#EF4444',   // measured on luna-dev filter count circle
+  escalatedEdge:  '#FF0000',   // card border when a request is escalated
+  statusWarn:     '#E2A03F',   // amber dot on the card status cluster
+  ink:            '#2D4E5E',   // timeline markers and connector
   statusWarning:  'rgba(234, 179, 8, 0.20)',
 
   // lines
   border:         '#E5E7EB',
   borderMuted:    '#9C9C9C',   // card status pill outline
   divider:        '#B3B3B3',   // hairline inside a request card
+  navDivider:     '#C1C1C1',   // between nav groups
+  chipBorder:     'rgba(156, 156, 156, 0.05)',
+  panelBorder:    'rgba(0, 0, 0, 0.06)',
+  navSelected:    'rgba(21, 97, 109, 0.12)',
+  navLabel:       'rgba(0, 0, 0, 0.5)',
 
   // scrim behind Sheet, from docs/04-components.md
   scrim:          'rgba(0, 0, 0, 0.25)',
@@ -44,12 +52,17 @@ export const type = {
   bodyLg:    { size: 16, weight: 400, leading: 24 },
   title:     { size: 24, weight: 600, leading: 32 },
   status:    { size: 12, weight: 600, leading: 16 },
+  nav:       { size: 15, weight: 400, leading: 20 },   // nav items and command bar
+  panelTitle:{ size: 18, weight: 600, leading: 28 },   // detail panel heading
+  event:     { size: 14, weight: 700, leading: 20 },   // bold keyword in a timeline line
 } as const;
 
 export const radius = {
   pill: 9999,   // dominant — filters, chips, buttons
-  card: 8,
-  panel: 8,
+  card: 8,      // request card, detail chip
+  panel: 12,    // detail panel blocks, timeline accordion
+  sheet: 16,    // panel title card, foot tab bar
+  nav: 20,      // nav panel and its items
   circle: 9999,
 } as const;
 
@@ -76,6 +89,15 @@ export const control = {
   statusPill:   44,
   iconBtn:  38,   // circular search / add buttons, measured
   leading:  48,   // card leading circle, measured
+  statusCluster: 44,
+  dot:      18,   // priority dot on the card status cluster
+  marker:   28,   // timeline numbered marker
+  select:   48,   // staff select and status button in the detail panel
+  navItem:  40,
+  navIcon:  30,
+  commandRow: 42,
+  orb:      42,
+  accordion: 52,   // timeline accordion header, measured
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
@@ -87,6 +109,21 @@ export const stroke = {
   hair: 1,   // not named in 04. Decision: default hairline.
   ring: 2,   // not named in 04. Decision: VoiceIndicator ring.
   edge: 3,   // docs/04-components.md, Card selected left edge.
+} as const;
+
+// Shadows, measured on luna-dev.
+export const shadow = {
+  nav:    'rgba(16, 24, 40, 0.16) 0px 10px 34px 0px',
+  tabBar: 'rgba(0, 0, 0, 0.06) 0px -1px 34.7px 0px',
+} as const;
+
+// The nav panel's frosted glass: three stacked layers, measured.
+export const navGlass = {
+  base:            'rgba(249, 249, 249, 0.3)',
+  backdrop:        'saturate(1.8) blur(7.6px)',
+  gradient:        'linear-gradient(140.369deg, #15616D 0%, #9D8E1E 47.3%, #29BCD3 100%)',
+  gradientOpacity: 0.32,
+  veil:            'rgba(255, 255, 255, 0.58)',
 } as const;
 
 // Motion, from docs/04-components.md and TASKS 6.4.
@@ -103,7 +140,9 @@ export const layout = {
   statusSelect: 160,
   etaSelect: 160,
   thread: 200,
-  navPanel: 260,
+  timeline: 300,   // expanded accordion scrolls independently
+  navPanel: 431,   // floating nav panel, measured
+  navContent: 391,
   rail: 96,
   genieContent: 720,
   bubble: 520,

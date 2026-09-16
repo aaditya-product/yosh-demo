@@ -28,12 +28,12 @@ export const navGroups: { group: string; items: NavItem[] }[] = [
     ],
   },
   {
-    group: 'Clients',
+    group: 'Guests',
     items: [
-      { id: 'client-center', label: 'Client center' },
+      { id: 'feedback', label: 'Feedback' },
+      { id: 'client-center', label: 'Guest center' },
       { id: 'chat', label: 'Chat' },
       { id: 'chat-history', label: 'Chat history' },
-      { id: 'feedback', label: 'Feedback' },
     ],
   },
   {

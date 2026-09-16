@@ -13,7 +13,7 @@ export type NewRequest = Partial<Request> &
 
 export type StoreAction =
   // seed and reset
-  | { kind: 'seed'; entities: Entities; selectedPropertyId: string; refSeed?: number }
+  | { kind: 'seed'; entities: Entities; selectedPropertyId: string | null; refSeed?: number }
   | { kind: 'reset' }
 
   // undo checkpoint — dispatch before a group of actions that one undo must reverse
@@ -37,7 +37,7 @@ export type StoreAction =
   | { kind: 'createActionPlan'; finding: string; inspectionId: string; ownerId: string; dueAt: string }
 
   // navigation and filters
-  | { kind: 'selectProperty'; propertyId: string }
+  | { kind: 'selectProperty'; propertyId: string | null }
   | { kind: 'setBoardFilter'; filter: BoardFilter }
   | { kind: 'setBoardTypeFilter'; type: RequestType | null }
   | { kind: 'selectRequest'; id: string | null }

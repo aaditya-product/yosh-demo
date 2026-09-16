@@ -12,12 +12,22 @@ import {
   useDispatch,
   type Request,
 } from '../store';
-import { Card, Chip, Icon, SegmentedControl, StatusBadge } from '../ui';
+import { Card, Chip, Icon, SegmentedControl, statusLabel } from '../ui';
 import { useNow } from '../useNow';
 import { EmptyDetail, RequestDetail } from './RequestDetail';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-01';
+
+const statusWord = (r: Request) =>
+  statusLabel(r.priority === 'escalated' ? 'escalated' : r.status);
+
+const statusTone = (r: Request) => {
+  if (r.priority === 'escalated') return 'text-statusEscalated';
+  if (r.status === 'new' || r.status === 'in_progress') return 'text-statusLive';
+  if (r.status === 'done' || r.status === 'cancelled') return 'text-textMuted';
+  return 'text-primary';
+};
 
 // A finished request does not advertise an arrival time.
 const CLOSED: Request['status'][] = ['done', 'cancelled'];
@@ -28,7 +38,7 @@ function SlaChip({ request, now }: { request: Request; now: number }) {
   return (
     <span
       data-id={`${ID}/card-${request.id}/sla`}
-      className={`inline-flex items-center rounded-card px-sm py-sm text-bodyMed ${
+      className={`inline-flex items-center rounded-card border border-chipBorder px-sm py-sm text-bodyMed ${
         state === 'ok' ? 'bg-page text-text' : 'bg-statusEscalated text-textOnPrimary'
       }`}
     >
@@ -65,7 +75,7 @@ function RequestCard({
       escalated={request.priority === 'escalated'}
       onClick={onSelect}
     >
-      <div className="px-lg py-lg">
+      <div className="p-cardPad">
         <div className="flex items-center gap-md">
           <span className="flex h-leading w-leading shrink-0 items-center justify-center rounded-circle bg-surfaceAlt text-text">
             {assigneeInitials ? (
@@ -80,10 +90,18 @@ function RequestCard({
               {request.ref} · {relativeTime(request.createdAt)}
             </span>
           </span>
-          <StatusBadge
-            status={request.priority === 'escalated' ? 'escalated' : request.status}
+          <span
             data-id={`${ID}/card-${request.id}/status`}
-          />
+            className="flex h-statusCluster shrink-0 items-center gap-sm rounded-pill border border-borderMuted bg-surface px-md"
+          >
+            {slaState(request, now) === 'soon' && (
+              <span className="h-dot w-dot rounded-circle bg-statusWarn" />
+            )}
+            {(request.priority === 'escalated' || slaState(request, now) === 'breached') && (
+              <span className="h-dot w-dot rounded-circle bg-statusEscalated" />
+            )}
+            <span className={`text-status ${statusTone(request)}`}>{statusWord(request)}</span>
+          </span>
         </div>
 
         {chips.length > 0 && (
@@ -94,7 +112,7 @@ function RequestCard({
             {request.eta && !CLOSED.includes(request.status) && (
               <span
                 data-id={`${ID}/card-${request.id}/eta`}
-                className="inline-flex items-center rounded-card bg-page px-sm py-sm text-bodyMed text-text"
+                className="inline-flex items-center rounded-card border border-chipBorder bg-page px-sm py-sm text-bodyMed text-text"
               >
                 Arriving {clockTime(request.eta)}
               </span>
@@ -102,7 +120,7 @@ function RequestCard({
             {request.external && (
               <span
                 data-id={`${ID}/card-${request.id}/external`}
-                className="inline-flex items-center rounded-card bg-page px-sm py-sm text-bodyMed text-text"
+                className="inline-flex items-center rounded-card border border-chipBorder bg-page px-sm py-sm text-bodyMed text-text"
               >
                 {request.external.system} · {request.external.ref}
               </span>

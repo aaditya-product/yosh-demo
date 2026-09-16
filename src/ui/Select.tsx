@@ -13,7 +13,7 @@ export function Select({ label, options, className = '', ...rest }: SelectProps)
       {label && <span className="mb-xs block text-meta text-textMuted">{label}</span>}
       <span className="relative block">
         <select
-          className={`h-btnMd w-full appearance-none rounded-pill border border-borderMuted bg-surface pl-lg pr-xl text-body text-text outline-none ${className}`}
+          className={`h-select w-full appearance-none rounded-pill border border-borderMuted bg-surface pl-lg pr-xl text-nav text-text outline-none ${className}`}
           {...rest}
         >
           {options.map((o) => (

@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { color, type as typeScale, radius, space, frame, font, control, motion, stroke, layout } from './src/tokens';
+import { color, type as typeScale, radius, space, frame, font, control, motion, stroke, layout, shadow } from './src/tokens';
 
 const px = (n: number) => `${n}px`;
 
@@ -47,7 +47,7 @@ export default {
       maxWidth: { bubble: px(layout.bubble) },
       minWidth: { genie: px(frame.genie.w), touch: px(control.touch) },
       minHeight: { genie: px(frame.genie.h), touch: px(control.touch) },
-      maxHeight: { thread: px(layout.thread) },
+      maxHeight: { thread: px(layout.thread), timeline: px(layout.timeline) },
       transitionDuration: {
         sheet: `${motion.sheet}ms`,
         overlay: `${motion.overlay}ms`,
@@ -63,9 +63,10 @@ export default {
         },
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
-      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)' },
+      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar },
       zIndex: { overlay: '40' },
-      borderColor: { divider: color.divider },
+      borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder },
+      padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px' },
       borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),
     },
   },

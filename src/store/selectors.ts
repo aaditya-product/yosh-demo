@@ -28,6 +28,8 @@ export const filterLabels: Record<BoardFilter, string> = {
   cancel_requested: 'Cancel req.',
 };
 
+// One request pane. Property chips narrow the same list; nothing selected
+// means every property flows into it.
 export function requestsForProperty(requests: Request[], propertyId: string | null) {
   return propertyId ? requests.filter((r) => r.property === propertyId) : requests;
 }

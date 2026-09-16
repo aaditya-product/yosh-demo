@@ -42,3 +42,17 @@ export function relativeTime(iso: string, from: Date = new Date()) {
 export function clockTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 }
+
+const ordinal = (n: number) => {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
+
+// "September 16th, 11:12 AM" — the long form the request timeline uses.
+export function longStamp(iso: string) {
+  const d = new Date(iso);
+  const month = d.toLocaleDateString([], { month: 'long' });
+  const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+  return `${month} ${ordinal(d.getDate())}, ${time}`;
+}
