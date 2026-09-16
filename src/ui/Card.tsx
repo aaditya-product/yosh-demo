@@ -10,6 +10,10 @@ export type CardProps = {
   'data-id': string;
 };
 
+// selected and escalated are independent. Selected changes the fill and adds
+// the left edge; escalated changes the border. A selected escalated request
+// shows both, because losing the escalation styling on selection hides the one
+// thing about that card that matters.
 export function Card({
   selected = false,
   escalated = false,
@@ -19,11 +23,17 @@ export function Card({
   className = '',
   ...rest
 }: CardProps) {
-  const look = selected
-    ? 'bg-chipSelected border-l-edge border-l-primaryBorderStrong'
-    : escalated
-      ? 'bg-surface border border-statusEscalated'
-      : `bg-surface ${bordered ? 'border border-border' : ''}`;
+  const look = [
+    selected ? 'bg-chipSelected' : 'bg-surface',
+    escalated
+      ? 'border border-statusEscalated'
+      : bordered
+        ? 'border border-border'
+        : '',
+    selected ? 'border-l-edge border-l-primaryBorderStrong' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div

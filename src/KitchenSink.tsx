@@ -190,6 +190,15 @@ export function KitchenSink() {
               }
             />
           </Card>
+          <Card data-id="KS/card-selected-escalated" selected escalated>
+            <ListRow
+              data-id="KS/row-selected-escalated"
+              leading={<Icon name="build" size={24} />}
+              title={escalated.title}
+              subtitle={`${escalated.ref} · selected and escalated`}
+              trailing={<StatusBadge status="escalated" />}
+            />
+          </Card>
           <Card data-id="KS/card-borderless" bordered={false}>
             <ListRow data-id="KS/row-borderless" title="No border" subtitle="bordered={false}" />
           </Card>
