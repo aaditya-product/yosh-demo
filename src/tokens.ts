@@ -65,19 +65,19 @@ export const control = {
   btnMd:  40,
   btnLg:  56,
   touch:  44,   // minimum tappable box anywhere in the app
-  chip:   40,   // not specified in 04 — matches btnMd
-  count:  20,   // not specified in 04 — the filter chip's count circle
+  chip:   40,   // not named in 04. Decision: match btnMd.
+  count:  20,   // not named in 04. Decision: the filter chip's count circle.
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
 } as const;
 
 // Stroke widths. `edge` is the Card selected left edge, named in
-// docs/04-components.md. `ring` is the VoiceIndicator ring, not specified.
+// docs/04-components.md. `hair` and `ring` are not named there.
 export const stroke = {
-  hair: 1,
-  ring: 2,
-  edge: 3,
+  hair: 1,   // not named in 04. Decision: default hairline.
+  ring: 2,   // not named in 04. Decision: VoiceIndicator ring.
+  edge: 3,   // docs/04-components.md, Card selected left edge.
 } as const;
 
 // Motion, from docs/04-components.md and TASKS 6.4.
@@ -86,6 +86,11 @@ export const motion = {
   overlay: 180,
   toast:   6000,
   pulse:   1400,
+} as const;
+
+// Luna board layout. 03-screens.md: list column ~750px.
+export const layout = {
+  boardList: 750,
 } as const;
 
 export const frame = {

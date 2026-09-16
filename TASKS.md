@@ -35,7 +35,7 @@ serve a step in it.
 Build this first. If the shared store doesn't drive Genie from a Luna action,
 everything after it is a lie.
 
-- [ ] `1.1` `L-01` Requests board. Property chips, filters with counts, SLA
+- [x] `1.1` `L-01` Requests board. Property chips, filters with counts, SLA
       clocks, escalation, type icons, external badges.
 - [ ] `1.2` `L-02` Request detail. Thread, ETA, assign, status, timeline.
 - [ ] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.

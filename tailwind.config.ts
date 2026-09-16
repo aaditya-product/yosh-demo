@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { color, type as typeScale, radius, space, frame, font, control, motion, stroke } from './src/tokens';
+import { color, type as typeScale, radius, space, frame, font, control, motion, stroke, layout } from './src/tokens';
 
 const px = (n: number) => `${n}px`;
 
@@ -31,6 +31,7 @@ export default {
       width: {
         genie: px(frame.genie.w),
         genieHalf: px(frame.genie.w / 2 - 80),
+        boardList: px(layout.boardList),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {
