@@ -4,6 +4,7 @@ import { GenieRail } from './GenieRail';
 import { GenieRequestDetail } from './GenieRequestDetail';
 import { Home } from './Home';
 import { MyRequests } from './MyRequests';
+import { ServiceBrowse } from './ServiceBrowse';
 
 export function GenieShell({ root = '/' }: { root?: string }) {
   return (
@@ -16,6 +17,7 @@ export function GenieShell({ root = '/' }: { root?: string }) {
             <Route path="home" element={<Home />} />
             <Route path="requests" element={<MyRequests />} />
             <Route path="requests/:requestId" element={<GenieRequestDetail />} />
+            <Route path="services" element={<ServiceBrowse />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </div>

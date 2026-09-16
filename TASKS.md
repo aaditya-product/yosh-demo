@@ -55,7 +55,7 @@ everything after it is a lie.
 ## Phase 2 - the resident side (Section A)
 
 - [x] `2.1` `G-02` Home. Figma `534:9809`, rail `534:10120`.
-- [ ] `2.2` `G-07` Service browse. Figma `534:11085`.
+- [x] `2.2` `G-07` Service browse. Figma `534:11085`.
 - [ ] `2.3` `G-08` Booking stepper, four steps, one component.
       Figma `534:13171` `534:13414` `534:13657` `534:13925`.
 - [ ] `2.4` `G-09` Confirmed. Figma `534:14216`.

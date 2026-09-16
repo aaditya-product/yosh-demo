@@ -14,7 +14,7 @@ const items: { id: string; label: string; icon: IconName; to?: string }[] = [
   { id: 'housekeeping', label: 'Housekeeping', icon: 'cleaning' },
   { id: 'maintenance', label: 'Maintenance', icon: 'build' },
   { id: 'gatherings', label: 'Gatherings', icon: 'celebration' },
-  { id: 'concierge', label: 'Concierge', icon: 'concierge' },
+  { id: 'concierge', label: 'Concierge', icon: 'concierge', to: '/services' },
   { id: 'provisions', label: 'Provisions', icon: 'basket' },
   { id: 'property', label: 'Property', icon: 'home' },
   { id: 'profile', label: 'Profile', icon: 'person' },
