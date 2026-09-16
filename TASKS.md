@@ -23,7 +23,7 @@ serve a step in it.
 - [x] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
 - [x] `0.5` Component library per `docs/04-components.md`.
 - [x] `0.6` `/kitchen-sink` - every component, every state, both backgrounds.
-- [ ] `0.7` `/demo` harness - Genie in a 1280x800 frame left, Luna right,
+- [x] `0.7` `/demo` harness - Genie in a 1280x800 frame left, Luna right,
       one store.
 
 ### REVIEW GATE - screenshot `/kitchen-sink` and the empty `/demo`
