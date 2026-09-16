@@ -80,7 +80,9 @@ export const requests: Request[] = [
     createdAt: minutesAgo(145),
     timeline: [
       { at: minutesAgo(145), actor: 'aisha', event: 'Raised' },
+      { at: minutesAgo(144), actor: 'aisha', event: 'It started this morning, quite loud.', kind: 'message' },
       { at: minutesAgo(138), actor: 'omar', event: 'Assigned to Rahul Menon' },
+      { at: minutesAgo(136), actor: 'marta', event: 'Rahul is on his way.', kind: 'message' },
       { at: minutesAgo(130), actor: 'rahul', event: 'On site' },
     ],
     external: null,

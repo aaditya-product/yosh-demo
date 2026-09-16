@@ -14,6 +14,7 @@ import {
 } from '../store';
 import { Avatar, Card, Chip, Icon, ListRow, SegmentedControl, StatusBadge } from '../ui';
 import { useNow } from '../useNow';
+import { EmptyDetail, RequestDetail } from './RequestDetail';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-01';
@@ -188,13 +189,9 @@ export function RequestsBoard() {
 
         <div
           data-id={`${ID}/detail`}
-          className="flex min-w-0 flex-1 items-center justify-center rounded-card border border-border bg-surface"
+          className="min-w-0 flex-1 overflow-hidden rounded-card border border-border bg-surface"
         >
-          {selected ? (
-            <span className="text-body text-textMuted">{selected.title}</span>
-          ) : (
-            <span className="text-body text-textMuted">Pick a request to see it</span>
-          )}
+          {selected ? <RequestDetail request={selected} /> : <EmptyDetail />}
         </div>
       </div>
     </div>

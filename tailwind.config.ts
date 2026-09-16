@@ -32,6 +32,8 @@ export default {
         genie: px(frame.genie.w),
         genieHalf: px(frame.genie.w / 2 - 80),
         boardList: px(layout.boardList),
+        statusSelect: px(layout.statusSelect),
+        etaSelect: px(layout.etaSelect),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {
@@ -41,6 +43,7 @@ export default {
       },
       minWidth: { genie: px(frame.genie.w), touch: px(control.touch) },
       minHeight: { genie: px(frame.genie.h), touch: px(control.touch) },
+      maxHeight: { thread: px(layout.thread) },
       transitionDuration: {
         sheet: `${motion.sheet}ms`,
         overlay: `${motion.overlay}ms`,

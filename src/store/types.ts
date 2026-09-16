@@ -22,7 +22,15 @@ export type ExternalSystem = 'D365' | 'CAFM';
 
 export type RequestItem = { label: string; qty: number };
 
-export type TimelineEntry = { at: string; actor: string; event: string };
+// 02-ia.md types this as { at, actor, event }. B2 needs a two-way thread as
+// well as an audit trail, so entries carry a kind and live in one array —
+// the trail then shows everything, in order, which is what C4 asks for.
+export type TimelineEntry = {
+  at: string;
+  actor: string;
+  event: string;
+  kind?: 'event' | 'message';
+};
 
 export type ExternalRef = { system: ExternalSystem; ref: string };
 

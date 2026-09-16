@@ -68,3 +68,26 @@ export const typeLabels: Record<RequestType, string> = {
   concierge: 'Concierge',
   gathering: 'Gathering',
 };
+
+// Timeline entries store actor ids. Screens show names.
+export function actorName(
+  id: string,
+  people: { staff: { id: string; name: string }[]; residents: { id: string; name: string }[] },
+) {
+  if (id === 'system') return 'System';
+  if (id === 'ops') return 'Operations';
+  return (
+    people.staff.find((s) => s.id === id)?.name ??
+    people.residents.find((r) => r.id === id)?.name ??
+    id
+  );
+}
+
+export const statusOptions: { value: Request['status']; label: string }[] = [
+  { value: 'new', label: 'New' },
+  { value: 'open', label: 'Open' },
+  { value: 'assigned', label: 'Assigned' },
+  { value: 'in_progress', label: 'In progress' },
+  { value: 'done', label: 'Done' },
+  { value: 'cancelled', label: 'Cancelled' },
+];

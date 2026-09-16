@@ -91,6 +91,9 @@ export const motion = {
 // Luna board layout. 03-screens.md: list column ~750px.
 export const layout = {
   boardList: 750,
+  statusSelect: 160,
+  etaSelect: 160,
+  thread: 200,
 } as const;
 
 export const frame = {

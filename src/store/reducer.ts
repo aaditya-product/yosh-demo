@@ -1,7 +1,7 @@
 import type { StoreAction } from './actions';
 import type { Entities, State } from './state';
 import { initialState, initialUi } from './state';
-import type { Request } from './types';
+import type { Request, RequestStatus } from './types';
 
 const entitiesOf = (s: State): Entities => ({
   properties: s.properties,
@@ -18,7 +18,26 @@ const now = () => new Date().toISOString();
 
 const makeRef = (n: number) => `#${n.toString(16).toUpperCase().padStart(3, '0')}`;
 
-const entry = (actor: string, event: string) => ({ at: now(), actor, event });
+// A button that says Assign produces a line that says Assigned. Statuses read
+// the way they read on the badge, never as the raw enum.
+const statusText: Record<RequestStatus, string> = {
+  new: 'New',
+  open: 'Open',
+  assigned: 'Assigned',
+  in_progress: 'In progress',
+  done: 'Done',
+  cancelled: 'Cancelled',
+};
+
+const clock = (iso: string) =>
+  new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+const entry = (actor: string, event: string, kind: 'event' | 'message' = 'event') => ({
+  at: now(),
+  actor,
+  event,
+  kind,
+});
 
 function patchRequest(
   state: State,
@@ -89,21 +108,24 @@ export function reducer(state: State, action: StoreAction): State {
       return patchRequest(state, action.id, (r) => ({
         ...r,
         eta: action.eta,
-        timeline: [...r.timeline, entry('ops', 'ETA set')],
+        timeline: [...r.timeline, entry('ops', `Arriving ${clock(action.eta)}`)],
       }));
 
     case 'setStatus':
       return patchRequest(state, action.id, (r) => ({
         ...r,
         status: action.status,
-        timeline: [...r.timeline, entry('ops', `Status changed to ${action.status}`)],
+        timeline: [...r.timeline, entry('ops', statusText[action.status])],
       }));
 
     case 'setPriority':
       return patchRequest(state, action.id, (r) => ({
         ...r,
         priority: action.priority,
-        timeline: [...r.timeline, entry('system', `Priority changed to ${action.priority}`)],
+        timeline: [
+          ...r.timeline,
+          entry('system', action.priority === 'escalated' ? 'Escalated' : `Priority ${action.priority}`),
+        ],
       }));
 
     case 'setExternal':
@@ -119,7 +141,7 @@ export function reducer(state: State, action: StoreAction): State {
     case 'addMessage':
       return patchRequest(state, action.id, (r) => ({
         ...r,
-        timeline: [...r.timeline, entry(action.actor, action.body)],
+        timeline: [...r.timeline, entry(action.actor, action.body, 'message')],
       }));
 
     case 'cancelRequest':
