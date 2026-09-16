@@ -95,6 +95,9 @@ export const layout = {
   etaSelect: 160,
   thread: 200,
   navPanel: 260,
+  rail: 96,
+  genieContent: 720,
+  bubble: 520,
 } as const;
 
 export const frame = {

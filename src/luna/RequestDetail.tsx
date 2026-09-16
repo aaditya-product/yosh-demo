@@ -32,6 +32,9 @@ export function RequestDetail({ request }: { request: Request }) {
   const people = { staff, residents };
 
   const messages = request.timeline.filter((t) => t.kind === 'message');
+  // Events only. The thread below renders the messages; L-14 is where the two
+  // interleave into the full audit trail.
+  const events = request.timeline.filter((t) => t.kind !== 'message');
 
   const send = () => {
     if (!draft.trim()) return;
@@ -165,7 +168,7 @@ export function RequestDetail({ request }: { request: Request }) {
           <div className="mt-md">
             <Timeline
               idPrefix={ID}
-              items={request.timeline.map((t) => ({
+              items={events.map((t) => ({
                 at: t.at,
                 actor: actorName(t.actor, people),
                 event: t.event,

@@ -35,6 +35,8 @@ export default {
         statusSelect: px(layout.statusSelect),
         etaSelect: px(layout.etaSelect),
         navPanel: px(layout.navPanel),
+        rail: px(layout.rail),
+        genieContent: px(layout.genieContent),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {
@@ -42,6 +44,7 @@ export default {
         sheetDemo: px(360),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
+      maxWidth: { bubble: px(layout.bubble) },
       minWidth: { genie: px(frame.genie.w), touch: px(control.touch) },
       minHeight: { genie: px(frame.genie.h), touch: px(control.touch) },
       maxHeight: { thread: px(layout.thread) },

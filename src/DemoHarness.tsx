@@ -43,7 +43,7 @@ export function DemoHarness() {
             className="h-genie w-genie origin-top-left"
             style={{ transform: `scale(${scale})` }}
           >
-            <MemoryRouter initialEntries={['/genie']}>
+            <MemoryRouter initialEntries={['/']}>
               <GenieShell />
             </MemoryRouter>
           </div>
@@ -54,7 +54,7 @@ export function DemoHarness() {
         data-id="DEMO/luna-pane"
         className="h-full min-w-0 flex-1 overflow-hidden rounded-panel border border-border bg-surface"
       >
-        <MemoryRouter initialEntries={['/luna']}>
+        <MemoryRouter initialEntries={['/']}>
           <LunaShell />
         </MemoryRouter>
       </div>

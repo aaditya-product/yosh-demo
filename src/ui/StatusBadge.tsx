@@ -15,8 +15,24 @@ const look: Record<BadgeStatus, { label: string; className: string }> = {
 
 export const statusLabel = (status: BadgeStatus) => look[status].label;
 
-export function StatusBadge({ status, ...rest }: { status: BadgeStatus; 'data-id'?: string }) {
-  const { label, className } = look[status];
+// Genie calls a request the resident just raised "Sent". The underlying status
+// is unchanged — this is the resident's word for it, not a second status model.
+const residentOverride: Partial<Record<BadgeStatus, { label: string; className: string }>> = {
+  new: { label: 'Sent', className: 'bg-surfaceMuted text-textMuted' },
+  open: { label: 'Sent', className: 'bg-surfaceMuted text-textMuted' },
+};
+
+export function StatusBadge({
+  status,
+  audience = 'staff',
+  ...rest
+}: {
+  status: BadgeStatus;
+  audience?: 'staff' | 'resident';
+  'data-id'?: string;
+}) {
+  const { label, className } =
+    (audience === 'resident' ? residentOverride[status] : undefined) ?? look[status];
   return (
     <span className={`inline-flex items-center rounded-pill px-sm py-xs text-meta ${className}`} {...rest}>
       {label}

@@ -7,7 +7,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/genie/*" element={<GenieStandalone />} />
-      <Route path="/luna/*" element={<LunaShell />} />
+      <Route path="/luna/*" element={<LunaShell root="/luna" />} />
       <Route path="/kitchen-sink" element={<KitchenSink />} />
     </Routes>
   );

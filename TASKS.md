@@ -39,8 +39,11 @@ everything after it is a lie.
       clocks, escalation, type icons, external badges.
 - [x] `1.2` `L-02` Request detail. Thread, ETA, assign, status, timeline.
 - [x] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.
-- [ ] `1.4` `G-05` My requests, `G-06` Request detail on Genie.
+- [x] `1.4` `G-05` My requests, `G-06` Request detail on Genie.
 - [ ] `1.5` Wire B2: assign on Luna, watch Genie update with no Genie-side code.
+      Not satisfied by the early `b2-assign` beat registered at 1.3. To close:
+      retarget it to `#0BE` once Beat 1 creates that request, and verify the
+      full loop against the real `G-05`/`G-06`. Report back before ticking.
 - [ ] `1.6` `L-11` Workload.
 - [ ] `1.7` `L-12` Schedule, recurring tasks that create real requests.
 - [ ] `1.8` `L-13` Rotas.

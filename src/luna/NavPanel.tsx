@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDemo } from '../demo';
+import { useGo } from '../productRoot';
 import { useDispatch, useUi } from '../store';
 import { Button, Chip, Field, Icon, VoiceIndicator } from '../ui';
 import { navGroups } from './nav';
@@ -71,7 +72,7 @@ function ActionCardPanel() {
 }
 
 export function NavPanel() {
-  const navigate = useNavigate();
+  const go = useGo();
   const location = useLocation();
   const engine = useDemo();
   const dispatch = useDispatch();
@@ -100,7 +101,7 @@ export function NavPanel() {
                       key={item.id}
                       data-id={`${ID}/nav-${item.id}`}
                       selected={Boolean(item.to && location.pathname.endsWith(item.to))}
-                      onClick={item.to ? () => navigate(item.to!) : undefined}
+                      onClick={item.to ? () => go(item.to!) : undefined}
                     >
                       {item.label}
                     </Chip>
