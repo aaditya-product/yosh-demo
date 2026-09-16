@@ -8,7 +8,7 @@ import {
   type Request,
   type RequestStatus,
 } from '../store';
-import { Avatar, Button, Icon, Select, Tabs } from '../ui';
+import { Avatar, Button, Icon, Tabs } from '../ui';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-02';
@@ -26,6 +26,51 @@ const statusTone = (r: Request) => {
   if (r.status === 'new' || r.status === 'in_progress') return 'bg-statusLive';
   return 'bg-primary';
 };
+
+// A styled trigger with a native select laid over it. Every dropdown in the
+// panel uses this, so status, staff and ETA look and behave the same.
+function Dropdown({
+  id,
+  value,
+  options,
+  onChange,
+  className = '',
+  tone = 'outline',
+}: {
+  id: string;
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (value: string) => void;
+  className?: string;
+  tone?: 'outline' | string;
+}) {
+  const label = options.find((o) => o.value === value)?.label ?? options[0]?.label;
+  const look =
+    tone === 'outline'
+      ? 'border border-borderMuted bg-surface text-text'
+      : `${tone} text-textOnPrimary`;
+
+  return (
+    <span
+      className={`relative inline-flex h-select items-center justify-between gap-md rounded-pill px-lg text-nav ${look} ${className}`}
+    >
+      {label}
+      <Icon name="chevronRight" size={16} />
+      <select
+        data-id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="absolute inset-0 cursor-pointer opacity-0"
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </span>
+  );
+}
 
 // White block on the page-coloured panel, radius 12, 16 padding — the wrapper
 // every section of the live detail panel uses.
@@ -55,7 +100,6 @@ export function RequestDetail({ request }: { request: Request }) {
 
   const property = properties.find((p) => p.id === request.property);
   const resident = residents.find((r) => r.id === request.requester);
-  const assignee = staff.find((s) => s.id === request.assignee);
   const people = { staff, residents };
 
   const messages = request.timeline.filter((t) => t.kind === 'message');
@@ -112,15 +156,6 @@ export function RequestDetail({ request }: { request: Request }) {
               )}
             </div>
 
-            {assignee && (
-              <div className="mt-md flex h-detailChip items-center justify-between rounded-card border-dashed border-borderMuted bg-surface px-md text-bodyMed">
-                <span>Assigned to</span>
-                <span className="flex items-center gap-sm">
-                  <Avatar initials={assignee.initials} size="sm" />
-                  {assignee.name}
-                </span>
-              </div>
-            )}
           </div>
 
           <div className="mt-lg flex items-center gap-md">
@@ -134,68 +169,50 @@ export function RequestDetail({ request }: { request: Request }) {
                   <span className="h-dot w-dot rounded-circle bg-statusEscalated" />
                 )}
               </span>
-              <span
-                className={`relative inline-flex h-select items-center gap-md rounded-pill pl-lg pr-lg text-nav text-textOnPrimary ${statusTone(request)}`}
-              >
-                {statusOptions.find((o) => o.value === request.status)?.label}
-                <Icon name="chevronRight" size={16} />
-                <select
-                  data-id={`${ID}/status`}
-                  value={request.status}
-                  onChange={(e) =>
-                    dispatch({
-                      kind: 'setStatus',
-                      id: request.id,
-                      status: e.target.value as RequestStatus,
-                    })
-                  }
-                  className="absolute inset-0 cursor-pointer opacity-0"
-                >
-                  {statusOptions.map((o) => (
-                    <option key={o.value} value={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              </span>
+              <Dropdown
+                id={`${ID}/status`}
+                value={request.status}
+                options={statusOptions}
+                tone={statusTone(request)}
+                onChange={(v) =>
+                  dispatch({ kind: 'setStatus', id: request.id, status: v as RequestStatus })
+                }
+              />
             </span>
           </div>
         </Block>
 
         <Block>
-          <div className="flex items-end gap-md">
-            <span className="flex-1">
-              <Select
-                data-id={`${ID}/staff`}
-                value={request.assignee ?? ''}
-                options={[
-                  { value: '', label: 'Select staff' },
-                  ...staff.map((s) => ({ value: s.id, label: `${s.name} · ${s.role}` })),
-                ]}
-                onChange={(e) =>
-                  e.target.value &&
-                  dispatch({ kind: 'assignRequest', id: request.id, staffId: e.target.value })
-                }
-              />
-            </span>
-            <span className="w-etaSelect">
-              <Select
-                data-id={`${ID}/eta`}
-                value=""
-                options={[
-                  { value: '', label: request.eta ? `Arriving ${clockTime(request.eta)}` : 'Set ETA' },
-                  ...ETA_CHOICES,
-                ]}
-                onChange={(e) =>
-                  e.target.value &&
-                  dispatch({
-                    kind: 'setEta',
-                    id: request.id,
-                    eta: new Date(Date.now() + Number(e.target.value) * 60_000).toISOString(),
-                  })
-                }
-              />
-            </span>
+          <div className="flex items-center gap-md">
+            <Dropdown
+              id={`${ID}/staff`}
+              className="min-w-0 flex-1"
+              value={request.assignee ?? ''}
+              options={[
+                { value: '', label: 'Select staff' },
+                ...staff.map((s) => ({ value: s.id, label: `${s.name} · ${s.role}` })),
+              ]}
+              onChange={(v) =>
+                v && dispatch({ kind: 'assignRequest', id: request.id, staffId: v })
+              }
+            />
+            <Dropdown
+              id={`${ID}/eta`}
+              className="w-etaSelect shrink-0"
+              value=""
+              options={[
+                { value: '', label: request.eta ? `Arriving ${clockTime(request.eta)}` : 'Set ETA' },
+                ...ETA_CHOICES,
+              ]}
+              onChange={(v) =>
+                v &&
+                dispatch({
+                  kind: 'setEta',
+                  id: request.id,
+                  eta: new Date(Date.now() + Number(v) * 60_000).toISOString(),
+                })
+              }
+            />
           </div>
         </Block>
 
