@@ -130,6 +130,51 @@ voice memo app.
 Bottom centre. `surface` bg, shadow, `radius.pill`. Optional action slot for
 Undo. Auto-dismiss configurable, default 6s.
 
+## `ConfirmationModal`
+
+**Shared by every completed action on Genie.** Observed identically after spa
+booking, activity booking, store order, dining order and housekeeping request.
+Build once, never per flow.
+
+Centred modal over a dimmed page, generous height, mostly empty space.
+
+| Prop | |
+|---|---|
+| `title` | serif face, larger than body |
+| `detail` | one or two centred lines in muted type |
+| `onHome` `onClose` | circular buttons, top-left home and top-right X |
+| `actions` | two equal-width outlined pills at the foot |
+
+Default actions are `Chat with us` and `Add special instructions`. A solid green
+circle with a white checkmark sits above the title.
+
+## `OrderPanel`
+
+**Shared by dining, store and housekeeping.** Right-side panel.
+
+Line items with pill qty steppers and line prices, a charges row, a
+`+ Special requests` pill beside a `Deliver to` dropdown, a tracked-caps upsell
+heading, a segmented tab row, and a four-column grid of upsell tiles with name
+and price overlaid on the image and a circular `+` top-right. Sticky footer with
+a wide pill CTA and the total right-aligned above a small `Cart total` label.
+
+Only the item set and the upsell tab names differ between the three flows.
+
+## `BookingPanel`
+
+**Shared by spa, activities and any other bookable service.** Right-side panel
+that advances in place — see `03-screens.md` `G-08`.
+
+Carries a back arrow from step 2, an X always, an accumulating `Summary` card
+overlaying the photo header from step 2, and a sticky footer whose CTA label
+changes per step. No step indicator, no Next button.
+
+## `GenieRail`
+
+Three states: collapsed sliver, icon column, expanded with labels. Floats above
+page content, vertically centred, white card with rounded corners and a soft
+shadow. A scroll indicator appears on its right edge when expanded.
+
 ---
 
 ## Kitchen sink

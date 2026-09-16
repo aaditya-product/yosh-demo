@@ -2,6 +2,11 @@
 
 20 screens. Build strictly to these. Where a spec is silent, ask — do not invent.
 
+> **Genie screens: read `09-genie-reference.md` first.** It is derived from a
+> recording of the shipped Genie product and **outranks this file** wherever the
+> two disagree. This file was written from Figma frames and prose before that
+> recording was available. Known corrections are marked inline below.
+
 Layer key: **A** replicate from live Luna · **B** extract from Genie Figma ·
 **C** new design, spec is the only source.
 
@@ -123,19 +128,39 @@ name, "Starting from" price.
 
 `G-07/chip-{category}` · `G-07/card-{serviceId}`
 
-## `G-08` Service stepper · B · nodes `534:13171` `534:13414` `534:13657` `534:13925`
+## `G-08` Service booking panel · B · nodes `534:13171` `534:13414` `534:13657` `534:13925`
 
-**Build as one component with four steps, not four screens.** This pattern is
-reused for every bookable flow.
+> **Corrected.** This was previously specced as a four-step wizard with a step
+> indicator and Back/Next. The shipped product does not work that way. Build it
+> per `09-genie-reference.md` § Booking flow.
 
-1. Detail — description, long copy, price
-2. Options — party size, duration
-3. Enhance — optional add-on, "Popular choice" tag
-4. Time — date strip, period tabs (Morning/Afternoon/Evening), time slots
+A right-side panel, ~40% width, over the dimmed browse page. It advances in
+place. **No step indicator. No Next button.** The sticky footer CTA advances
+and its label changes per step.
 
-Step indicator at top. Back is always available. Price total updates per step.
+Chrome: circular back arrow top-left from step 2 onward, circular X top-right
+always, sticky footer with a wide pill CTA and the price right-aligned outside
+it. `SHOW SUMMARY` in small tracked caps beneath the price from step 2.
 
-`G-08/step-{n}` · `G-08/option-{field}-{value}` · `G-08/back` · `G-08/next`
+1. **Detail** — photo header, title and price over it, intro box, body copy,
+   `You'll love this if:` list, `Good to know before you book:` list, then
+   option pill groups. CTA `Book now`.
+2. **Enhance** — a Summary card overlays the photo header showing selections so
+   far. Add-on cards with a `Popular choice` badge and a tinted benefit strip.
+   CTA `Continue`, price becomes a running total.
+3. **Time** — Summary card gains a second line with a clock icon and the chosen
+   datetime. Date pills wrapping two rows, a `Morning / Afternoon / Evening`
+   segmented control, then a four-column grid of 15-minute time pills.
+   CTA `Confirm booking`.
+4. **Confirmation** — the shared `ConfirmationModal`, not a step of this panel.
+
+The activity variant swaps the option groups for `Adults` / `Children` steppers
+and a `Duration` pill group, and adds `Description` / `Instructions` tabs plus a
+meta chip row. See `09-genie-reference.md`.
+
+`G-08/panel` · `G-08/back` · `G-08/close` · `G-08/summary` ·
+`G-08/option-{field}-{value}` · `G-08/date-{date}` · `G-08/period-{name}` ·
+`G-08/slot-{time}` · `G-08/cta` · `G-08/show-summary`
 
 ## `G-09` Booking confirmed · B · node `534:14216`
 
@@ -456,3 +481,53 @@ Preview must compute from the real store, so a report run during the demo
 includes what happened during the demo.
 
 `L-20/criteria-{field}` · `L-20/preview` · `L-20/generate` · `L-20/format`
+
+
+---
+
+# Added from the product recording
+
+See `09-genie-reference.md` for full structural detail on each.
+
+## `G-14` Transport booking panel · C
+
+Not previously specced. Right-side panel. Pill labelled `Bookings` top-left,
+circular X top-right.
+
+1. **Vehicle** — destination line, `Choice of vehicle` label, vehicle cards
+   each with a name, one line of description, a capacity row with a person icon,
+   image right, and either a qty stepper or a `Select` pill. The first card
+   carries a `Suggested for you` ribbon badge.
+2. **Time** — `Select time to leave` with the chosen value in bold, a scrolling
+   three-column time wheel with a tinted centre band and fading rows above and
+   below, then a `Recommended times` row of outlined pills. Sticky footer CTA
+   `Confirm`.
+
+`G-14/vehicle-{id}` · `G-14/vehicle-{id}/qty` · `G-14/wheel-{column}` ·
+`G-14/recommended-{n}` · `G-14/confirm`
+
+## `G-15` Order panel · C — shared
+
+Used by dining, store and housekeeping. Right-side panel. Circular back arrow
+top-left, pill button top-right.
+
+Line items with qty steppers and line prices, a charges row, a `+ Special
+requests` pill beside a `Deliver to` dropdown, then a tracked-caps upsell
+heading, a segmented tab row, and a four-column grid of upsell tiles with the
+name and price overlaid and a circular `+` top-right of each. Sticky footer:
+wide pill CTA `Place order`, total right-aligned with a `Cart total` label
+beneath.
+
+`G-15/item-{id}/qty` · `G-15/special-requests` · `G-15/deliver-to` ·
+`G-15/upsell-tab-{name}` · `G-15/upsell-{id}/add` · `G-15/place-order`
+
+## `G-16` Restaurant browse · B · full page, not a panel
+
+The only browse screen that takes over the page. Back arrow and title in a top
+bar with a dark pill action button right. Photographic band with centred serif
+type. A `Food` / `Beverages` segmented control, then filter icon and category
+chips, then sections with a four-across grid of item cards carrying an `Add`
+pill on the image and dietary icons beside the price.
+
+`G-16/back` · `G-16/reserve` · `G-16/segment-{name}` · `G-16/chip-{category}` ·
+`G-16/item-{id}/add`

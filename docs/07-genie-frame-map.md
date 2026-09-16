@@ -28,20 +28,6 @@ Product context: Casa Cook, El Gouna. Guest "Thomas". Prices in €.
 | `534:10120` | Home, nav rail open — My Requests / Spa / Activities / Restaurant / Taxi / Store / Gym / Hotel info / Profile |
 | `534:21095` `534:21293` | Home variants — ⚠ state unclear, inspect |
 
-**Built at task 2.1, content not verbatim.** `534:9809`'s greeting/weather/quick-tile/
-experience-card structure was pulled and reused; `534:10120`'s rail item labels
-(Spa, Activities, Restaurant, Taxi, Store, Gym, Hotel info) were not — those are
-Casa Cook's resort concepts, and this is a residential estate (`00-brief.md`).
-Rail content instead comes from `02-ia.md`'s table; only the visual treatment
-(white floating card, icon beside label) came from this node. The greeting name,
-weather values, and quick-tile/experience labels are likewise estate-appropriate
-substitutions, not the literal "Thomas" / snorkelling / Order Food / Book a spa
-copy in the frame. The 3 promo tiles ("Make your stay greener", "Explore El
-Gouna", "Discover in-hotel events") and the bottom "Explore casa cook & el
-gouna" video section are hotel-guest content with no residential-estate
-equivalent and were not built — `03-screens.md`'s G-02 entry doesn't call for
-them either.
-
 ## In-room dining — row y=3245
 
 | Node | Screen |
