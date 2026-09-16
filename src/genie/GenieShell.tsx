@@ -9,18 +9,18 @@ import { ServiceBrowse } from './ServiceBrowse';
 export function GenieShell({ root = '/' }: { root?: string }) {
   return (
     <ProductRoot root={root}>
-      <div className="flex h-full w-full gap-lg overflow-hidden bg-page p-lg">
+      {/* R.1: the rail floats over content and does not push it (09-genie-
+          reference.md) — content is now full-bleed, not a flex sibling. */}
+      <div className="relative h-full w-full overflow-hidden bg-surface">
+        <Routes>
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<Home />} />
+          <Route path="requests" element={<MyRequests />} />
+          <Route path="requests/:requestId" element={<GenieRequestDetail />} />
+          <Route path="services" element={<ServiceBrowse />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
         <GenieRail />
-        <div className="min-w-0 flex-1 overflow-hidden rounded-panel bg-surface">
-          <Routes>
-            <Route index element={<Navigate to="home" replace />} />
-            <Route path="home" element={<Home />} />
-            <Route path="requests" element={<MyRequests />} />
-            <Route path="requests/:requestId" element={<GenieRequestDetail />} />
-            <Route path="services" element={<ServiceBrowse />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </div>
       </div>
     </ProductRoot>
   );

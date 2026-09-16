@@ -47,6 +47,8 @@ export const color = {
   navSelected:    'rgba(21, 97, 109, 0.12)',
   navLabel:       'rgba(0, 0, 0, 0.5)',
   cancelBorder:   'rgba(0, 0, 0, 0.5)',
+  railBorder:     '#D8D8D8',   // GenieRail card edge, measured node 534:10189
+  railLabel:      '#5C5C5C',   // GenieRail item label, measured node 534:10193
 
   // scrim behind Sheet, from docs/04-components.md
   scrim:          'rgba(0, 0, 0, 0.25)',
@@ -74,6 +76,7 @@ export const radius = {
   sheet: 16,    // panel title card, foot tab bar
   nav: 20,      // nav panel and its items
   modal: 24,    // Select tags sheet top corners
+  rail: 26,     // GenieRail card, measured node 534:10189
   circle: 9999,
 } as const;
 
@@ -127,12 +130,18 @@ export const stroke = {
   hair: 1,   // not named in 04. Decision: default hairline.
   ring: 2,   // not named in 04. Decision: VoiceIndicator ring.
   edge: 3,   // docs/04-components.md, Card selected left edge.
+  railHair: 0.5,   // GenieRail card edge, measured node 534:10189
 } as const;
 
-// Shadows, measured on luna-dev.
+// Shadows, measured on luna-dev unless noted.
 export const shadow = {
   nav:    'rgba(16, 24, 40, 0.16) 0px 10px 34px 0px',
   tabBar: 'rgba(0, 0, 0, 0.06) 0px -1px 34.7px 0px',
+  // GenieRail float, measured node 534:10189 (soft rightward-projecting shadow).
+  railFloat:
+    '81px 0px 11.5px rgba(158,158,158,0), 52px 0px 10.5px rgba(158,158,158,0.01), ' +
+    '29px 0px 8.5px rgba(158,158,158,0.05), 13px 0px 6.5px rgba(158,158,158,0.09), ' +
+    '3px 0px 3.5px rgba(158,158,158,0.1)',
 } as const;
 
 // The nav panel's frosted glass: three stacked layers, measured.
@@ -173,7 +182,19 @@ export const layout = {
   handleW: 44,
   navPanel: 431,   // floating nav panel, measured
   navContent: 391,
-  rail: 208,   // widened at 2.1 to fit icon-beside-label rows, per Figma 534:10120
+  // GenieRail, corrected at R.1 per docs/09-genie-reference.md — three states,
+  // not the single fixed-width bar built at 2.1. Card and gap values measured
+  // on Figma node 534:10189 (the expanded state). The icon-column and
+  // collapsed-sliver widths have no Figma node behind them — 09's own text
+  // calls icon-column "~52px", and the sliver has no measurement at all, so
+  // that one is a guess ("thin", "barely visible").
+  railSliver: 14,     // guessed, no measurement or estimate exists
+  railIcon: 52,       // 09-genie-reference.md estimate, no Figma node
+  railExpanded: 143,  // measured, node 534:10189
+  railHeight: 555,    // measured, node 534:10189
+  railLeft: 11,       // measured, node 534:10189
+  railItemGap: 40,    // measured, vertical gap between rail items
+  railPadX: 20,        // measured, node 534:10190
   genieContent: 720,
   bubble: 520,
   hourLabel: 64,   // L-12 schedule entry time column
