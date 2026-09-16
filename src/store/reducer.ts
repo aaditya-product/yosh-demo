@@ -1,4 +1,4 @@
-import type { StoreAction } from './actions';
+import type { NewRequest, StoreAction } from './actions';
 import type { Entities, State } from './state';
 import { initialState, initialUi } from './state';
 import type { Request, RequestStatus } from './types';
@@ -12,6 +12,7 @@ const entitiesOf = (s: State): Entities => ({
   inspections: s.inspections,
   actionPlans: s.actionPlans,
   services: s.services,
+  scheduleTemplates: s.scheduleTemplates,
 });
 
 const now = () => new Date().toISOString();
@@ -50,6 +51,37 @@ function patchRequest(
   };
 }
 
+// Shared by 'createRequest' and 'generateFromTemplate' — a request raised by a
+// person and one raised by the schedule engine are built the same way.
+function buildRequest(n: number, r: NewRequest): Request {
+  return {
+    id: r.id ?? `REQ-${String(1000 + n)}`,
+    ref: r.ref ?? makeRef(n),
+    type: r.type,
+    property: r.property,
+    requester: r.requester ?? 'system',
+    origin: r.origin,
+    title: r.title,
+    items: r.items ?? [],
+    status: r.status ?? 'new',
+    priority: r.priority ?? 'normal',
+    assignee: r.assignee ?? null,
+    eta: r.eta ?? null,
+    slaMinutes: r.slaMinutes ?? 60,
+    createdAt: r.createdAt ?? now(),
+    timeline: r.timeline ?? [entry(r.requester ?? 'system', 'Raised')],
+    external: r.external ?? null,
+    tags: r.tags ?? [],
+  };
+}
+
+// Weekly cadence: the same weekday and time, seven days on.
+const oneWeekLater = (iso: string) => {
+  const d = new Date(iso);
+  d.setDate(d.getDate() + 7);
+  return d.toISOString();
+};
+
 export function reducer(state: State, action: StoreAction): State {
   switch (action.kind) {
     case 'seed':
@@ -69,30 +101,41 @@ export function reducer(state: State, action: StoreAction): State {
 
     case 'createRequest': {
       const n = state.refCounter + 1;
-      const r = action.request;
-      const request: Request = {
-        id: r.id ?? `REQ-${String(1000 + n)}`,
-        ref: r.ref ?? makeRef(n),
-        type: r.type,
-        property: r.property,
-        requester: r.requester ?? 'system',
-        origin: r.origin,
-        title: r.title,
-        items: r.items ?? [],
-        status: r.status ?? 'new',
-        priority: r.priority ?? 'normal',
-        assignee: r.assignee ?? null,
-        eta: r.eta ?? null,
-        slaMinutes: r.slaMinutes ?? 60,
-        createdAt: r.createdAt ?? now(),
-        timeline: r.timeline ?? [entry(r.requester ?? 'system', 'Raised')],
-        external: r.external ?? null,
-        tags: r.tags ?? [],
-      };
+      const request = buildRequest(n, action.request);
       return {
         ...state,
         refCounter: n,
         requests: [request, ...state.requests],
+      };
+    }
+
+    case 'generateFromTemplate': {
+      const template = state.scheduleTemplates.find((t) => t.id === action.templateId);
+      if (!template) return state;
+
+      const n = state.refCounter + 1;
+      const request = buildRequest(n, {
+        type: template.requestType,
+        title: template.requestTitle,
+        origin: 'schedule',
+        property: template.propertyId,
+        requester: 'system',
+        timeline: [entry('system', 'Raised', 'event')],
+      });
+
+      return {
+        ...state,
+        refCounter: n,
+        requests: [request, ...state.requests],
+        scheduleTemplates: state.scheduleTemplates.map((t) =>
+          t.id === template.id
+            ? {
+                ...t,
+                nextDueAt: oneWeekLater(t.nextDueAt),
+                generatedRequestIds: [...t.generatedRequestIds, request.id],
+              }
+            : t,
+        ),
       };
     }
 

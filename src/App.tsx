@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { KitchenSink } from './KitchenSink';
 import { ProductSwitcher } from './ProductSwitcher';
+import { ScheduleTicker } from './ScheduleTicker';
 import { GenieStandalone } from './genie/GenieStandalone';
 import { LunaShell } from './luna/LunaShell';
 
@@ -15,6 +16,7 @@ export function App() {
         <Route path="*" element={<Navigate to="/luna" replace />} />
       </Routes>
       <ProductSwitcher />
+      <ScheduleTicker />
     </>
   );
 }

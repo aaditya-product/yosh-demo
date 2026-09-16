@@ -176,6 +176,8 @@ export const layout = {
   rail: 96,
   genieContent: 720,
   bubble: 520,
+  hourLabel: 64,   // L-12 schedule entry time column
+  templateSheet: 420,
 } as const;
 
 export const frame = {

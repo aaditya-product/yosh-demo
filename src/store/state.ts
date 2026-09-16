@@ -7,6 +7,7 @@ import type {
   Request,
   RequestType,
   Resident,
+  ScheduleTemplate,
   Service,
   Staff,
 } from './types';
@@ -49,6 +50,7 @@ export type Entities = {
   inspections: Inspection[];
   actionPlans: ActionPlan[];
   services: Service[];
+  scheduleTemplates: ScheduleTemplate[];
 };
 
 export type Ui = {
@@ -82,6 +84,7 @@ export const emptyEntities: Entities = {
   inspections: [],
   actionPlans: [],
   services: [],
+  scheduleTemplates: [],
 };
 
 export const initialUi: Ui = {

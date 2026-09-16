@@ -1,5 +1,5 @@
 import type { BoardFilter } from './state';
-import type { Request, RequestType } from './types';
+import type { Request, RequestType, ScheduleTemplate } from './types';
 
 // #0B8 is status 'open' with priority 'escalated'. It belongs under Escalated
 // and must not also be counted under Open, or the board reads Open 3.
@@ -159,3 +159,64 @@ export const segmentTone: Record<string, string> = {
   assigned: 'bg-ink',
   in_progress: 'bg-statusLive',
 };
+
+// L-12. The next 7 days from app load, so the day chips never need a
+// hardcoded date. index 0 is today.
+export function scheduleWeek(from: Date = new Date()) {
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(from);
+    d.setDate(d.getDate() + i);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  });
+}
+
+export function templatesForProperty(templates: ScheduleTemplate[], propertyId: string | null) {
+  return propertyId ? templates.filter((t) => t.propertyId === propertyId) : templates;
+}
+
+export type ScheduleInstance = {
+  templateId: string;
+  hour: number;
+  minute: number;
+  title: string;
+  area: string;
+  state: 'pending' | 'created';
+  requestId: string | null;
+};
+
+// A template projects one instance onto each date whose weekday matches. If it
+// has already fired for that date, the instance links to the real request it
+// created instead of just describing what will happen.
+export function instancesForDay(
+  templates: ScheduleTemplate[],
+  requests: Request[],
+  date: Date,
+): ScheduleInstance[] {
+  const weekday = date.getDay();
+  const dayStart = new Date(date);
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setDate(dayEnd.getDate() + 1);
+
+  return templates
+    .filter((t) => t.weekday === weekday)
+    .map((t) => {
+      const generated = requests.find(
+        (r) =>
+          t.generatedRequestIds.includes(r.id) &&
+          Date.parse(r.createdAt) >= dayStart.getTime() &&
+          Date.parse(r.createdAt) < dayEnd.getTime(),
+      );
+      return {
+        templateId: t.id,
+        hour: t.hour,
+        minute: t.minute,
+        title: t.requestTitle,
+        area: t.area,
+        state: generated ? ('created' as const) : ('pending' as const),
+        requestId: generated?.id ?? null,
+      };
+    })
+    .sort((a, b) => a.hour - b.hour || a.minute - b.minute);
+}

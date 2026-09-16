@@ -45,7 +45,7 @@ everything after it is a lie.
       tab, one store. Still to do at 2.6: retarget `b2-assign` from `#0A4` to
       `#0BE` once Beat 1 raises that request.
 - [x] `1.6` `L-11` Workload.
-- [ ] `1.7` `L-12` Schedule, recurring tasks that create real requests.
+- [x] `1.7` `L-12` Schedule, recurring tasks that create real requests.
 - [ ] `1.8` `L-13` Rotas.
 
 ### REVIEW GATE - walk Section B end to end

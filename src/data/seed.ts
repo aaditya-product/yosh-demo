@@ -6,10 +6,21 @@ import type {
   RegistryItem,
   Request,
   Resident,
+  ScheduleTemplate,
   Service,
   Staff,
 } from '../store/types';
-import { hoursAgo, minutesAgo, minutesFromNow, nextWeekdayAt, todayAt, tomorrowAt } from './time';
+import {
+  WEEKDAY_NAMES,
+  formatHourMinute,
+  hoursAgo,
+  loadedAt,
+  minutesAgo,
+  minutesFromNow,
+  nextWeekdayAt,
+  todayAt,
+  tomorrowAt,
+} from './time';
 
 export const DEFAULT_PROPERTY_ID = 'villa-12';
 
@@ -450,6 +461,43 @@ export const serviceEnhancement = {
   price: 20,
 };
 
+// L-12. `deepClean` fires 2 minutes after load, not on its real weekly slot —
+// a demo cannot wait until next Monday, so the wait is compressed. The pattern
+// text still states the true rule; only nextDueAt is compressed for the demo.
+// `poolCheck` is left on its actual next occurrence, so Recurring shows more
+// than one template without a second one firing mid-demo.
+const deepCleanWeekday = loadedAt.getDay();
+export const scheduleTemplates: ScheduleTemplate[] = [
+  {
+    id: 'sched-deep-clean',
+    title: 'Weekly deep clean',
+    propertyId: 'main-house',
+    area: 'Main House',
+    weekday: deepCleanWeekday,
+    hour: 9,
+    minute: 0,
+    requestType: 'service',
+    requestTitle: 'Deep clean, Main House',
+    pattern: `Every ${WEEKDAY_NAMES[deepCleanWeekday]}, ${formatHourMinute(9, 0)}, Main House, deep clean`,
+    nextDueAt: minutesFromNow(2),
+    generatedRequestIds: [],
+  },
+  {
+    id: 'sched-pool-check',
+    title: 'Pool chemical check',
+    propertyId: 'villa-12',
+    area: 'Villa 12, pool plant room',
+    weekday: 3,
+    hour: 7,
+    minute: 0,
+    requestType: 'maintenance',
+    requestTitle: 'Pool chemical check, Villa 12',
+    pattern: `Every ${WEEKDAY_NAMES[3]}, ${formatHourMinute(7, 0)}, Villa 12, chemical check`,
+    nextDueAt: nextWeekdayAt(3, 7, 0),
+    generatedRequestIds: [],
+  },
+];
+
 export function buildSeed(): Entities {
   return {
     properties,
@@ -460,6 +508,7 @@ export function buildSeed(): Entities {
     inspections,
     actionPlans,
     services,
+    scheduleTemplates,
   };
 }
 

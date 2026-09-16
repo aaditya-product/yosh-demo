@@ -16,6 +16,7 @@ import {
 import { Card, Chip, Icon, SegmentedControl, statusLabel } from '../ui';
 import { useNow } from '../useNow';
 import { EmptyDetail, RequestDetail } from './RequestDetail';
+import { Schedule } from './Schedule';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-01';
@@ -187,43 +188,57 @@ export function RequestsBoard() {
         </span>
       </div>
 
-      <div className="flex gap-sm px-xl pt-md">
-        {boardFilters.map((f) => (
-          <Chip
-            key={f}
-            data-id={`${ID}/filter-${f}`}
-            count={counts[f]}
-            selected={f === ui.boardFilter}
-            onClick={() => dispatch({ kind: 'setBoardFilter', filter: f })}
-          >
-            {filterLabels[f]}
-          </Chip>
-        ))}
-      </div>
+      {segment === 'schedule' ? (
+        <Schedule
+          onOpenRequest={(id) => {
+            dispatch({ kind: 'selectRequest', id });
+            setSegment('request');
+          }}
+        />
+      ) : (
+        <>
+          <div className="flex gap-sm px-xl pt-md">
+            {boardFilters.map((f) => (
+              <Chip
+                key={f}
+                data-id={`${ID}/filter-${f}`}
+                count={counts[f]}
+                selected={f === ui.boardFilter}
+                onClick={() => dispatch({ kind: 'setBoardFilter', filter: f })}
+              >
+                {filterLabels[f]}
+              </Chip>
+            ))}
+          </div>
 
-      <div className="flex min-h-0 flex-1 gap-lg p-xl">
-        <div data-id={`${ID}/list`} className="scrollbar-none flex w-boardList shrink-0 flex-col gap-lg overflow-y-auto">
-          {visible.map((r) => (
-            <RequestCard
-              key={r.id}
-              request={r}
-              now={now}
-              selected={r.id === ui.selectedRequestId}
-              onSelect={() => dispatch({ kind: 'selectRequest', id: r.id })}
-              assigneeInitials={staff.find((s) => s.id === r.assignee)?.initials}
-            />
-          ))}
-        </div>
+          <div className="flex min-h-0 flex-1 gap-lg p-xl">
+            <div
+              data-id={`${ID}/list`}
+              className="scrollbar-none flex w-boardList shrink-0 flex-col gap-lg overflow-y-auto"
+            >
+              {visible.map((r) => (
+                <RequestCard
+                  key={r.id}
+                  request={r}
+                  now={now}
+                  selected={r.id === ui.selectedRequestId}
+                  onSelect={() => dispatch({ kind: 'selectRequest', id: r.id })}
+                  assigneeInitials={staff.find((s) => s.id === r.assignee)?.initials}
+                />
+              ))}
+            </div>
 
-        <div
-          data-id={`${ID}/detail`}
-          className={`min-w-0 flex-1 overflow-hidden rounded-card ${
-            selected ? 'bg-surface' : ''
-          }`}
-        >
-          {selected ? <RequestDetail request={selected} /> : <EmptyDetail />}
-        </div>
-      </div>
+            <div
+              data-id={`${ID}/detail`}
+              className={`min-w-0 flex-1 overflow-hidden rounded-card ${
+                selected ? 'bg-surface' : ''
+              }`}
+            >
+              {selected ? <RequestDetail request={selected} /> : <EmptyDetail />}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

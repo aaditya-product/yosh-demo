@@ -21,6 +21,7 @@ export type StoreAction =
 
   // requests
   | { kind: 'createRequest'; request: NewRequest }
+  | { kind: 'generateFromTemplate'; templateId: string }
   | { kind: 'assignRequest'; id: string; staffId: string }
   | { kind: 'setEta'; id: string; eta: string }
   | { kind: 'setStatus'; id: string; status: RequestStatus }

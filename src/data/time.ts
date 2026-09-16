@@ -29,6 +29,23 @@ export function nextWeekdayAt(weekday: number, hour: number, minute = 0) {
   return d.toISOString();
 }
 
+export const WEEKDAY_NAMES = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+// "9am" · "2:30pm" — how a recurring pattern states its time.
+export function formatHourMinute(hour: number, minute: number) {
+  const ampm = hour >= 12 ? 'pm' : 'am';
+  const h12 = hour % 12 || 12;
+  return minute === 0 ? `${h12}${ampm}` : `${h12}:${String(minute).padStart(2, '0')}${ampm}`;
+}
+
 // "29 min ago" · "Arriving 16:40" · "Tomorrow, 9am" — never an ISO string.
 export function relativeTime(iso: string, from: Date = new Date()) {
   const diff = Math.round((from.getTime() - Date.parse(iso)) / 60000);

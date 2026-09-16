@@ -24,14 +24,29 @@ Inspection { id, name, area, propertyId, assigneeId, dueAt, items: InspectionIte
 InspectionItem { id, area, check, result: 'pass'|'fail'|'na'|null, finding? }
 ActionPlan { id, finding, inspectionId, ownerId, dueAt, status, requestRef }
 Service    { id, name, category, mood, description, longCopy, priceFrom, options[] }
+ScheduleTemplate { // L-12. A weekly recurring definition.
+  id, title, propertyId, area, weekday, hour, minute,
+  requestType, requestTitle, pattern, nextDueAt,
+  generatedRequestIds: string[]
+}
 ```
+
+`ScheduleTemplate` is not in the original entity list — L-12 (Schedule, task 1.7) needed it and
+nothing else covers a recurring definition. Firing one (`nextDueAt` reached) creates a real
+`Request` with `origin: 'schedule'`, appends its id to `generatedRequestIds`, and advances
+`nextDueAt` by 7 days. `origin: 'schedule'` is likewise an addition to `02-ia.md`'s original enum
+— see that file.
 
 ## Properties — 6
 
 `Villa 12` · `The Residence` · `Main House` · `Garden Wing` ·
 `Lakeside Lodge` · `Stable Court`
 
-`Villa 12` is selected by default and carries all demo activity.
+`Villa 12` carries most demo activity, but no property is selected by default —
+the board opens on every property at once, and the chips are a filter, not a
+per-property view. (Corrected here: this line previously said Villa 12 was
+selected by default, which stopped being true once that was fixed — see the
+1.6/1.7-era commits.)
 
 ## Residents — 3
 

@@ -39,6 +39,7 @@ export default {
         navPanel: px(layout.navPanel),
         rail: px(layout.rail),
         genieContent: px(layout.genieContent),
+        hourLabel: px(layout.hourLabel),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {

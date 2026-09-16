@@ -6,7 +6,11 @@ export type RequestType =
   | 'concierge'
   | 'gathering';
 
-export type RequestOrigin = 'voice' | 'chat' | 'catalogue' | 'inspection' | 'command';
+// 'schedule' is not in 02-ia.md's original enum. Added here: a request the
+// recurring engine raises when a template comes due is not staff-typed
+// ('command') and not resident-spoken ('voice'/'chat') — calling it 'command'
+// would misattribute it in the audit trail. Flagged to the user.
+export type RequestOrigin = 'voice' | 'chat' | 'catalogue' | 'inspection' | 'command' | 'schedule';
 
 export type RequestStatus =
   | 'new'
@@ -141,6 +145,23 @@ export type ActionPlan = {
 };
 
 export type ServiceOption = { id: string; label: string; values: string[] };
+
+// L-12. A weekly recurring definition. Firing one creates a real Request
+// with origin 'schedule' and advances nextDueAt by 7 days.
+export type ScheduleTemplate = {
+  id: string;
+  title: string;
+  propertyId: string;
+  area: string;
+  weekday: number; // 0=Sun..6=Sat, matches Date#getDay()
+  hour: number;
+  minute: number;
+  requestType: RequestType;
+  requestTitle: string;
+  pattern: string; // "Every Monday, 9:00am, Main House, deep clean"
+  nextDueAt: string; // ISO
+  generatedRequestIds: string[];
+};
 
 export type Service = {
   id: string;
