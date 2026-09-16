@@ -1,7 +1,9 @@
+import { beats, useDemo } from './demo';
 import { useAppState } from './store';
 
 export function Scaffold({ route }: { route: string }) {
   const state = useAppState();
+  const engine = useDemo();
   const { requests } = state;
 
   const filters = [
@@ -24,6 +26,9 @@ export function Scaffold({ route }: { route: string }) {
         </p>
         <p className="mt-xs text-meta text-textMuted">
           {filters.map(([label, n]) => `${label} ${n}`).join(' · ')}
+        </p>
+        <p className="mt-xs text-meta text-textMuted">
+          Engine ready · {beats.length} beats registered · {engine.speed}x
         </p>
       </div>
     </div>

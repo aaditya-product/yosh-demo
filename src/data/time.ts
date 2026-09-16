@@ -28,3 +28,17 @@ export function nextWeekdayAt(weekday: number, hour: number, minute = 0) {
   d.setHours(hour, minute, 0, 0);
   return d.toISOString();
 }
+
+// "29 min ago" · "Arriving 16:40" · "Tomorrow, 9am" — never an ISO string.
+export function relativeTime(iso: string, from: Date = new Date()) {
+  const diff = Math.round((from.getTime() - Date.parse(iso)) / 60000);
+  if (diff >= 0 && diff < 1) return 'just now';
+  if (diff > 0 && diff < 60) return `${diff} min ago`;
+  if (diff >= 60 && diff < 60 * 24) return `${Math.round(diff / 60)}h ago`;
+  if (diff < 0 && diff > -60) return `in ${Math.abs(diff)} min`;
+  return clockTime(iso);
+}
+
+export function clockTime(iso: string) {
+  return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+}

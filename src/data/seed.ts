@@ -320,6 +320,45 @@ export const services: Service[] = [
   },
 ];
 
+// Genie screen copy, extracted from the Figma frames and de-branded.
+// The Figma source is a hotel spa (Casa Cook El Gouna, guest "Thomas", prices
+// in euro). Layout and structure are kept exactly; the words are moved to a
+// residential estate. Anything rendered on G-01, G-07 or G-08 reads from here,
+// so the hotel copy cannot creep back in when those screens get built.
+export const currency = 'AED';
+
+export const formatPrice = (amount: number) => `${currency} ${amount}`;
+
+export const genieCopy = {
+  // G-01 welcome. Figma: "WELCOME, Thomas" — the resident is the Genie user.
+  welcomeName: 'Aisha',
+
+  // G-07 service browse. Figma title was "Spa Booking".
+  catalogueTitle: 'Wellness',
+  catalogueHeadline: 'Feel better, your way',
+  catalogueSubhead: 'Browse by category or explore by mood',
+  moodPrompt: 'Explore treatments based on your mood',
+  helpChip: 'Help me choose',
+  priceFromLabel: 'From',
+
+  // G-08 booking stepper.
+  bookingForLabel: 'Booking this for',
+  sessionLengthLabel: 'Session length',
+  enhancementLabel: 'Enhance your experience',
+  enhancementTag: 'Popular choice',
+  summaryLabel: 'Summary',
+  bookCta: 'Book',
+  continueCta: 'Next',
+} as const;
+
+export const moods = ['Relaxation', 'Pain relief', 'Detox', 'Facials'] as const;
+
+export const serviceEnhancement = {
+  name: 'Head and neck massage',
+  note: 'Boost circulation and soothe post massage',
+  price: 20,
+};
+
 export function buildSeed(): Entities {
   return {
     properties,

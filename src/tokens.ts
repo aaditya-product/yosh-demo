@@ -28,6 +28,9 @@ export const color = {
   // lines
   border:         '#E5E7EB',
   borderMuted:    '#9C9C9C',
+
+  // scrim behind Sheet, from docs/04-components.md
+  scrim:          'rgba(0, 0, 0, 0.25)',
 } as const;
 
 // Four sizes, three weights. Do not add a fifth size without asking.
@@ -53,6 +56,36 @@ export const space = {
   md: 12,
   lg: 16,
   xl: 24,
+} as const;
+
+// Control sizes. Named in docs/04-components.md: button heights 32/40/56, a
+// 44px floor on every touch target, avatars 24/32/40.
+export const control = {
+  btnSm:  32,
+  btnMd:  40,
+  btnLg:  56,
+  touch:  44,   // minimum tappable box anywhere in the app
+  chip:   40,   // not specified in 04 — matches btnMd
+  count:  20,   // not specified in 04 — the filter chip's count circle
+  avatarSm: 24,
+  avatarMd: 32,
+  avatarLg: 40,
+} as const;
+
+// Stroke widths. `edge` is the Card selected left edge, named in
+// docs/04-components.md. `ring` is the VoiceIndicator ring, not specified.
+export const stroke = {
+  hair: 1,
+  ring: 2,
+  edge: 3,
+} as const;
+
+// Motion, from docs/04-components.md and TASKS 6.4.
+export const motion = {
+  sheet:   240,
+  overlay: 180,
+  toast:   6000,
+  pulse:   1400,
 } as const;
 
 export const frame = {

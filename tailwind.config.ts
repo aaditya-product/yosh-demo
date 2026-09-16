@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { color, type as typeScale, radius, space, frame, font } from './src/tokens';
+import { color, type as typeScale, radius, space, frame, font, control, motion, stroke } from './src/tokens';
 
 const px = (n: number) => `${n}px`;
 
@@ -28,10 +28,35 @@ export default {
     spacing,
     borderRadius,
     extend: {
-      width: { genie: px(frame.genie.w) },
-      height: { genie: px(frame.genie.h) },
-      minWidth: { genie: px(frame.genie.w) },
-      minHeight: { genie: px(frame.genie.h) },
+      width: {
+        genie: px(frame.genie.w),
+        genieHalf: px(frame.genie.w / 2 - 80),
+        ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
+      },
+      height: {
+        genie: px(frame.genie.h),
+        sheetDemo: px(360),
+        ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
+      },
+      minWidth: { genie: px(frame.genie.w), touch: px(control.touch) },
+      minHeight: { genie: px(frame.genie.h), touch: px(control.touch) },
+      transitionDuration: {
+        sheet: `${motion.sheet}ms`,
+        overlay: `${motion.overlay}ms`,
+      },
+      animation: {
+        pulseRing: `pulseRing ${motion.pulse}ms ease-in-out infinite`,
+        sweep: 'sweep 1200ms linear infinite',
+      },
+      keyframes: {
+        pulseRing: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.45', transform: 'scale(1.06)' },
+        },
+        sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
+      },
+      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)' },
+      borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),
     },
   },
   plugins: [],

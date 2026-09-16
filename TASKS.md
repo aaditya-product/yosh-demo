@@ -20,8 +20,8 @@ serve a step in it.
 - [x] `0.2` Store: one context + reducer per `docs/02-ia.md`.
 - [x] `0.3` Seed data per `docs/05-data-model.md`. Timestamps relative to load.
       Copy follows `docs/08-copy.md`.
-- [ ] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
-- [ ] `0.5` Component library per `docs/04-components.md`.
+- [x] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
+- [x] `0.5` Component library per `docs/04-components.md`.
 - [ ] `0.6` `/kitchen-sink` - every component, every state, both backgrounds.
 - [ ] `0.7` `/demo` harness - Genie in a 1280x800 frame left, Luna right,
       one store.
