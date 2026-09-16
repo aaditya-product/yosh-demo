@@ -68,7 +68,7 @@ export default {
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
       boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar },
-      zIndex: { cluster: '10', sheet: '20', overlay: '40' },
+      zIndex: { cluster: '10', sheet: '20', overlay: '40', switcher: '50' },
       borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder, cancelBorder: color.cancelBorder },
       padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px' },
       inset: { navX: '19px' },
