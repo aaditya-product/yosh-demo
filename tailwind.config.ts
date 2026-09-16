@@ -29,9 +29,11 @@ export default {
     borderRadius,
     extend: {
       width: {
+        handleBar: px(layout.handleW),
         genie: px(frame.genie.w),
         genieHalf: px(frame.genie.w / 2 - 80),
         boardList: px(layout.boardList),
+
         statusSelect: px(layout.statusSelect),
         etaSelect: px(layout.etaSelect),
         navPanel: px(layout.navPanel),
@@ -40,8 +42,10 @@ export default {
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {
+        handleBar: px(control.handle),
         genie: px(frame.genie.h),
         sheetDemo: px(360),
+        detailSheet: px(layout.detailSheet),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       maxWidth: { bubble: px(layout.bubble) },
@@ -64,7 +68,7 @@ export default {
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
       boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar },
-      zIndex: { overlay: '40' },
+      zIndex: { cluster: '10', sheet: '20', overlay: '40' },
       borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder },
       padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px' },
       borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),

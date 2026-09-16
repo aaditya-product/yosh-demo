@@ -98,6 +98,9 @@ export const control = {
   commandRow: 42,
   orb:      42,
   accordion: 52,   // timeline accordion header, measured
+  detailChip: 46,  // chip inside the detail panel, measured
+  titleCard: 68,   // detail panel title card, measured
+  handle:    4,    // bottom sheet drag handle
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
@@ -141,6 +144,8 @@ export const layout = {
   etaSelect: 160,
   thread: 200,
   timeline: 300,   // expanded accordion scrolls independently
+  detailSheet: 520,
+  handleW: 44,
   navPanel: 431,   // floating nav panel, measured
   navContent: 391,
   rail: 96,

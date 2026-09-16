@@ -20,7 +20,7 @@ export function LunaShell({ root = '/' }: { root?: string }) {
           <Route path="*" element={<RequestsBoard />} />
         </Routes>
 
-        <div className="absolute bottom-xl right-xl flex items-center gap-md rounded-pill bg-surface px-lg py-md shadow-toast">
+        <div className="absolute bottom-xl right-xl z-cluster flex items-center gap-md rounded-pill bg-surface px-lg py-md shadow-toast">
           <button
             type="button"
             data-id="L-03/open-nav"
