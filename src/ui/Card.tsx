@@ -19,8 +19,10 @@ export function Card({
   className = '',
   ...rest
 }: CardProps) {
+  // 04 specifies primaryBorderStrong here, but at 20% opacity over chipSelected
+  // the edge is invisible. Full-strength primary, agreed with the user.
   const look = selected
-    ? 'bg-chipSelected border-l-edge border-l-primaryBorderStrong'
+    ? 'bg-chipSelected border-l-edge border-l-primary'
     : escalated
       ? 'bg-surface border border-statusEscalated'
       : `bg-surface ${bordered ? 'border border-border' : ''}`;

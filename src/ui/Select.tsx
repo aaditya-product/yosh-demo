@@ -1,4 +1,5 @@
 import type { SelectHTMLAttributes } from 'react';
+import { Icon } from './Icon';
 
 export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label?: string;
@@ -22,7 +23,7 @@ export function Select({ label, options, className = '', ...rest }: SelectProps)
           ))}
         </select>
         <span className="pointer-events-none absolute inset-y-0 right-lg flex items-center text-textMuted">
-          ›
+          <Icon name="chevronRight" size={18} />
         </span>
       </span>
     </label>

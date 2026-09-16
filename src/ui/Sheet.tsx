@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Icon } from './Icon';
 
 export function Sheet({
   open,
@@ -37,7 +38,7 @@ export function Sheet({
               onClick={onClose}
               className="flex h-touch w-touch items-center justify-center text-textMuted"
             >
-              ✕
+              <Icon name="close" size={20} />
             </button>
           </div>
           <div className="min-h-0 flex-1 overflow-auto">{children}</div>

@@ -4,6 +4,7 @@ export { Card, type CardProps } from './Card';
 export { Chip, type ChipProps } from './Chip';
 export { ConfirmCard } from './ConfirmCard';
 export { Field, type FieldProps } from './Field';
+export { Icon, type IconName } from './Icon';
 export { ListRow, type ListRowProps } from './ListRow';
 export { SegmentedControl, type Segment } from './SegmentedControl';
 export { Select, type SelectProps } from './Select';
