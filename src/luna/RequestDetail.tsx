@@ -8,6 +8,7 @@ import {
   useDispatch,
   type Request,
   type RequestStatus,
+  type StoreAction,
 } from '../store';
 import { Avatar, Button, Icon, Tabs } from '../ui';
 import { TagSheet } from './TagSheet';
@@ -108,6 +109,20 @@ export function RequestDetail({ request }: { request: Request }) {
   const messages = request.timeline.filter((t) => t.kind === 'message');
   const events = request.timeline.filter((t) => t.kind !== 'message');
 
+  // Every field edit here is a single reversible step: checkpoint right
+  // before it, then a toast with Undo. Previously only the scripted command-bar
+  // beat did this (docs/06-demo-engine.md), so assigning or setting an ETA
+  // straight from these dropdowns produced no toast at all — not a rendering
+  // bug, the affordance was simply never built for this path.
+  const commit = (action: StoreAction, message: string) => {
+    dispatch({ kind: 'checkpoint' });
+    dispatch(action);
+    dispatch({
+      kind: 'showToast',
+      toast: { id: `${request.id}-${action.kind}-${Date.now()}`, message, undo: true, ms: 6000 },
+    });
+  };
+
   const send = () => {
     if (!draft.trim()) return;
     dispatch({ kind: 'addMessage', id: request.id, actor: 'omar', body: draft.trim() });
@@ -186,7 +201,10 @@ export function RequestDetail({ request }: { request: Request }) {
                 options={statusOptions}
                 tone={statusTone(request)}
                 onChange={(v) =>
-                  dispatch({ kind: 'setStatus', id: request.id, status: v as RequestStatus })
+                  commit(
+                    { kind: 'setStatus', id: request.id, status: v as RequestStatus },
+                    statusOptions.find((o) => o.value === v)?.label ?? v,
+                  )
                 }
               />
             </span>
@@ -203,9 +221,15 @@ export function RequestDetail({ request }: { request: Request }) {
                 { value: '', label: 'Select staff' },
                 ...staff.map((s) => ({ value: s.id, label: `${s.name} · ${s.role}` })),
               ]}
-              onChange={(v) =>
-                v && dispatch({ kind: 'assignRequest', id: request.id, staffId: v })
-              }
+              onChange={(v) => {
+                const person = staff.find((s) => s.id === v);
+                if (v && person) {
+                  commit(
+                    { kind: 'assignRequest', id: request.id, staffId: v },
+                    `Assigned to ${person.name}`,
+                  );
+                }
+              }}
             />
             <Dropdown
               id={`${ID}/eta`}
@@ -215,14 +239,11 @@ export function RequestDetail({ request }: { request: Request }) {
                 { value: '', label: request.eta ? `Arriving ${clockTime(request.eta)}` : 'Set ETA' },
                 ...ETA_CHOICES,
               ]}
-              onChange={(v) =>
-                v &&
-                dispatch({
-                  kind: 'setEta',
-                  id: request.id,
-                  eta: new Date(Date.now() + Number(v) * 60_000).toISOString(),
-                })
-              }
+              onChange={(v) => {
+                if (!v) return;
+                const eta = new Date(Date.now() + Number(v) * 60_000).toISOString();
+                commit({ kind: 'setEta', id: request.id, eta }, `Arriving ${clockTime(eta)}`);
+              }}
             />
           </div>
         </Block>
