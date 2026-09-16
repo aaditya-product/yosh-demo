@@ -56,6 +56,15 @@ export function relativeTime(iso: string, from: Date = new Date()) {
   return clockTime(iso);
 }
 
+// G-02: "Greeting, time-aware." Morning/afternoon/evening by the clock, not a
+// fixed string.
+export function timeOfDayGreeting(from: Date = new Date()) {
+  const h = from.getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 export function clockTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 }

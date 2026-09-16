@@ -173,11 +173,13 @@ export const layout = {
   handleW: 44,
   navPanel: 431,   // floating nav panel, measured
   navContent: 391,
-  rail: 96,
+  rail: 208,   // widened at 2.1 to fit icon-beside-label rows, per Figma 534:10120
   genieContent: 720,
   bubble: 520,
   hourLabel: 64,   // L-12 schedule entry time column
   templateSheet: 420,
+  quickTile: 88,       // G-02 quick action circle
+  experienceCard: 280, // G-02 experience card
 } as const;
 
 export const frame = {

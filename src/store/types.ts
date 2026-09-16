@@ -163,6 +163,9 @@ export type ScheduleTemplate = {
   generatedRequestIds: string[];
 };
 
+// G-02's weather chip. Invented content — see src/data/seed.ts.
+export type Weather = { tempC: number; condition: string };
+
 export type Service = {
   id: string;
   name: string;

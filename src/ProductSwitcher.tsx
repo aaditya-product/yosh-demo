@@ -13,7 +13,7 @@ export function ProductSwitcher() {
   // Remember where each product was, so switching mid-demo returns you to the
   // screen you left rather than its index.
   const lastPath = useRef<{ genie: string; luna: string }>({
-    genie: '/genie/requests',
+    genie: '/genie/home',
     luna: '/luna/requests',
   });
 

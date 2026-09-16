@@ -10,6 +10,7 @@ import type {
   ScheduleTemplate,
   Service,
   Staff,
+  Weather,
 } from './types';
 
 export type BoardFilter = 'all' | 'new' | 'open' | 'escalated' | 'cancel_requested';
@@ -51,6 +52,7 @@ export type Entities = {
   actionPlans: ActionPlan[];
   services: Service[];
   scheduleTemplates: ScheduleTemplate[];
+  weather: Weather;
 };
 
 export type Ui = {
@@ -85,6 +87,7 @@ export const emptyEntities: Entities = {
   actionPlans: [],
   services: [],
   scheduleTemplates: [],
+  weather: { tempC: 0, condition: '' },
 };
 
 export const initialUi: Ui = {

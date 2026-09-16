@@ -115,6 +115,13 @@ the progress bar must read `3 of 12` correctly.
 Beat 3 path. Pull its content from Figma node `534:11085` and its detail nodes
 rather than writing new copy.
 
+## Weather — for `G-02`
+
+`{ tempC, condition }`. Added at task 2.1 for the home screen's weather chip.
+Nothing sources a real value — no live weather feed exists for a static demo —
+so this is invented content, seeded rather than left inline in the component
+per the content rule below.
+
 ## Timestamps
 
 All relative to app load, computed at runtime. Never hardcode absolute dates —

@@ -2,12 +2,13 @@ import { useLocation } from 'react-router-dom';
 import { useGo } from '../productRoot';
 import { Icon, type IconName } from '../ui';
 
-const ID = 'G-RAIL';
+const ID = 'G-02';
 
-// Rail pattern per docs/02-ia.md: vertical, persistent, pill container, icon
-// above label, teal icons. Items without `to` render and highlight but do not
-// navigate — a dead-end screen is worse than an inert rail item. The Figma
-// rail node 534:10120 gets matched at task 2.1.
+// Content per docs/02-ia.md's rail table — kept even though Figma node
+// 534:10120's rail lists hotel items (Spa, Restaurant, Taxi, Gym...). This is
+// a residential estate, not a resort (docs/00-brief.md), so the content comes
+// from the IA doc; only the visual treatment (white floating card, icon beside
+// label, not icon-above-label in a pill) is pulled from that Figma frame.
 const items: { id: string; label: string; icon: IconName; to?: string }[] = [
   { id: 'my-requests', label: 'My requests', icon: 'listAlt', to: '/requests' },
   { id: 'housekeeping', label: 'Housekeeping', icon: 'cleaning' },
@@ -24,31 +25,31 @@ export function GenieRail() {
   const location = useLocation();
 
   return (
-    <nav className="flex h-full w-rail shrink-0 flex-col items-center gap-sm rounded-pill bg-surfaceMuted px-sm py-lg">
-      {items.map((item) => {
-        const active = Boolean(item.to && location.pathname.includes(item.to));
-        return (
-          <button
-            key={item.id}
-            type="button"
-            data-id={`${ID}/${item.id}`}
-            onClick={item.to ? () => go(item.to!) : undefined}
-            className={`flex min-h-touch w-full flex-col items-center justify-center gap-xs rounded-pill px-xs py-sm text-meta ${
-              active ? 'bg-surface text-primary' : 'text-textMuted hover:bg-surface'
-            }`}
-          >
-            <span className="text-primary">
-              <Icon name={item.icon} size={20} />
-            </span>
-            <span className="text-center leading-none">{item.label}</span>
-          </button>
-        );
-      })}
+    <nav className="flex h-full w-rail shrink-0 flex-col justify-center rounded-panel border border-border bg-surface px-lg py-xl shadow-nav">
+      <div className="flex flex-col gap-lg">
+        {items.map((item) => {
+          const active = Boolean(item.to && location.pathname.includes(item.to));
+          return (
+            <button
+              key={item.id}
+              type="button"
+              data-id={`${ID}/rail-${item.id}`}
+              onClick={item.to ? () => go(item.to!) : undefined}
+              className={`flex min-h-touch items-center gap-md text-bodyMed ${
+                active ? 'text-primary' : 'text-textMuted'
+              }`}
+            >
+              <Icon name={item.icon} size={18} />
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
 
       <button
         type="button"
-        data-id={`${ID}/voice`}
-        className="mt-auto flex h-btnLg w-btnLg items-center justify-center rounded-circle bg-primary text-textOnPrimary"
+        data-id={`${ID}/voice-trigger`}
+        className="mt-xl flex h-btnLg w-btnLg items-center justify-center self-center rounded-circle bg-primary text-textOnPrimary"
       >
         <Icon name="mic" size={22} />
       </button>

@@ -40,6 +40,8 @@ export default {
         rail: px(layout.rail),
         genieContent: px(layout.genieContent),
         hourLabel: px(layout.hourLabel),
+        quickTile: px(layout.quickTile),
+        experienceCard: px(layout.experienceCard),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {
@@ -47,6 +49,7 @@ export default {
         genie: px(frame.genie.h),
         sheetDemo: px(360),
         detailSheet: px(layout.detailSheet),
+        quickTile: px(layout.quickTile),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       maxWidth: { bubble: px(layout.bubble) },

@@ -498,6 +498,15 @@ export const scheduleTemplates: ScheduleTemplate[] = [
   },
 ];
 
+// G-02's weather chip. 03-screens.md says "Weather chip" with no value and
+// nothing else in the docs supplies one — there is no live weather source for
+// a static demo. Invented and flagged rather than left inline in Home.tsx, per
+// CLAUDE.md's content rule.
+export const weather = {
+  tempC: 32,
+  condition: 'Clear skies',
+};
+
 export function buildSeed(): Entities {
   return {
     properties,
@@ -509,6 +518,7 @@ export function buildSeed(): Entities {
     actionPlans,
     services,
     scheduleTemplates,
+    weather,
   };
 }
 

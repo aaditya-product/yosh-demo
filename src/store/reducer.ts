@@ -13,6 +13,7 @@ const entitiesOf = (s: State): Entities => ({
   actionPlans: s.actionPlans,
   services: s.services,
   scheduleTemplates: s.scheduleTemplates,
+  weather: s.weather,
 });
 
 const now = () => new Date().toISOString();
