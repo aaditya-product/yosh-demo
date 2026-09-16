@@ -26,6 +26,7 @@ export type StoreAction =
   | { kind: 'setStatus'; id: string; status: RequestStatus }
   | { kind: 'setPriority'; id: string; priority: Request['priority'] }
   | { kind: 'setExternal'; id: string; external: ExternalRef }
+  | { kind: 'setTags'; id: string; tags: string[] }
   | { kind: 'addMessage'; id: string; actor: string; body: string }
   | { kind: 'cancelRequest'; id: string; actor: string }
 

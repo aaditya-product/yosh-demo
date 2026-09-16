@@ -34,6 +34,19 @@ export type TimelineEntry = {
 
 export type ExternalRef = { system: ExternalSystem; ref: string };
 
+// Tags shown on the request's dot pill. Delayed and Escalated are written by
+// the system; the rest are set by staff from the Select tags sheet.
+export const TAGS = [
+  { id: 'delayed', label: 'Delayed', system: true },
+  { id: 'escalated', label: 'Escalated', system: true },
+  { id: 'high-priority', label: 'High Priority', system: false },
+  { id: 'reopened', label: 'Reopened', system: true },
+  { id: 'on-hold', label: 'On Hold', system: false },
+  { id: 'need-attention', label: 'Need Attention', system: false },
+] as const;
+
+export type TagId = (typeof TAGS)[number]['id'];
+
 export type Request = {
   id: string;
   ref: string;
@@ -51,6 +64,7 @@ export type Request = {
   createdAt: string;
   timeline: TimelineEntry[];
   external: ExternalRef | null;
+  tags: TagId[];
 };
 
 export type Property = { id: string; name: string; shortName: string };

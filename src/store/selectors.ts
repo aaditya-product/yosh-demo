@@ -93,3 +93,12 @@ export const statusOptions: { value: Request['status']; label: string }[] = [
   { value: 'done', label: 'Done' },
   { value: 'cancelled', label: 'Cancelled' },
 ];
+
+export const tagColor: Record<string, string> = {
+  delayed: 'bg-tagDelayed',
+  escalated: 'bg-tagEscalated',
+  'high-priority': 'bg-tagHighPriority',
+  reopened: 'bg-tagReopened',
+  'on-hold': 'bg-tagOnHold',
+  'need-attention': 'bg-tagNeedAttention',
+};

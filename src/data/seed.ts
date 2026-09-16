@@ -62,6 +62,7 @@ export const requests: Request[] = [
       { at: hoursAgo(1), actor: 'marta', event: 'Done' },
     ],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0904',
@@ -86,6 +87,7 @@ export const requests: Request[] = [
       { at: minutesAgo(130), actor: 'rahul', event: 'On site' },
     ],
     external: null,
+    tags: ['delayed'],
   },
   {
     id: 'REQ-0907',
@@ -107,6 +109,7 @@ export const requests: Request[] = [
       { at: minutesAgo(34), actor: 'marta', event: 'Assigned to Daniel Okoro' },
     ],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0912',
@@ -125,6 +128,7 @@ export const requests: Request[] = [
     createdAt: minutesAgo(95),
     timeline: [{ at: minutesAgo(95), actor: 'omar', event: 'Raised' }],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0915',
@@ -146,6 +150,7 @@ export const requests: Request[] = [
       { at: minutesAgo(176), actor: 'system', event: 'Sent to D365 · PR-4468' },
     ],
     external: { system: 'D365', ref: 'PR-4468' },
+    tags: [],
   },
   {
     id: 'REQ-0918',
@@ -167,6 +172,7 @@ export const requests: Request[] = [
       { at: minutesAgo(95), actor: 'system', event: 'Escalated, no response within 2h' },
     ],
     external: null,
+    tags: ['escalated', 'delayed'],
   },
   {
     id: 'REQ-0921',
@@ -185,6 +191,7 @@ export const requests: Request[] = [
     createdAt: minutesAgo(12),
     timeline: [{ at: minutesAgo(12), actor: 'aisha', event: 'Raised' }],
     external: null,
+    tags: [],
   },
 ];
 
@@ -209,6 +216,7 @@ export const otherPropertyRequests: Request[] = [
     createdAt: minutesAgo(18),
     timeline: [{ at: minutesAgo(18), actor: 'thomas', event: 'Raised' }],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0934',
@@ -227,6 +235,7 @@ export const otherPropertyRequests: Request[] = [
     createdAt: minutesAgo(52),
     timeline: [{ at: minutesAgo(52), actor: 'leila', event: 'Raised' }],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0937',
@@ -245,6 +254,7 @@ export const otherPropertyRequests: Request[] = [
     createdAt: hoursAgo(3),
     timeline: [{ at: hoursAgo(3), actor: 'omar', event: 'Raised' }],
     external: null,
+    tags: [],
   },
   {
     id: 'REQ-0940',
@@ -263,6 +273,7 @@ export const otherPropertyRequests: Request[] = [
     createdAt: minutesAgo(7),
     timeline: [{ at: minutesAgo(7), actor: 'marta', event: 'Raised' }],
     external: null,
+    tags: [],
   },
 ];
 

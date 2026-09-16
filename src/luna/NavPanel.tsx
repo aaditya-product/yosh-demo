@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useDemo } from '../demo';
 import { useGo } from '../productRoot';
 import { useDispatch, useUi } from '../store';
-import { navGlass } from '../tokens';
+import { navGlass, orbGradient } from '../tokens';
 import { Button, Chip, Icon, VoiceIndicator, type IconName } from '../ui';
 import { navGroups } from './nav';
 
@@ -108,6 +108,15 @@ export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void
       />
       <div className="absolute inset-0" style={{ backgroundColor: navGlass.veil }} />
 
+      <button
+        type="button"
+        data-id={`${ID}/close-nav`}
+        onClick={onClose}
+        className="absolute right-navX top-navX z-sheet flex h-orb w-orb items-center justify-center rounded-circle bg-surface text-text"
+      >
+        <Icon name="collapse" size={16} />
+      </button>
+
       <div className="relative px-navX pb-navY pt-navTop">
         {actionCard ? (
           <ActionCardPanel />
@@ -162,19 +171,23 @@ export function NavPanel({ open, onClose }: { open: boolean; onClose: () => void
             />
             <button
               type="button"
-              data-id={`${ID}/command-mic`}
-              onClick={() => {
-                dispatch({ kind: 'setVoiceState', state: 'listening' });
-                submit('voice', command || 'assign');
-              }}
+              data-id={`${ID}/command-send`}
+              onClick={() => submit('type', command)}
               className="shrink-0 text-textMuted"
             >
-              <Icon name="mic" size={18} />
+              <Icon name="arrowForward" size={14} />
             </button>
           </div>
-          <span className="flex h-orb w-orb shrink-0 items-center justify-center rounded-circle bg-primary text-textOnPrimary">
-            <Icon name="forum" size={18} />
-          </span>
+          <button
+            type="button"
+            data-id={`${ID}/command-mic`}
+            onClick={() => {
+              dispatch({ kind: 'setVoiceState', state: 'listening' });
+              submit('voice', command || 'assign');
+            }}
+            className="h-orb w-orb shrink-0 overflow-hidden rounded-circle"
+            style={{ backgroundImage: orbGradient, filter: 'blur(0.2px) saturate(1.15)' }}
+          />
         </div>
 
         {(voiceState === 'listening' || voiceState === 'parsing') && (

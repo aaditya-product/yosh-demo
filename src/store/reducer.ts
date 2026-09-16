@@ -87,6 +87,7 @@ export function reducer(state: State, action: StoreAction): State {
         createdAt: r.createdAt ?? now(),
         timeline: r.timeline ?? [entry(r.requester ?? 'system', 'Raised')],
         external: r.external ?? null,
+        tags: r.tags ?? [],
       };
       return {
         ...state,
@@ -136,6 +137,12 @@ export function reducer(state: State, action: StoreAction): State {
           ...r.timeline,
           entry('system', `Sent to ${action.external.system} · ${action.external.ref}`),
         ],
+      }));
+
+    case 'setTags':
+      return patchRequest(state, action.id, (r) => ({
+        ...r,
+        tags: action.tags as Request['tags'],
       }));
 
     case 'addMessage':

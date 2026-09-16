@@ -8,6 +8,7 @@ import {
   matchesFilter,
   requestsForProperty,
   slaState,
+  tagColor,
   useAppState,
   useDispatch,
   type Request,
@@ -94,12 +95,9 @@ function RequestCard({
             data-id={`${ID}/card-${request.id}/status`}
             className="flex h-statusCluster shrink-0 items-center gap-sm rounded-pill border border-borderMuted bg-surface px-md"
           >
-            {slaState(request, now) === 'soon' && (
-              <span className="h-dot w-dot rounded-circle bg-statusWarn" />
-            )}
-            {(request.priority === 'escalated' || slaState(request, now) === 'breached') && (
-              <span className="h-dot w-dot rounded-circle bg-statusEscalated" />
-            )}
+            {request.tags.map((t) => (
+              <span key={t} className={`h-dot w-dot rounded-circle ${tagColor[t]}`} />
+            ))}
             <span className={`text-status ${statusTone(request)}`}>{statusWord(request)}</span>
           </span>
         </div>

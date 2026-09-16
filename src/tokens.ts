@@ -26,7 +26,15 @@ export const color = {
   statusEscalated:'#EF4444',   // measured on luna-dev filter count circle
   escalatedEdge:  '#FF0000',   // card border when a request is escalated
   statusWarn:     '#E2A03F',   // amber dot on the card status cluster
-  ink:            '#2D4E5E',   // timeline markers and connector
+  ink:            '#2D4E5E',   // timeline markers, connector, Save button
+
+  // Request tag dots, measured on the live Select tags sheet
+  tagDelayed:     '#E2A03F',
+  tagEscalated:   '#EF4444',
+  tagHighPriority:'#2D4E5E',
+  tagReopened:    '#B97A57',
+  tagOnHold:      '#636363',
+  tagNeedAttention:'#823E0A',
   statusWarning:  'rgba(234, 179, 8, 0.20)',
 
   // lines
@@ -38,6 +46,7 @@ export const color = {
   panelBorder:    'rgba(0, 0, 0, 0.06)',
   navSelected:    'rgba(21, 97, 109, 0.12)',
   navLabel:       'rgba(0, 0, 0, 0.5)',
+  cancelBorder:   'rgba(0, 0, 0, 0.5)',
 
   // scrim behind Sheet, from docs/04-components.md
   scrim:          'rgba(0, 0, 0, 0.25)',
@@ -55,6 +64,7 @@ export const type = {
   nav:       { size: 15, weight: 400, leading: 20 },   // nav items and command bar
   panelTitle:{ size: 18, weight: 600, leading: 28 },   // detail panel heading
   event:     { size: 14, weight: 700, leading: 20 },   // bold keyword in a timeline line
+  tagTitle:  { size: 16, weight: 500, leading: 24 },   // Select tags heading
 } as const;
 
 export const radius = {
@@ -63,6 +73,7 @@ export const radius = {
   panel: 12,    // detail panel blocks, timeline accordion
   sheet: 16,    // panel title card, foot tab bar
   nav: 20,      // nav panel and its items
+  modal: 24,    // Select tags sheet top corners
   circle: 9999,
 } as const;
 
@@ -101,6 +112,9 @@ export const control = {
   detailChip: 46,  // chip inside the detail panel, measured
   titleCard: 68,   // detail panel title card, measured
   handle:    4,    // bottom sheet drag handle
+  tagRow:    56,   // Select tags row, measured
+  tagCheck:  32,
+  modalBtn:  54,
   avatarSm: 24,
   avatarMd: 32,
   avatarLg: 40,
@@ -128,6 +142,16 @@ export const navGlass = {
   gradientOpacity: 0.32,
   veil:            'rgba(255, 255, 255, 0.58)',
 } as const;
+
+// The voice orb. The live build renders an animated multicolour blob; this is
+// a static stand-in with the same palette.
+export const orbGradient = [
+  'radial-gradient(circle at 30% 28%, #8FD8E8 0%, rgba(143,216,232,0) 58%)',
+  'radial-gradient(circle at 72% 32%, #F0B5C8 0%, rgba(240,181,200,0) 55%)',
+  'radial-gradient(circle at 62% 76%, #9D8E1E 0%, rgba(157,142,30,0) 52%)',
+  'radial-gradient(circle at 24% 74%, #29BCD3 0%, rgba(41,188,211,0) 55%)',
+  'linear-gradient(140deg, #E7F2F4, #F4E9F0)',
+].join(', ');
 
 // Motion, from docs/04-components.md and TASKS 6.4.
 export const motion = {

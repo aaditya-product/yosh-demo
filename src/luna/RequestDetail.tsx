@@ -3,12 +3,14 @@ import { clockTime, longStamp, relativeTime } from '../data/time';
 import {
   actorName,
   statusOptions,
+  tagColor,
   useAppState,
   useDispatch,
   type Request,
   type RequestStatus,
 } from '../store';
 import { Avatar, Button, Icon, Tabs } from '../ui';
+import { TagSheet } from './TagSheet';
 import { typeIcon } from './typeIcon';
 
 const ID = 'L-02';
@@ -94,6 +96,7 @@ export function RequestDetail({ request }: { request: Request }) {
   const { properties, residents, staff } = useAppState();
   const dispatch = useDispatch();
   const [sheet, setSheet] = useState<'chat' | 'note' | null>(null);
+  const [tagsOpen, setTagsOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [note, setNote] = useState('');
   const [timelineOpen, setTimelineOpen] = useState(false);
@@ -163,12 +166,20 @@ export function RequestDetail({ request }: { request: Request }) {
               {request.ref} | {relativeTime(request.createdAt)}
             </span>
             <span className="ml-auto flex items-center gap-md">
-              <span className="flex h-statusCluster items-center gap-sm rounded-pill border border-borderMuted bg-surface px-md">
-                <span className="h-dot w-dot rounded-circle bg-statusWarn" />
-                {request.priority === 'escalated' && (
-                  <span className="h-dot w-dot rounded-circle bg-statusEscalated" />
+              <button
+                type="button"
+                data-id={`${ID}/tags`}
+                onClick={() => setTagsOpen(true)}
+                className="flex h-statusCluster items-center gap-sm rounded-pill border border-borderMuted bg-surface px-md"
+              >
+                {request.tags.length === 0 ? (
+                  <Icon name="add" size={16} />
+                ) : (
+                  request.tags.map((t) => (
+                    <span key={t} className={`h-dot w-dot rounded-circle ${tagColor[t]}`} />
+                  ))
                 )}
-              </span>
+              </button>
               <Dropdown
                 id={`${ID}/status`}
                 value={request.status}
@@ -278,6 +289,8 @@ export function RequestDetail({ request }: { request: Request }) {
           ]}
         />
       </div>
+
+      <TagSheet request={request} open={tagsOpen} onClose={() => setTagsOpen(false)} />
 
       <div
         data-id={`${ID}/sheet-scrim`}
