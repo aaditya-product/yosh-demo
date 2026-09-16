@@ -34,6 +34,7 @@ export default {
         boardList: px(layout.boardList),
         statusSelect: px(layout.statusSelect),
         etaSelect: px(layout.etaSelect),
+        navPanel: px(layout.navPanel),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
       height: {

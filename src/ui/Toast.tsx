@@ -4,11 +4,13 @@ export function Toast({
   message,
   actionLabel,
   onAction,
+  actionId,
   idPrefix,
 }: {
   message: string;
   actionLabel?: string;
   onAction?: () => void;
+  actionId?: string;
   idPrefix: string;
 }) {
   return (
@@ -18,7 +20,7 @@ export function Toast({
     >
       <span className="text-bodyMed">{message}</span>
       {actionLabel && onAction && (
-        <Button data-id={`${idPrefix}/toast-action`} variant="ghost" size="sm" onClick={onAction}>
+        <Button data-id={actionId ?? `${idPrefix}/toast-action`} variant="ghost" size="sm" onClick={onAction}>
           {actionLabel}
         </Button>
       )}

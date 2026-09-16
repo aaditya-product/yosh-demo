@@ -94,6 +94,7 @@ export const layout = {
   statusSelect: 160,
   etaSelect: 160,
   thread: 200,
+  navPanel: 260,
 } as const;
 
 export const frame = {

@@ -38,7 +38,7 @@ everything after it is a lie.
 - [x] `1.1` `L-01` Requests board. Property chips, filters with counts, SLA
       clocks, escalation, type icons, external badges.
 - [x] `1.2` `L-02` Request detail. Thread, ETA, assign, status, timeline.
-- [ ] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.
+- [x] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.
 - [ ] `1.4` `G-05` My requests, `G-06` Request detail on Genie.
 - [ ] `1.5` Wire B2: assign on Luna, watch Genie update with no Genie-side code.
 - [ ] `1.6` `L-11` Workload.
