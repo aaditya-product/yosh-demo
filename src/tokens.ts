@@ -195,12 +195,18 @@ export const layout = {
   railLeft: 11,       // measured, node 534:10189
   railItemGap: 40,    // measured, vertical gap between rail items
   railPadX: 20,        // measured, node 534:10190
+  // Home's own left content margin, measured node 534:9809 ("left-[64px]" on
+  // both the quick-tile row and the experiences card). Needed because the
+  // rail floats over content rather than pushing it (R.1) — content has to
+  // clear the rail's own footprint itself, and 24px (space.xl) doesn't.
+  genieContentX: 64,
   genieContent: 720,
   bubble: 520,
   hourLabel: 64,   // L-12 schedule entry time column
   templateSheet: 420,
-  quickTile: 88,       // G-02 quick action circle
-  experienceCard: 280, // G-02 experience card
+  quickTile: 129,      // corrected at R.2, measured node 534:9809 ("128.961px"), was a guess (88) at 2.1
+  experienceCard: 280, // G-02 experience card, ~matches measured node 534:9809 (280.954px)
+  experienceCardH: 160, // approximate — Figma's carousel cards vary 145-226px tall per card; not a single measured value
 } as const;
 
 export const frame = {
@@ -211,3 +217,129 @@ export const frame = {
 // which is what the real Luna build uses. No webfont loading.
 export const font =
   '-apple-system, system-ui, "SF Pro Display", "Segoe UI", Roboto, sans-serif';
+
+// ---------------------------------------------------------------------------
+// Genie — its own design language, extracted separately from Luna's.
+//
+// tokens.ts started life seeded from Luna's computed CSS (Phase 0), and every
+// Genie screen through R.1 was built reusing those Luna values — spacing,
+// type scale, radii, shadows, all of it. That was wrong: Genie and Luna read
+// as two different products in the source material and should read as two
+// different products here. Assume nothing below matches the tables above.
+//
+// Extracted 2026-09 by calling get_design_context on six Figma nodes chosen
+// to span the product: 534:10120 (Home, rail open), 534:9809 (Home, base),
+// 534:11085 (Spa browse), 534:13171 (Spa booking detail panel, both its
+// hidden and its visible/open state), 534:6503 (Housekeeping), 534:20237
+// (Welcome). Every value below is cited to one of those. This is a working
+// set from six sampled frames, not a claim of exhaustive coverage — extend it
+// the same way (get_design_context, cite the node) as later Genie screens get
+// built or rebuilt.
+//
+// Structure and interaction still come from docs/09-genie-reference.md
+// (outranks Figma for Genie). Figma is pixel values only, per that file's own
+// "How to use this with Figma" section.
+export const genie = {
+  color: {
+    // Text
+    ink:            '#15191C',   // page titles ("Spa Booking", "Housekeeping"), 534:11085 / 534:6503
+    textPrimary90:  'rgba(0,0,0,0.9)',  // item-card titles, 534:11085
+    textPrimary85:  'rgba(0,0,0,0.85)', // Home quick-tile labels, 534:9809
+    textPrimary80:  'rgba(0,0,0,0.8)',  // Housekeeping segmented-tab labels, 534:6503
+    secondaryText:  '#636363',   // "Starting from", body copy captions — named "Secondary Text" in Figma, 534:13171
+    labelMuted:     '#454647',   // side-sheet field labels ("About …", "Dietary information"), 534:6503
+
+    // Teal family — Genie uses at least three distinct teals, not Luna's one.
+    // Keep them distinct; do not collapse to `color.primary`.
+    deepTeal:       '#2D4E5E',   // named "Deep Teal" in Figma. Primary CTA fill ("Help me choose"),
+                                  // section headings ("Relaxtion"), selected chip border. 534:13171 / 534:11085
+    deepTealText:   '#05363D',   // selected mood-chip text (on white, with deepTeal border), 534:11085
+    accentTeal:     '#15616D',   // == color.primary. "Place Request" CTA, Home's serif accent colour.
+                                  // A genuine overlap with Luna, not an assumption — measured separately, 534:9809 / 534:6503
+    chatGradientFrom: '#125A65', // "genie main" chat-entry button, diagonal gradient, 534:6503
+    chatGradientTo:   '#197886',
+    welcomeBg:      '#1C7684',   // Welcome screen background wash, 534:20237
+
+    // Confirm / select — sage green, not teal
+    sage:           '#CADFD4',   // named "Primary CTA" in Figma. Book Now / Add / selected option pills.
+                                  // == color.chipSelected — a second genuine overlap. 534:6503 / 534:13171
+
+    // Welcome screen's own warm-cream pair (nowhere else in the product)
+    cream:          '#F5F2E9',   // Welcome hero text, language pills, ENTER button fill, 534:20237
+    creamText:      '#142821',   // dark text on the cream ENTER button, 534:20237
+
+    // Surfaces
+    cardBg:         '#FFFFFF',
+    infoCardBg:     '#F5F7F9',   // side-sheet grouped info cards (About/Dietary/Nutrition) — == color.page, 534:6503
+    introBoxBg:     'rgba(80,125,157,0.07)', // highlighted intro strip in the booking detail panel, 534:13171
+
+    // Borders
+    cardBorder:     '#DADADA',   // item-card border (Spa, Housekeeping), 534:11085 / 534:6503
+    cardBorderFaint:'rgba(0,0,0,0.3)', // Housekeeping card border (thinner variant of the same idea), 534:6503
+    chipBorder:     'rgba(0,0,0,0.5)', // unselected filter/mood chip border, 534:11085
+    segmentBorder:  'rgba(0,0,0,0.5)', // Housekeeping segmented-control track border, 534:6503
+
+    // Photo-card gradient overlay (promo cards, hero image cards)
+    overlayTop:     'rgba(0,0,0,0)',
+    overlayBottom:  'rgba(0,0,0,0.7)',
+  },
+
+  // Genie's type scale is wide and role-driven, not Luna's fixed four sizes —
+  // it runs from 12px tracked caps to a 78px serif hero name, mixing SF Pro
+  // Display, plain SF Pro, and Playfair Display. Named by role, each cited.
+  type: {
+    caption:     { size: 12, weight: 500, leading: 16, tracking: 3.84 }, // "SELECT YOUR LANGUAGE", 534:20237
+    small:       { size: 13, weight: 500, leading: 16, tracking: 0.26 }, // language pills / ENTER, 534:20237
+    meta:        { size: 14, weight: 400, leading: 20 },                // "Starting from", intro-box body, 534:13171
+    metaSemibold:{ size: 14, weight: 600, leading: 16 },                // "You'll love this if:", 534:13171
+    body:        { size: 16, weight: 400, leading: 24 },                // chip labels, "Browse by category…", 534:11085
+    bodyMed:     { size: 16, weight: 500, leading: 24 },                // named "body-lg" in Figma, 534:13171
+    tileLabel:   { size: 15, weight: 500, leading: 18, tracking: 1.35 }, // Home quick-tile caption, tracked caps, 534:9809
+    itemTitle:   { size: 20, weight: 500, leading: 24 },                // item-card title (massage, towel…), 534:11085
+    heading:     { size: 20, weight: 600, leading: 24 },                // section heading ("Relaxtion"), 534:11085
+    heroTitle:   { size: 20, weight: 600, leading: 35 },                // booking-panel hero ("Feel better, your way"), 534:13171
+    pageTitle:   { size: 24, weight: 500, leading: 24 },                // "Spa Booking" / "Housekeeping", 534:11085
+    priceBold:   { size: 24, weight: 700, leading: 25, tracking: 0.72 },// booking-panel footer price, 534:13171
+    serifAccent: { size: 26, weight: 500, leading: 32, italic: true },  // "Experiences for you", Playfair italic, 534:9809
+    welcomeName: { size: 78, weight: 500, leading: 78 },                // "Thomas", Playfair, 534:20237
+  },
+
+  // Corner radii — a much wider range than Luna's, tightest on item-card
+  // photos (7px) up to the fully-round rail card (26, already in `radius`).
+  radius: {
+    itemPhoto:    7,     // item-card thumbnail crop, 534:11085
+    card:         8,     // item card itself (Spa, Housekeeping) — coincides with radius.card, 534:11085
+    infoCard:     5.76,  // side-sheet grouped info cards, 534:6503
+    promoCard:    11.5,  // Home promo cards ("Explore El Gouna"), 534:9809
+    heroCategory: 15.85, // hero-band category cards (Spa: Massage/Hammam Therapy), 534:11085
+  },
+
+  // Spacing rhythm — looser and less uniform than Luna's tight xs/sm/md/lg/xl
+  // ladder. Named by where they show up rather than forced onto that scale.
+  space: {
+    chipGap:      12,  // between filter/mood chips, 534:11085
+    sectionGap:   18,  // section heading to its divider line, 534:11085
+    cardGap:      24,  // item-card row gap, Home promo-card gap, 534:9809 / 534:11085
+    gridGap:      30,  // Housekeeping's 3-column grid gap, 534:6503
+    tileRowGap:   37,  // Home quick-tile row gap, 534:9809
+    sectionStack: 45,  // Housekeeping's top-level vertical stack gap, 534:6503
+  },
+
+  // Ambient card shadow — soft and near-invisible against white, a different
+  // character from Luna's crisper `shadow.nav`. Reuses the same five-layer
+  // shape as `shadow.railFloat` (same design system), projected downward.
+  shadow: {
+    card: '0px 0px 21.5px 0px #F0F0F0, 0px 0px 12.3px 0px #F0F0F0, 0px 0px 7.2px 0px #F0F0F0, ' +
+          '0px 0px 3.6px 0px #F0F0F0, 0px 0px 1px 0px #F0F0F0, 0px 0px 0.5px 0px #F0F0F0', // 534:9809
+    sheetFooter: '0px -31px 4.5px rgba(163,163,163,0), 0px -20px 4px rgba(163,163,163,0.01), ' +
+          '0px -11px 3.5px rgba(163,163,163,0.05), 0px -5px 2.5px rgba(163,163,163,0.09), ' +
+          '0px -1px 1.5px rgba(163,163,163,0.1)', // booking-panel sticky footer, upward, 534:13171
+  },
+} as const;
+
+// Playfair Display is used for two Genie accents (the italic "Experiences for
+// you" heading, the Welcome screen's guest name) but CLAUDE.md bans webfont
+// loading. Georgia is the closest system-available serif to Playfair's
+// transitional, high-contrast character — same substitution logic as `font`
+// standing in for SF Pro Display.
+export const genieSerifFont = 'Georgia, "Times New Roman", serif';

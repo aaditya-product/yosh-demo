@@ -175,4 +175,5 @@ export type Service = {
   longCopy: string;
   priceFrom: number;
   options: ServiceOption[];
+  photo?: string; // real Figma photography, pulled at R.2 — see docs/09-genie-reference.md
 };

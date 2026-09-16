@@ -1,7 +1,8 @@
 import type { Config } from 'tailwindcss';
-import { color, type as typeScale, radius, space, frame, font, control, motion, stroke, layout, shadow } from './src/tokens';
+import { color, type as typeScale, radius, space, frame, font, control, motion, stroke, layout, shadow, genie, genieSerifFont } from './src/tokens';
 
 const px = (n: number) => `${n}px`;
+const genieKey = (name: string) => `genie${name[0].toUpperCase()}${name.slice(1)}`;
 
 const fontSize = Object.fromEntries(
   Object.entries(typeScale).map(([name, t]) => [
@@ -15,16 +16,38 @@ const spacing = {
   ...Object.fromEntries(Object.entries(space).map(([name, n]) => [name, px(n)])),
 };
 
-const borderRadius = Object.fromEntries(
-  Object.entries(radius).map(([name, n]) => [name, px(n)]),
+const borderRadius = {
+  ...Object.fromEntries(Object.entries(radius).map(([name, n]) => [name, px(n)])),
+  ...Object.fromEntries(Object.entries(genie.radius).map(([name, n]) => [genieKey(name), px(n)])),
+};
+
+// Genie's own scale (R.2 correction — see the `genie` namespace in tokens.ts).
+// Flattened into Tailwind's normal theme keys, all prefixed `genie`, so Genie
+// components use ordinary utility classes like every other token in the app.
+const genieColors = Object.fromEntries(Object.entries(genie.color).map(([k, v]) => [genieKey(k), v]));
+
+const genieFontSize = Object.fromEntries(
+  Object.entries(genie.type).map(([name, t]) => [
+    genieKey(name),
+    [px(t.size), { lineHeight: px(t.leading), fontWeight: String(t.weight) }],
+  ]),
 );
+
+const genieLetterSpacing = Object.fromEntries(
+  Object.entries(genie.type)
+    .filter(([, t]) => 'tracking' in t)
+    .map(([name, t]) => [genieKey(name), px((t as { tracking: number }).tracking)]),
+);
+
+const genieGap = Object.fromEntries(Object.entries(genie.space).map(([name, n]) => [genieKey(name), px(n)]));
+const genieShadow = Object.fromEntries(Object.entries(genie.shadow).map(([name, v]) => [genieKey(name), v]));
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
-    colors: { transparent: 'transparent', current: 'currentColor', ...color },
-    fontFamily: { sans: [font] },
-    fontSize: fontSize as never,
+    colors: { transparent: 'transparent', current: 'currentColor', ...color, ...genieColors },
+    fontFamily: { sans: [font], serif: [genieSerifFont] },
+    fontSize: { ...fontSize, ...genieFontSize } as never,
     spacing,
     borderRadius,
     extend: {
@@ -53,6 +76,7 @@ export default {
         sheetDemo: px(360),
         detailSheet: px(layout.detailSheet),
         quickTile: px(layout.quickTile),
+        experienceCard: px(layout.experienceCardH),
         rail: px(layout.railHeight),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
       },
@@ -75,12 +99,13 @@ export default {
         },
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
-      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar, railFloat: shadow.railFloat },
+      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar, railFloat: shadow.railFloat, ...genieShadow },
       zIndex: { cluster: '10', sheet: '20', overlay: '40', switcher: '50' },
       borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder, cancelBorder: color.cancelBorder, railBorder: color.railBorder },
-      padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px', railX: px(layout.railPadX) },
+      padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px', railX: px(layout.railPadX), genieContentX: px(layout.genieContentX) },
       inset: { navX: '19px', railLeft: px(layout.railLeft) },
-      gap: { railItem: px(layout.railItemGap) },
+      gap: { railItem: px(layout.railItemGap), ...genieGap },
+      letterSpacing: genieLetterSpacing,
       borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),
     },
   },

@@ -3,6 +3,10 @@
 Source: screen recording of the running Genie build, 2026-08-10, 2:31, iPad
 landscape. Scrubbed at 1-3 second intervals across the whole runtime.
 
+Video source (consult only when this file is ambiguous about a specific
+interaction — don't watch it wholesale, this file is the distilled version):
+https://crossbo-my.sharepoint.com/personal/annie_david_crossbo_com/_layouts/15/stream.aspx?id=%2Fpersonal%2Fannie%5Fdavid%5Fcrossbo%5Fcom%2FDocuments%2FMicrosoft%20Teams%20Chat%20Files%2FScreen%20Recording%202026%2D08%2D10%20at%205%2E49%2E41%E2%80%AFPM%2Emov
+
 **This file outranks 03-screens.md wherever the two disagree on Genie.** 03 was
 written from Figma frames and prose; this is the shipped product.
 

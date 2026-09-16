@@ -1,3 +1,14 @@
+// Real photography pulled from Figma at R.2 (get_design_context /
+// download_assets on the Home and Spa nodes) — see docs/09-genie-reference.md.
+// No stock substitutes: where the Figma file has no matching photo (Report an
+// issue has no source image at all), the quick action stays icon-only rather
+// than inventing one — see genieQuickActions below.
+import genieHomeHeroPhoto from '../assets/genie/home-hero.jpg';
+import genieHousekeepingPhoto from '../assets/genie/quick-housekeeping.jpg';
+import genieCoffeePhoto from '../assets/genie/quick-coffee.jpg';
+import genieSpaPhoto from '../assets/genie/quick-spa.jpg';
+import genieGatheringPhoto from '../assets/genie/quick-gathering.jpg';
+import genieWellnessPhoto from '../assets/genie/experience-wellness.jpg';
 import type { Entities } from '../store/state';
 import type {
   ActionPlan,
@@ -369,6 +380,7 @@ export const services: Service[] = [
       { id: 'enhancement', label: 'Enhance your experience', values: ['Head and neck massage'] },
       { id: 'time', label: 'Time', values: ['Morning', 'Afternoon', 'Evening'] },
     ],
+    photo: genieWellnessPhoto,
   },
   {
     id: 'svc-hot-stone',
@@ -379,6 +391,7 @@ export const services: Service[] = [
     longCopy: '',
     priceFrom: 75,
     options: [{ id: 'session-length', label: 'Session length', values: ['60 min', '90 min'] }],
+    photo: genieWellnessPhoto,
   },
   {
     id: 'svc-deep-tissue',
@@ -389,6 +402,7 @@ export const services: Service[] = [
     longCopy: '',
     priceFrom: 70,
     options: [{ id: 'session-length', label: 'Session length', values: ['60 min', '90 min'] }],
+    photo: genieWellnessPhoto,
   },
   {
     id: 'svc-hammam',
@@ -399,6 +413,7 @@ export const services: Service[] = [
     longCopy: '',
     priceFrom: 85,
     options: [{ id: 'session-length', label: 'Session length', values: ['45 min', '75 min'] }],
+    photo: genieWellnessPhoto,
   },
   {
     id: 'svc-hammam-couple',
@@ -409,6 +424,7 @@ export const services: Service[] = [
     longCopy: '',
     priceFrom: 150,
     options: [{ id: 'session-length', label: 'Session length', values: ['75 min'] }],
+    photo: genieWellnessPhoto,
   },
   {
     id: 'svc-hydrating-facial',
@@ -419,6 +435,7 @@ export const services: Service[] = [
     longCopy: '',
     priceFrom: 65,
     options: [{ id: 'session-length', label: 'Session length', values: ['45 min', '60 min'] }],
+    photo: genieWellnessPhoto,
   },
 ];
 
@@ -506,6 +523,20 @@ export const weather = {
   tempC: 32,
   condition: 'Clear skies',
 };
+
+// G-02 Home, rebuilt at R.2 to be photography-led per docs/09-genie-reference.md.
+// Photos are real, pulled from Figma (see the imports above); `report-issue`
+// has none — no such tile exists in the source file — so it stays icon-only
+// rather than getting a stock substitute. Home.tsx supplies that one icon.
+export const genieHomeHero = genieHomeHeroPhoto;
+
+export const genieQuickActions = [
+  { id: 'housekeeping', label: 'Housekeeping', photo: genieHousekeepingPhoto },
+  { id: 'coffee', label: 'Order coffee', photo: genieCoffeePhoto },
+  { id: 'treatment', label: 'Book a treatment', photo: genieSpaPhoto, to: '/services' },
+  { id: 'report-issue', label: 'Report an issue' },
+  { id: 'gathering', label: 'Plan a gathering', photo: genieGatheringPhoto },
+] as const;
 
 export function buildSeed(): Entities {
   return {
