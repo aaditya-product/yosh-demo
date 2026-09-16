@@ -15,10 +15,10 @@ serve a step in it.
 
 ## Phase 0 - foundation
 
-- [ ] `0.1` Scaffold Vite + React + TS + Tailwind. Tailwind reads
+- [x] `0.1` Scaffold Vite + React + TS + Tailwind. Tailwind reads
       `src/tokens.ts`. Routes `/genie/*` `/luna/*` `/demo` `/kitchen-sink`.
-- [ ] `0.2` Store: one context + reducer per `docs/02-ia.md`.
-- [ ] `0.3` Seed data per `docs/05-data-model.md`. Timestamps relative to load.
+- [x] `0.2` Store: one context + reducer per `docs/02-ia.md`.
+- [x] `0.3` Seed data per `docs/05-data-model.md`. Timestamps relative to load.
       Copy follows `docs/08-copy.md`.
 - [ ] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
 - [ ] `0.5` Component library per `docs/04-components.md`.
