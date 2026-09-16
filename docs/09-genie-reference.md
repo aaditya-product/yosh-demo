@@ -10,6 +10,29 @@ https://crossbo-my.sharepoint.com/personal/annie_david_crossbo_com/_layouts/15/s
 **This file outranks 03-screens.md wherever the two disagree on Genie.** 03 was
 written from Figma frames and prose; this is the shipped product.
 
+## Definition of done for a Genie screen
+
+Genie screens were being fixed reactively, one defect at a time, and the same
+defects kept recurring. This is the standard instead. Every Genie screen must
+satisfy all seven before its task is ticked:
+
+1. **Every colour, size, spacing, radius and shadow comes from the `genie`
+   namespace in `tokens.ts`.** No Luna tokens on a Genie screen, ever.
+2. **Photographs are real, pulled via `download_assets` from that screen's
+   Figma node.** If an element is a photo in Figma, it is a photo here. No
+   icon standing in for a photograph, no flat tinted circle.
+3. **Content clears the floating rail.** The rail overlays content globally,
+   so clearance lives in the Genie shell, never per screen.
+4. **Card treatment, elevation and spacing match Genie's language** — soft
+   elevated surfaces, generous spacing. Not flat white boxes with thin grey
+   borders, which is Luna's language.
+5. **Type uses Genie's mixed scale, including the serif face where the
+   reference shows one.** Not Luna's four-size system.
+6. **Every interactive element carries a `data-id`.**
+7. **A side-by-side screenshot against a fresh Figma render of that screen's
+   node has been taken, looked at, and shows the same product.** Token values
+   matching is not sufficient evidence.
+
 ## How to use this with Figma
 
 Two sources, two jobs, do not mix them up:

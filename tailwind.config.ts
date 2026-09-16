@@ -39,8 +39,9 @@ const genieLetterSpacing = Object.fromEntries(
     .map(([name, t]) => [genieKey(name), px((t as { tracking: number }).tracking)]),
 );
 
-const genieGap = Object.fromEntries(Object.entries(genie.space).map(([name, n]) => [genieKey(name), px(n)]));
+const genieSpace = Object.fromEntries(Object.entries(genie.space).map(([name, n]) => [genieKey(name), px(n)]));
 const genieShadow = Object.fromEntries(Object.entries(genie.shadow).map(([name, v]) => [genieKey(name), v]));
+const genieSize = Object.fromEntries(Object.entries(genie.size).map(([name, n]) => [genieKey(name), px(n)]));
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
@@ -60,15 +61,13 @@ export default {
         statusSelect: px(layout.statusSelect),
         etaSelect: px(layout.etaSelect),
         navPanel: px(layout.navPanel),
-        railSliver: px(layout.railSliver),
-        railIcon: px(layout.railIcon),
-        railExpanded: px(layout.railExpanded),
         hair: px(stroke.hair),
         genieContent: px(layout.genieContent),
         hourLabel: px(layout.hourLabel),
         quickTile: px(layout.quickTile),
         experienceCard: px(layout.experienceCard),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
+        ...genieSize,
       },
       height: {
         handleBar: px(control.handle),
@@ -77,8 +76,8 @@ export default {
         detailSheet: px(layout.detailSheet),
         quickTile: px(layout.quickTile),
         experienceCard: px(layout.experienceCardH),
-        rail: px(layout.railHeight),
         ...Object.fromEntries(Object.entries(control).map(([k, v]) => [k, px(v)])),
+        ...genieSize,
       },
       maxWidth: { bubble: px(layout.bubble) },
       minWidth: { genie: px(frame.genie.w), touch: px(control.touch) },
@@ -99,12 +98,12 @@ export default {
         },
         sweep: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } },
       },
-      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar, railFloat: shadow.railFloat, ...genieShadow },
+      boxShadow: { toast: '0 4px 16px rgba(0, 0, 0, 0.12)', nav: shadow.nav, tabBar: shadow.tabBar, ...genieShadow },
       zIndex: { cluster: '10', sheet: '20', overlay: '40', switcher: '50' },
-      borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder, cancelBorder: color.cancelBorder, railBorder: color.railBorder },
-      padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px', railX: px(layout.railPadX), genieContentX: px(layout.genieContentX) },
-      inset: { navX: '19px', railLeft: px(layout.railLeft) },
-      gap: { railItem: px(layout.railItemGap), ...genieGap },
+      borderColor: { divider: color.divider, navDivider: color.navDivider, panelBorder: color.panelBorder, cancelBorder: color.cancelBorder, ...genieColors },
+      padding: { navX: '19px', navY: '19px', navTop: '31px', cardPad: '20px', ...genieSpace },
+      inset: { navX: '19px', ...genieSize },
+      gap: { ...genieSpace },
       letterSpacing: genieLetterSpacing,
       borderWidth: Object.fromEntries(Object.entries(stroke).map(([k, v]) => [k, px(v)])),
     },

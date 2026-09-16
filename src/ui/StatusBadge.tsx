@@ -24,6 +24,12 @@ const residentOverride: Partial<Record<BadgeStatus, { label: string; className: 
   open: { label: 'Sent', className: 'text-textMuted' },
 };
 
+// The label half of the single source of truth, reusable without the Luna-
+// styled pill below — Genie screens style their own pill on genie tokens
+// (checklist item 1) but must not invent a second status vocabulary.
+export const residentStatusLabel = (status: BadgeStatus) =>
+  (residentOverride[status] ?? look[status]).label;
+
 export function StatusBadge({
   status,
   audience = 'staff',

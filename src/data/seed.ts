@@ -9,6 +9,8 @@ import genieCoffeePhoto from '../assets/genie/quick-coffee.jpg';
 import genieSpaPhoto from '../assets/genie/quick-spa.jpg';
 import genieGatheringPhoto from '../assets/genie/quick-gathering.jpg';
 import genieWellnessPhoto from '../assets/genie/experience-wellness.jpg';
+import genieServiceHeroPhoto from '../assets/genie/service-hero.jpg';
+import genieServiceTreatmentRawPhoto from '../assets/genie/service-treatment.jpg';
 import type { Entities } from '../store/state';
 import type {
   ActionPlan,
@@ -529,6 +531,12 @@ export const weather = {
 // has none — no such tile exists in the source file — so it stays icon-only
 // rather than getting a stock substitute. Home.tsx supplies that one icon.
 export const genieHomeHero = genieHomeHeroPhoto;
+
+// G-07 Service browse, rebuilt at R.2's checklist pass — hero band and
+// treatment-card photos, pulled from this screen's own node (534:11085)
+// rather than reusing Home's.
+export const genieServiceHero = genieServiceHeroPhoto;
+export const genieServiceTreatmentPhoto = genieServiceTreatmentRawPhoto;
 
 export const genieQuickActions = [
   { id: 'housekeeping', label: 'Housekeeping', photo: genieHousekeepingPhoto },

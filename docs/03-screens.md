@@ -90,14 +90,18 @@ produces multiple. Each card:
 
 ## `G-05` My Requests · C
 
+> **Corrected.** The card treatment below ("matches Luna's card rhythm") is
+> superseded by `09-genie-reference.md`'s definition-of-done checklist: no
+> Luna tokens on a Genie screen, ever. Built instead on the `genie` namespace
+> — soft elevated card, generous spacing, Genie's own type scale. Status pill
+> colours are a two-tone simplification (muted vs active) since Genie has no
+> observed status vocabulary of its own; `urgent` (escalated) is invented and
+> flagged as such in tokens.ts.
+
 Rail persists. Content area: page title, then a vertical list of request cards.
 
 Card: type icon left, title, status pill right, item lines below a hairline
-divider, relative timestamp. Matches Luna's card rhythm — same radius, same
-8px gap — but on Genie's lighter surface.
-
-Status pill colours: sent `textMuted` · assigned `primary` ·
-in progress `statusLive` · done `textMuted`.
+divider, relative timestamp.
 
 Tapping a card → `G-06`.
 

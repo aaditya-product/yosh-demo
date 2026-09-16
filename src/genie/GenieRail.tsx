@@ -33,6 +33,9 @@ const items: { id: string; label: string; icon: IconName; to?: string }[] = [
 // the source names a control for that state either.
 type BaseMode = 'icons' | 'sliver';
 
+// Rebuilt at R.2's checklist pass onto the `genie` namespace throughout —
+// this component previously ran on the shared/Luna-seeded tokens even though
+// every one of its measurements came from a Genie Figma node (534:10189).
 export function GenieRail() {
   const go = useGo();
   const location = useLocation();
@@ -48,19 +51,22 @@ export function GenieRail() {
     if (el) setOverflowing(el.scrollHeight > el.clientHeight);
   }, []);
 
-  const width =
-    expanded ? 'w-railExpanded' : mode === 'sliver' ? 'w-railSliver' : 'w-railIcon';
+  const width = expanded
+    ? 'w-genieRailExpandedW'
+    : mode === 'sliver'
+      ? 'w-genieRailSliverW'
+      : 'w-genieRailIconW';
 
   return (
     <nav
       data-id={`${ID}/rail`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
-      className={`absolute left-railLeft top-1/2 z-cluster flex h-rail -translate-y-1/2 flex-col items-stretch overflow-hidden rounded-rail border-railHair border-railBorder bg-surface shadow-railFloat transition-all duration-overlay ${width}`}
+      className={`absolute left-genieRailLeft top-1/2 z-cluster flex h-genieRailHeight -translate-y-1/2 flex-col items-stretch overflow-hidden rounded-genieRail border-railHair border-genieRailBorder bg-genieCardBg shadow-genieRailFloat transition-all duration-overlay ${width}`}
     >
       <div
         ref={listRef}
-        className="relative flex min-h-0 flex-1 flex-col items-start gap-railItem overflow-y-auto px-railX py-xl"
+        className="relative flex min-h-0 flex-1 flex-col items-start gap-genieRailItemGap overflow-y-auto px-genieRailPadX py-genieCardGap"
       >
         {items.map((item) => {
           const active = Boolean(item.to && location.pathname.includes(item.to));
@@ -70,8 +76,8 @@ export function GenieRail() {
               type="button"
               data-id={`${ID}/rail-${item.id}`}
               onClick={item.to ? () => go(item.to!) : undefined}
-              className={`flex shrink-0 items-center gap-sm whitespace-nowrap text-nav ${
-                active ? 'text-primary' : 'text-railLabel'
+              className={`flex shrink-0 items-center gap-sm whitespace-nowrap text-genieMeta ${
+                active ? 'text-genieAccentTeal' : 'text-genieRailLabel'
               }`}
             >
               <Icon name={item.icon} size={18} />
@@ -82,7 +88,7 @@ export function GenieRail() {
         {expanded && overflowing && (
           <span
             data-id={`${ID}/rail-scroll-indicator`}
-            className="pointer-events-none absolute right-0 top-0 h-full w-hair rounded-pill bg-navDivider"
+            className="pointer-events-none absolute right-0 top-0 h-full w-hair rounded-pill bg-genieCardBorder"
           />
         )}
       </div>
@@ -92,7 +98,7 @@ export function GenieRail() {
           type="button"
           data-id={`${ID}/rail-collapse`}
           onClick={() => setMode((m) => (m === 'sliver' ? 'icons' : 'sliver'))}
-          className="mb-md flex shrink-0 items-center justify-center self-center text-textMuted"
+          className="mb-md flex shrink-0 items-center justify-center self-center text-genieSecondaryText"
         >
           <Icon name="chevronRight" size={14} className={mode === 'sliver' ? '' : 'rotate-180'} />
         </button>

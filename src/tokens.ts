@@ -47,8 +47,6 @@ export const color = {
   navSelected:    'rgba(21, 97, 109, 0.12)',
   navLabel:       'rgba(0, 0, 0, 0.5)',
   cancelBorder:   'rgba(0, 0, 0, 0.5)',
-  railBorder:     '#D8D8D8',   // GenieRail card edge, measured node 534:10189
-  railLabel:      '#5C5C5C',   // GenieRail item label, measured node 534:10193
 
   // scrim behind Sheet, from docs/04-components.md
   scrim:          'rgba(0, 0, 0, 0.25)',
@@ -76,7 +74,6 @@ export const radius = {
   sheet: 16,    // panel title card, foot tab bar
   nav: 20,      // nav panel and its items
   modal: 24,    // Select tags sheet top corners
-  rail: 26,     // GenieRail card, measured node 534:10189
   circle: 9999,
 } as const;
 
@@ -131,17 +128,13 @@ export const stroke = {
   ring: 2,   // not named in 04. Decision: VoiceIndicator ring.
   edge: 3,   // docs/04-components.md, Card selected left edge.
   railHair: 0.5,   // GenieRail card edge, measured node 534:10189
+  genieChipSelected: 1.5,  // selected mood-chip border, measured node 534:11085
 } as const;
 
 // Shadows, measured on luna-dev unless noted.
 export const shadow = {
   nav:    'rgba(16, 24, 40, 0.16) 0px 10px 34px 0px',
   tabBar: 'rgba(0, 0, 0, 0.06) 0px -1px 34.7px 0px',
-  // GenieRail float, measured node 534:10189 (soft rightward-projecting shadow).
-  railFloat:
-    '81px 0px 11.5px rgba(158,158,158,0), 52px 0px 10.5px rgba(158,158,158,0.01), ' +
-    '29px 0px 8.5px rgba(158,158,158,0.05), 13px 0px 6.5px rgba(158,158,158,0.09), ' +
-    '3px 0px 3.5px rgba(158,158,158,0.1)',
 } as const;
 
 // The nav panel's frosted glass: three stacked layers, measured.
@@ -182,24 +175,6 @@ export const layout = {
   handleW: 44,
   navPanel: 431,   // floating nav panel, measured
   navContent: 391,
-  // GenieRail, corrected at R.1 per docs/09-genie-reference.md — three states,
-  // not the single fixed-width bar built at 2.1. Card and gap values measured
-  // on Figma node 534:10189 (the expanded state). The icon-column and
-  // collapsed-sliver widths have no Figma node behind them — 09's own text
-  // calls icon-column "~52px", and the sliver has no measurement at all, so
-  // that one is a guess ("thin", "barely visible").
-  railSliver: 14,     // guessed, no measurement or estimate exists
-  railIcon: 52,       // 09-genie-reference.md estimate, no Figma node
-  railExpanded: 143,  // measured, node 534:10189
-  railHeight: 555,    // measured, node 534:10189
-  railLeft: 11,       // measured, node 534:10189
-  railItemGap: 40,    // measured, vertical gap between rail items
-  railPadX: 20,        // measured, node 534:10190
-  // Home's own left content margin, measured node 534:9809 ("left-[64px]" on
-  // both the quick-tile row and the experiences card). Needed because the
-  // rail floats over content rather than pushing it (R.1) — content has to
-  // clear the rail's own footprint itself, and 24px (space.xl) doesn't.
-  genieContentX: 64,
   genieContent: 720,
   bubble: 520,
   hourLabel: 64,   // L-12 schedule entry time column
@@ -253,6 +228,9 @@ export const genie = {
     // Keep them distinct; do not collapse to `color.primary`.
     deepTeal:       '#2D4E5E',   // named "Deep Teal" in Figma. Primary CTA fill ("Help me choose"),
                                   // section headings ("Relaxtion"), selected chip border. 534:13171 / 534:11085
+    deepTealFill:   'rgba(45,78,94,0.10)', // derived: deepTeal at 10% — same alpha Luna uses for primaryFill,
+                                  // applied to Genie's own colour. No Figma node has an icon-in-a-tinted-circle
+                                  // for a screen with no photo source (G-05); this is that treatment's fill.
     deepTealText:   '#05363D',   // selected mood-chip text (on white, with deepTeal border), 534:11085
     accentTeal:     '#15616D',   // == color.primary. "Place Request" CTA, Home's serif accent colour.
                                   // A genuine overlap with Luna, not an assumption — measured separately, 534:9809 / 534:6503
@@ -278,10 +256,20 @@ export const genie = {
     cardBorderFaint:'rgba(0,0,0,0.3)', // Housekeeping card border (thinner variant of the same idea), 534:6503
     chipBorder:     'rgba(0,0,0,0.5)', // unselected filter/mood chip border, 534:11085
     segmentBorder:  'rgba(0,0,0,0.5)', // Housekeeping segmented-control track border, 534:6503
+    railBorder:     '#D8D8D8',   // GenieRail card edge, measured node 534:10189
+    railLabel:      '#5C5C5C',   // GenieRail item label, measured node 534:10189
 
     // Photo-card gradient overlay (promo cards, hero image cards)
     overlayTop:     'rgba(0,0,0,0)',
     overlayBottom:  'rgba(0,0,0,0.7)',
+
+    // Not extracted — none of the six sampled frames show an escalated/urgent
+    // state. Invented at R.2's G-05 rebuild because a resident can genuinely
+    // see one (03-screens.md's escalated-priority mapping), so some colour is
+    // needed; picked from Genie's own warm, low-saturation family rather than
+    // reaching for Luna's `statusEscalated` red. Revisit if a real frame
+    // surfaces this state.
+    urgent:         '#A6462D',
   },
 
   // Genie's type scale is wide and role-driven, not Luna's fixed four sizes —
@@ -312,28 +300,80 @@ export const genie = {
     infoCard:     5.76,  // side-sheet grouped info cards, 534:6503
     promoCard:    11.5,  // Home promo cards ("Explore El Gouna"), 534:9809
     heroCategory: 15.85, // hero-band category cards (Spa: Massage/Hammam Therapy), 534:11085
+    rail:         26,    // GenieRail card, measured node 534:10189
   },
 
   // Spacing rhythm — looser and less uniform than Luna's tight xs/sm/md/lg/xl
   // ladder. Named by where they show up rather than forced onto that scale.
   space: {
+    cardPad:      16,  // item-card internal padding (Spa, Housekeeping), 534:11085 / 534:6503
     chipGap:      12,  // between filter/mood chips, 534:11085
+    chipPadX:     23,  // mood chip horizontal padding, measured 23.2px, 534:11085
+    chipPadY:     12,  // mood chip vertical padding, measured 11.6px, 534:11085
+    heroOverlap:  54,  // half `size.heroCategoryH` — how far the category-card row
+                        // spills past the hero's bottom edge ("partially overlapping
+                        // the hero's bottom edge", 09-genie-reference.md). Derived,
+                        // not directly measured — Figma's own frame keeps the cards
+                        // fully inside the hero band, but the reference doc (which
+                        // outranks Figma for structure) and the rendered screenshot
+                        // both show real overlap, so this is a principled midpoint.
     sectionGap:   18,  // section heading to its divider line, 534:11085
     cardGap:      24,  // item-card row gap, Home promo-card gap, 534:9809 / 534:11085
     gridGap:      30,  // Housekeeping's 3-column grid gap, 534:6503
     tileRowGap:   37,  // Home quick-tile row gap, 534:9809
     sectionStack: 45,  // Housekeeping's top-level vertical stack gap, 534:6503
+    railItemGap:  40,  // vertical gap between rail items, measured, 534:10189
+    railPadX:     20,  // rail's own internal horizontal padding, measured, 534:10190
+    // The rail's clearance, applied once at the Genie shell (GenieShell.tsx),
+    // never per screen — the rail floats over content globally (R.1), so
+    // every route needs the same protection. Value is 105, measured node
+    // 534:11085 (Service browse's own left content margin) — not Home's own
+    // 64 (node 534:9809), because 64 barely clears the rail's collapsed
+    // icon-column width (63 = size.railLeft 11 + size.railIconW 52) with
+    // almost no margin. 105 is a real measured value from the same file,
+    // just borrowed from a screen with more breathing room, and every screen
+    // now gets the same figure rather than each being tuned separately.
+    contentX:     105,
   },
 
   // Ambient card shadow — soft and near-invisible against white, a different
-  // character from Luna's crisper `shadow.nav`. Reuses the same five-layer
-  // shape as `shadow.railFloat` (same design system), projected downward.
+  // character from Luna's crisper `shadow.nav`.
   shadow: {
     card: '0px 0px 21.5px 0px #F0F0F0, 0px 0px 12.3px 0px #F0F0F0, 0px 0px 7.2px 0px #F0F0F0, ' +
           '0px 0px 3.6px 0px #F0F0F0, 0px 0px 1px 0px #F0F0F0, 0px 0px 0.5px 0px #F0F0F0', // 534:9809
     sheetFooter: '0px -31px 4.5px rgba(163,163,163,0), 0px -20px 4px rgba(163,163,163,0.01), ' +
           '0px -11px 3.5px rgba(163,163,163,0.05), 0px -5px 2.5px rgba(163,163,163,0.09), ' +
           '0px -1px 1.5px rgba(163,163,163,0.1)', // booking-panel sticky footer, upward, 534:13171
+    // GenieRail float, measured node 534:10189 (soft rightward-projecting shadow).
+    railFloat:
+      '81px 0px 11.5px rgba(158,158,158,0), 52px 0px 10.5px rgba(158,158,158,0.01), ' +
+      '29px 0px 8.5px rgba(158,158,158,0.05), 13px 0px 6.5px rgba(158,158,158,0.09), ' +
+      '3px 0px 3.5px rgba(158,158,158,0.1)',
+  },
+
+  // Control sizes with no Figma equivalent at all — none of the six sampled
+  // frames put an icon in a small circle inline in a row (Genie's own icon
+  // treatment is either a full photo tile or a bare rail icon). Estimated,
+  // not measured; needed for G-05's request-type marker, which has no photo
+  // source (no Figma node) to draw from instead.
+  size: {
+    listAvatar: 40,
+    chip: 50,           // filter/mood chip height, measured, 534:11085
+    heroHeight: 245,    // browse-screen hero band height, measured, 534:11085
+    heroCategoryW: 307, // hero category card, measured, 534:11085
+    heroCategoryH: 108,
+    itemPhotoW: 153,    // item-card thumbnail (Spa, Housekeeping), measured, 534:11085 / 534:6503
+    itemPhotoH: 105,
+    // GenieRail, corrected at R.1, moved into this namespace at R.2's
+    // checklist pass. The icon-column and collapsed-sliver widths have no
+    // Figma node behind them — 09-genie-reference.md's own text calls the
+    // icon column "~52px", and the sliver has no measurement at all, so
+    // that one is a guess ("thin", "barely visible").
+    railSliverW:   14,  // guessed, no measurement or estimate exists
+    railIconW:     52,  // 09-genie-reference.md estimate, no Figma node
+    railExpandedW: 143, // measured, node 534:10189
+    railHeight:    555, // measured, node 534:10189
+    railLeft:      11,  // measured, node 534:10189
   },
 } as const;
 

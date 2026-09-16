@@ -25,10 +25,8 @@ export function Home() {
 
   return (
     <div className="flex h-full flex-col gap-genieCardGap overflow-y-auto pb-xl">
-      {/* Full-bleed, edge to edge — docs/09-genie-reference.md. Everything
-          below it is inset by genieContentX so it clears the rail, which
-          floats over content rather than pushing it (R.1); this band doesn't
-          need to, since it has no content as far left as the rail reaches. */}
+      {/* Rail clearance (checklist item 3) lives in GenieShell now, applied to
+          every route — this screen carries no clearance padding of its own. */}
       <div
         data-id={`${ID}/hero`}
         className="relative flex shrink-0 items-start justify-between overflow-hidden rounded-b-panel bg-cover bg-center p-xl"
@@ -51,7 +49,7 @@ export function Home() {
         </span>
       </div>
 
-      <div className="flex flex-col gap-genieCardGap pl-genieContentX pr-xl">
+      <div className="flex flex-col gap-genieCardGap pr-xl">
         <div className="flex flex-wrap gap-genieTileRowGap">
           {genieQuickActions.map((action, i) => (
             <button

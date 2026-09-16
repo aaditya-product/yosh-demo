@@ -9,7 +9,7 @@ export { ListRow, type ListRowProps } from './ListRow';
 export { SegmentedControl, type Segment } from './SegmentedControl';
 export { Select, type SelectProps } from './Select';
 export { Sheet } from './Sheet';
-export { StatusBadge, statusLabel, type BadgeStatus } from './StatusBadge';
+export { StatusBadge, statusLabel, residentStatusLabel, type BadgeStatus } from './StatusBadge';
 export { Tabs, type Tab } from './Tabs';
 export { Timeline, type TimelineItem } from './Timeline';
 export { Toast } from './Toast';
