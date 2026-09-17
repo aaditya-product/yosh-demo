@@ -384,13 +384,29 @@ Source: `figma.com/design/C1ZiMoq2vDXGt9xILvVIQ2/Abu-Dhabi-app`, nodes `158:3930
 directly against these exact screens — **this section is not inferred, it is
 confirmed spec.**
 
-This is the same base app as the rest of this document — same photo, same
-"Good Morning, Thomas" header, same weather widget, same rail chrome. Only the
-service flows differ. Everything above about the rail, the home hero, and the
-photographic treatment still applies. **What changes is which tiles exist and
-what they open.**
+This is the same base app as the rest of this document. Only the service
+flows differ. **What changes is which tiles exist and what they open.**
 
-## Home — Yosh tile set
+> **Corrected — no rail, no photo hero, no greeting on Yosh's Home.** The
+> claim above used to say "same photo, same 'Good Morning, Thomas' header,
+> same weather widget, same rail chrome" wholesale. Checked directly against
+> `docs/assets/genie-yosh/home-orders-banner.png` and `home-room-controls.png`
+> (the real `G-02` Home) and against Figma node `2033:9248`: only the weather
+> widget carries over. There is no floating icon rail anywhere in this Home —
+> the rail visible behind the Requests/Profile overlay in
+> `requests-and-profile.png` is the entire old Casa Cook Home frame (rail,
+> resort tile row, carousel, video section — all present, unhidden, at their
+> original Casa Cook content) reused wholesale as a backdrop for the new
+> overlay panels layered on top of it, not something to replicate. And
+> neither PNG shows a photographic hero band or a "Good Morning, {name}"
+> greeting anywhere — the page starts directly below the status bar with the
+> weather/property/controls stack and the `Your Orders` banner, on a plain
+> page background. Same goes for the bottom-right two-button cluster the
+> main body claims is on every frame: neither Yosh reference confirms two
+> buttons anywhere. The only confirmed floating affordance on Home is a
+> single ambient chat orb, bottom-left.
+
+## Home — Yosh tile set and real chrome
 
 Replace the resort tile row (`Order Food` / `Book a Spa` / `Try Kayaking` /
 `Store`) with:
@@ -400,6 +416,27 @@ Replace the resort tile row (`Order Food` / `Book a Spa` / `Try Kayaking` /
 
 Same square card treatment as before — bold two-line label, circular arrow
 button bottom-right. For Yosh, drop `Food Order` (not in the RFI).
+
+Home's actual left-edge chrome, confirmed from the two PNGs above: a weather
+widget, a Room/Property number card, an `Open Controls` / `Close Controls`
+toggle, and a single ambient chat orb bottom-left (opens Chat, scoped
+ad-hoc/unscoped — matches the `genie main` / `ri:chat-ai-3-line` component
+noted in `07-genie-frame-map.md`).
+
+**Room Controls — observed, explicitly excluded.** `Open Controls` reveals a
+right-side panel: thermostat dial, room lighting toggle + slider, TV
+transport controls + volume, chandelier toggle, bathroom lights toggle. Real
+feature in the source, genuinely present in both PNGs — but out of scope for
+this build, same treatment as Spa/Activities/Restaurant/Dining/Store below.
+Not in the RFI, not relevant to the ops-focused demo. Do not build it; do not
+delete the observation.
+
+**Profile entry point — a designed decision, not confirmed spec.** Nothing in
+the source shows how Profile is reached from this Home — no chevron, no
+button styling, no confirmed tap target anywhere in either PNG. Decision:
+tapping the Room/Property card opens `G-11` Profile. This is a guess made to
+close a real gap, not something observed — flagged the same way as any other
+invented affordance in this document.
 
 ### Status banner — one component, several fillings
 
@@ -531,6 +568,10 @@ title `Requests`, X top-right.
 thread. This is the follow-up mechanism — confirmed.
 
 ## Profile
+
+Reached by tapping the Room/Property card on Home — a designed decision, not
+confirmed spec, see the note under "Home — Yosh tile set and real chrome"
+above.
 
 Overlay, `Profile` title, X top-right.
 - Large room/property number, language selector top-right

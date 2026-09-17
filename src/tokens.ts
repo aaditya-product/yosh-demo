@@ -270,6 +270,17 @@ export const genie = {
     // reaching for Luna's `statusEscalated` red. Revisit if a real frame
     // surfaces this state.
     urgent:         '#A6462D',
+
+    // Home's ambient chat orb (2.1) — sampled directly from the pale
+    // blue/lavender pixels in home-orders-banner.png (get_design_context on
+    // 158:3930 wouldn't resolve this session, see genie.type's note above).
+    // A dedicated Genie value, not Luna's `orbGradient` — checklist item 1
+    // is absolute, so this isn't reused even though the two are visually
+    // similar in spirit (an iridescent decorative blob).
+    chatOrbGradient:
+      'radial-gradient(circle at 30% 25%, #F5F8FE 0%, rgba(245,248,254,0) 55%), ' +
+      'radial-gradient(circle at 70% 70%, #8FB0E6 0%, rgba(143,176,230,0) 60%), ' +
+      'linear-gradient(135deg, #E4ECFC, #C6D6F4)',
   },
 
   // Genie's type scale is wide and role-driven, not Luna's fixed four sizes —
@@ -290,6 +301,16 @@ export const genie = {
     priceBold:   { size: 24, weight: 700, leading: 25, tracking: 0.72 },// booking-panel footer price, 534:13171
     serifAccent: { size: 26, weight: 500, leading: 32, italic: true },  // "Experiences for you", Playfair italic, 534:9809
     welcomeName: { size: 78, weight: 500, leading: 78 },                // "Thomas", Playfair, 534:20237
+
+    // Yosh Home's real chrome (2.1) — estimated from pixel measurements on
+    // docs/assets/genie-yosh/home-orders-banner.png and
+    // home-room-controls.png. get_design_context on node 158:3930 returned
+    // "nothing selected" every attempt this session; PNG is the documented
+    // fallback (07-genie-frame-map.md), so these are screenshot-estimated,
+    // not Figma-confirmed. Revisit with a real Figma pull when possible.
+    homeStat:      { size: 34, weight: 700, leading: 36 },  // weather temp, room/property numerals
+    homeTileTitle: { size: 22, weight: 700, leading: 26 },  // tile card's bold first word ("Housekeeping")
+    homeTileSub:   { size: 22, weight: 400, leading: 26 },  // tile card's regular second word ("Services")
   },
 
   // Corner radii — a much wider range than Luna's, tightest on item-card
@@ -300,7 +321,11 @@ export const genie = {
     infoCard:     5.76,  // side-sheet grouped info cards, 534:6503
     promoCard:    11.5,  // Home promo cards ("Explore El Gouna"), 534:9809
     heroCategory: 15.85, // hero-band category cards (Spa: Massage/Hammam Therapy), 534:11085
-    rail:         26,    // GenieRail card, measured node 534:10189
+    rail:         26,    // GenieRail card, measured node 534:10189 — no longer used, GenieRail
+                          // does not exist on Yosh's Home (2.1 correction), kept only in case a
+                          // later screen's own reference turns out to use this exact radius
+    homeCard:     18,    // Yosh Home's weather/property/controls/tile cards, estimated from
+                          // the reference PNGs (see genie.type's note on Home tokens above)
   },
 
   // Spacing rhythm — looser and less uniform than Luna's tight xs/sm/md/lg/xl
@@ -333,7 +358,12 @@ export const genie = {
     // almost no margin. 105 is a real measured value from the same file,
     // just borrowed from a screen with more breathing room, and every screen
     // now gets the same figure rather than each being tuned separately.
-    contentX:     105,
+    contentX:     105, // unused on Yosh Home — see radius.rail's note, no rail to clear any more
+
+    // Yosh Home's real chrome (2.1), screenshot-estimated — see genie.type's
+    // note on Home tokens above for sourcing.
+    homeStackGap: 16, // gap between the weather / property / open-controls cards
+    homeGridGap:  20, // gap between tile cards in the 2x2 grid
   },
 
   // Ambient card shadow — soft and near-invisible against white, a different
@@ -371,9 +401,17 @@ export const genie = {
     // that one is a guess ("thin", "barely visible").
     railSliverW:   14,  // guessed, no measurement or estimate exists
     railIconW:     52,  // 09-genie-reference.md estimate, no Figma node
-    railExpandedW: 143, // measured, node 534:10189
+    railExpandedW: 143, // measured, node 534:10189 — see radius.rail's note, unused on Yosh Home
     railHeight:    555, // measured, node 534:10189
     railLeft:      11,  // measured, node 534:10189
+
+    // Yosh Home's real chrome (2.1), screenshot-estimated — see genie.type's
+    // note on Home tokens above for sourcing.
+    homeStackW:  150, // left column: weather / property / open-controls cards
+    homeTileH:   140, // tile card height — fixed, not stretched to fill the row
+    arrowBtn:    52,  // tile card and status-banner "enter" arrow circle
+    weatherIcon: 32,  // sun/cloud glyph on the weather card
+    chatOrb:     96,  // ambient chat orb, bottom-left
   },
 } as const;
 

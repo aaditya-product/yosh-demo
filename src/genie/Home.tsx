@@ -1,107 +1,129 @@
-import { timeOfDayGreeting } from '../data/time';
-import { formatPrice, genieHomeHero, genieQuickActions } from '../data/seed';
-import { useGo } from '../productRoot';
 import { useAppState } from '../store';
+import { genie } from '../tokens';
 import { Icon } from '../ui';
 
 const ID = 'G-02';
 const RESIDENT = 'aisha';
 
-// Rebuilt at R.2 per docs/09-genie-reference.md: Genie is photography-led
-// (full-bleed header, circular photo tiles, dark photo cards with copy
-// overlaid), not the white-card/icon-avatar treatment built at 2.1 on tokens
-// seeded from Luna. Structure and copy are unchanged from 2.1's own resolved
-// content decisions — greeting/weather/quick-tiles/experience-cards only, no
-// promo tiles or event video section (03-screens.md's G-02 line doesn't call
-// for them, and the user confirmed dropping them was correct). What changed
-// is that every value now comes from the `genie` namespace in tokens.ts and
-// every image is real, pulled from Figma — see src/data/seed.ts.
+const TILES = [
+  { id: 'housekeeping', title: 'Housekeeping', sub: 'Services' },
+  { id: 'maintenance', title: 'Maintenance', sub: 'Services' },
+  { id: 'event-planning', title: 'Event', sub: 'Planning' },
+  { id: 'chauffeur', title: 'Chauffeur', sub: 'Request' },
+] as const;
+
+// Rebuilt at 2.1 per the corrected docs/09-genie-reference.md: this Home has
+// no rail, no photo hero, no greeting — all three were carried over from the
+// Casa Cook recording and don't hold up against the real Yosh reference
+// (home-orders-banner.png / home-room-controls.png). Real chrome only:
+// weather widget, Room/Property card, an inert `Open Controls` stub (Room
+// Controls itself is explicitly out of scope, see 09-genie-reference.md),
+// the tile row, a status-banner shell (pill/detail/chat content arrives at
+// 2.5), and an ambient chat orb bottom-left. Every value below is from the
+// `genie` namespace — see tokens.ts for sourcing (screenshot-estimated,
+// get_design_context on 158:3930 wouldn't resolve this session).
 export function Home() {
-  const go = useGo();
-  const { residents, services, weather } = useAppState();
+  const { residents, properties, weather } = useAppState();
   const resident = residents.find((r) => r.id === RESIDENT);
-  const firstName = resident?.name.split(' ')[0] ?? '';
-  const featured = services.slice(0, 3);
+  const property = properties.find((p) => p.id === resident?.propertyId);
+  // "Your Room" from the reference has no equivalent here — residents hold a
+  // whole property, not a numbered room in someone else's building (see
+  // 03-screens.md G-11's own precedent of dropping "Dates of stay" for the
+  // same reason). One stacked fact instead of two: the property's own number,
+  // parsed out of its name ("Villa 12" -> "12"), labelled "Your Property".
+  const propertyNumber = property?.name.match(/\d+/)?.[0] ?? '—';
 
   return (
-    <div className="flex h-full flex-col gap-genieCardGap overflow-y-auto pb-xl">
-      {/* Rail clearance (checklist item 3) lives in GenieShell now, applied to
-          every route — this screen carries no clearance padding of its own. */}
-      <div
-        data-id={`${ID}/hero`}
-        className="relative flex shrink-0 items-start justify-between overflow-hidden rounded-b-panel bg-cover bg-center p-xl"
-        style={{ backgroundImage: `url(${genieHomeHero})`, minHeight: 220 }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-genieOverlayTop to-genieOverlayBottom" />
-        <div className="relative">
-          <p className="text-genieBody text-textOnPrimary opacity-80">{timeOfDayGreeting()},</p>
-          <p className="mt-xs text-title text-textOnPrimary">{firstName}</p>
-        </div>
-        <span
+    <div className="flex h-full gap-genieHomeStackGap bg-page p-xl">
+      <div className="flex w-genieHomeStackW shrink-0 flex-col gap-genieHomeStackGap">
+        <div
           data-id={`${ID}/weather`}
-          className="relative flex items-center gap-md rounded-pill bg-scrim px-lg py-md text-textOnPrimary"
+          className="rounded-genieHomeCard bg-page p-lg text-center"
         >
-          <Icon name="sunny" size={22} />
-          <span>
-            <span className="block text-bodyMed">{weather.tempC}°C</span>
-            <span className="block text-meta opacity-80">{weather.condition}</span>
-          </span>
-        </span>
+          <Icon name="sunny" size={genie.size.weatherIcon} className="mx-auto text-genieAccentTeal" />
+          <p className="mt-sm text-genieHomeStat text-genieInk">{weather.tempC}°C</p>
+          <p className="text-body text-genieSecondaryText">{weather.tempLowC}°C</p>
+        </div>
+
+        <div
+          data-id={`${ID}/property-card`}
+          className="rounded-genieHomeCard bg-surface p-lg text-center"
+        >
+          <p className="text-genieHomeStat text-genieInk">{propertyNumber}</p>
+          <p className="text-body text-genieSecondaryText">Your Property</p>
+        </div>
+
+        <button
+          type="button"
+          data-id={`${ID}/open-controls`}
+          className="rounded-genieHomeCard bg-page p-lg text-center text-bodyMed text-genieTextPrimary90"
+        >
+          Open
+          <br />
+          Controls
+        </button>
       </div>
 
-      <div className="flex flex-col gap-genieCardGap pr-xl">
-        <div className="flex flex-wrap gap-genieTileRowGap">
-          {genieQuickActions.map((action, i) => (
-            <button
-              key={action.id}
-              type="button"
-              data-id={`${ID}/quick-${i}`}
-              onClick={'to' in action && action.to ? () => go(action.to!) : undefined}
-              className="flex w-quickTile flex-col items-center gap-sm text-center"
+      <div className="flex min-w-0 flex-1 flex-col gap-genieHomeStackGap">
+        {/* Status banner shell only — pill/detail/Chat with X content is 2.5 */}
+        <div
+          data-id={`${ID}/status-banner`}
+          className="flex shrink-0 items-center gap-genieChipGap rounded-genieHomeCard bg-surface p-lg shadow-genieCard"
+        >
+          <p className="text-genieHomeTileTitle text-genieInk">
+            Your
+            <br />
+            <span className="text-genieHomeTileSub">Orders</span>
+          </p>
+          <button
+            type="button"
+            data-id={`${ID}/status-banner/arrow`}
+            className="flex shrink-0 items-center justify-center rounded-circle bg-genieSage text-genieInk"
+            style={{ width: genie.size.arrowBtn, height: genie.size.arrowBtn }}
+          >
+            <Icon name="arrowForward" size={20} />
+          </button>
+        </div>
+
+        <div
+          data-id={`${ID}/tiles`}
+          className="grid grid-cols-2 content-start gap-genieHomeGridGap"
+        >
+          {TILES.map((tile) => (
+            <div
+              key={tile.id}
+              data-id={`${ID}/tile-${tile.id}`}
+              className="relative rounded-genieHomeCard bg-page p-xl"
+              style={{ height: genie.size.homeTileH }}
             >
-              {'photo' in action && action.photo ? (
-                <span className="block h-quickTile w-quickTile overflow-hidden rounded-circle">
-                  <img src={action.photo} alt="" className="h-full w-full object-cover" />
-                </span>
-              ) : (
-                <span className="flex h-quickTile w-quickTile items-center justify-center rounded-circle bg-primaryFill text-primary">
-                  <Icon name="build" size={26} />
-                </span>
-              )}
-              <span className="break-words text-genieTileLabel uppercase tracking-genieTileLabel text-genieTextPrimary85">
-                {action.label}
-              </span>
-            </button>
+              <p className="text-genieHomeTileTitle text-genieInk">
+                {tile.title}
+                <br />
+                <span className="text-genieHomeTileSub">{tile.sub}</span>
+              </p>
+              <button
+                type="button"
+                data-id={`${ID}/tile-${tile.id}/open`}
+                className="absolute bottom-lg right-lg flex items-center justify-center rounded-circle bg-genieSage text-genieInk"
+                style={{ width: genie.size.arrowBtn, height: genie.size.arrowBtn }}
+              >
+                <Icon name="arrowForward" size={20} />
+              </button>
+            </div>
           ))}
         </div>
-
-        <div className="rounded-genieCard bg-surface p-xl shadow-genieCard">
-          <p className="text-center font-serif italic text-genieSerifAccent text-genieAccentTeal">
-            Experiences for you
-          </p>
-          <p className="text-center text-genieBody lowercase text-genieAccentTeal">curated with care</p>
-          <div className="mt-lg flex gap-genieCardGap overflow-x-auto pb-xs">
-            {featured.map((s) => (
-              <div
-                key={s.id}
-                data-id={`${ID}/experience-${s.id}`}
-                onClick={() => go('/services')}
-                className="relative h-experienceCard w-experienceCard shrink-0 cursor-pointer overflow-hidden rounded-genieCard"
-              >
-                {s.photo && <img src={s.photo} alt="" className="absolute inset-0 h-full w-full object-cover" />}
-                <div className="absolute inset-0 bg-gradient-to-b from-genieOverlayTop to-genieOverlayBottom" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-xs px-lg text-center text-textOnPrimary">
-                  <p className="text-bodyMed">{s.name}</p>
-                  <p className="text-meta text-genieTextPrimary85">{s.description}</p>
-                </div>
-                <p className="absolute inset-x-0 bottom-0 bg-genieOverlayBottom py-sm text-center text-genieCaption uppercase tracking-genieCaption text-textOnPrimary">
-                  {s.mood} · From {formatPrice(s.priceFrom)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+
+      <button
+        type="button"
+        data-id={`${ID}/chat-orb`}
+        className="fixed bottom-xl left-xl rounded-circle shadow-genieCard"
+        style={{
+          width: genie.size.chatOrb,
+          height: genie.size.chatOrb,
+          backgroundImage: genie.color.chatOrbGradient,
+        }}
+      />
     </div>
   );
 }

@@ -1,13 +1,7 @@
-// Real photography pulled from Figma at R.2 (get_design_context /
-// download_assets on the Home and Spa nodes) — see docs/09-genie-reference.md.
-// No stock substitutes: where the Figma file has no matching photo (Report an
-// issue has no source image at all), the quick action stays icon-only rather
-// than inventing one — see genieQuickActions below.
-import genieHomeHeroPhoto from '../assets/genie/home-hero.jpg';
-import genieHousekeepingPhoto from '../assets/genie/quick-housekeeping.jpg';
-import genieCoffeePhoto from '../assets/genie/quick-coffee.jpg';
-import genieSpaPhoto from '../assets/genie/quick-spa.jpg';
-import genieGatheringPhoto from '../assets/genie/quick-gathering.jpg';
+// Real photography pulled from Figma — see docs/09-genie-reference.md.
+// genieWellnessPhoto is still used below by the Spa-mood `services` seed
+// data (out of scope for Yosh, see Never build in TASKS.md, but not yet
+// deleted — that's ServiceBrowse.tsx's own task, not touched here).
 import genieWellnessPhoto from '../assets/genie/experience-wellness.jpg';
 import genieServiceHeroPhoto from '../assets/genie/service-hero.jpg';
 import genieServiceTreatmentRawPhoto from '../assets/genie/service-treatment.jpg';
@@ -520,31 +514,20 @@ export const scheduleTemplates: ScheduleTemplate[] = [
 // G-02's weather chip. 03-screens.md says "Weather chip" with no value and
 // nothing else in the docs supplies one — there is no live weather source for
 // a static demo. Invented and flagged rather than left inline in Home.tsx, per
-// CLAUDE.md's content rule.
+// CLAUDE.md's content rule. `tempLowC` added at 2.1: the real Yosh Home
+// reference shows a second, smaller temperature beneath the main one
+// (home-orders-banner.png) — a plausible overnight low, also invented.
 export const weather = {
   tempC: 32,
+  tempLowC: 24,
   condition: 'Clear skies',
 };
-
-// G-02 Home, rebuilt at R.2 to be photography-led per docs/09-genie-reference.md.
-// Photos are real, pulled from Figma (see the imports above); `report-issue`
-// has none — no such tile exists in the source file — so it stays icon-only
-// rather than getting a stock substitute. Home.tsx supplies that one icon.
-export const genieHomeHero = genieHomeHeroPhoto;
 
 // G-07 Service browse, rebuilt at R.2's checklist pass — hero band and
 // treatment-card photos, pulled from this screen's own node (534:11085)
 // rather than reusing Home's.
 export const genieServiceHero = genieServiceHeroPhoto;
 export const genieServiceTreatmentPhoto = genieServiceTreatmentRawPhoto;
-
-export const genieQuickActions = [
-  { id: 'housekeeping', label: 'Housekeeping', photo: genieHousekeepingPhoto },
-  { id: 'coffee', label: 'Order coffee', photo: genieCoffeePhoto },
-  { id: 'treatment', label: 'Book a treatment', photo: genieSpaPhoto, to: '/services' },
-  { id: 'report-issue', label: 'Report an issue' },
-  { id: 'gathering', label: 'Plan a gathering', photo: genieGatheringPhoto },
-] as const;
 
 export function buildSeed(): Entities {
   return {

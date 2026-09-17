@@ -22,8 +22,11 @@ Figma file key for all B screens: `wDL5ESB8yofxIbXjSha7I5`. Call
 ("Yosh-specific flows"), confirmed directly against the Abu Dhabi Figma file
 by the person.** Do not build Spa, Activities, Restaurant, Dining or Store —
 out of scope, confirmed. Where this section and the main body of
-`09-genie-reference.md` disagree about which flows exist, this section wins;
-the main body's rail/chrome/photographic-treatment notes still apply.
+`09-genie-reference.md` disagree about which flows exist, this section wins.
+**The main body's rail and bottom-right-cluster chrome notes do not apply —
+checked directly against the Yosh reference PNGs and Figma, neither exists in
+this build, see `G-02` below.** The home hero and photographic treatment
+notes still apply.
 
 Figma file key for this addendum: `C1ZiMoq2vDXGt9xILvVIQ2`.
 
@@ -37,16 +40,25 @@ Unchanged from the main body of `09-genie-reference.md`.
 
 ## `G-02` Home · C
 
-Structure per `09-genie-reference.md` § Home, tokens per the `genie` namespace
-in `tokens.ts`. Photographic hero, greeting, weather chip, then the
-**status banner** (see below), then the tile row.
+Structure per `09-genie-reference.md` § "Home — Yosh tile set and real
+chrome", tokens per the `genie` namespace in `tokens.ts`. **No photographic
+hero, no greeting** — checked directly against both Home reference PNGs,
+neither has one; the page opens directly below the status bar. Weather chip,
+then the **status banner** (see below), then the tile row.
 
 Tile set, confirmed: `Housekeeping Services` · `Maintenance Services` ·
 `Event Planning` · `Chauffeur Request`. No Food Order.
 
-Rail as documented in `02-ia.md`.
+**No rail.** `02-ia.md`'s rail section is superseded for Home — checked
+directly against the Yosh reference PNGs and against Figma, there is no
+floating icon rail anywhere in this Home. Left-edge chrome is a weather
+widget, a Room/Property card, and an `Open Controls` toggle. `Room Controls`
+(thermostat, lighting, TV) is observed in the source behind that toggle but
+is explicitly out of scope for this build — do not build it. A single
+ambient chat orb, bottom-left, opens `G-09`.
 
-`G-02/tile-{name}` · `G-02/status-banner` · `G-02/status-banner/chat`
+`G-02/tile-{name}` · `G-02/status-banner` · `G-02/status-banner/chat` ·
+`G-02/room-property-card` · `G-02/open-controls` · `G-02/chat-orb`
 
 ## `G-03` Status banner · C — shared component
 
@@ -167,6 +179,10 @@ from a request's detail in `G-08` — not a rail destination.
 `G-10/category-{name}` · `G-10/item-{id}/view` · `G-10/item-{id}/request`
 
 ## `G-11` Profile · C
+
+Reached by tapping the Room/Property card on `G-02` Home — a designed
+decision, not confirmed spec; nothing in the source shows a Profile entry
+point from this Home treatment. See `09-genie-reference.md`.
 
 Overlay, `Profile` title, X top-right. Room/property number large, language
 selector top-right, `Name` with edit pencil, `Email`, `Preferences` section

@@ -169,11 +169,15 @@ Carries a back arrow from step 2, an X always, an accumulating `Summary` card
 overlaying the photo header from step 2, and a sticky footer whose CTA label
 changes per step. No step indicator, no Next button.
 
-## `GenieRail`
+## `GenieRail` — deleted at 2.1
 
-Three states: collapsed sliver, icon column, expanded with labels. Floats above
-page content, vertically centred, white card with rounded corners and a soft
-shadow. A scroll indicator appears on its right edge when expanded.
+Was: three states (collapsed sliver, icon column, expanded with labels),
+floating above page content. Removed — there is no floating icon rail in the
+Yosh build. Checked directly against `docs/assets/genie-yosh/`
+`home-orders-banner.png` / `home-room-controls.png` and against Figma; see
+`docs/09-genie-reference.md`'s corrected addendum. Left here, struck through
+in spirit rather than deleted outright, so nobody rebuilds it from an old
+mention elsewhere in this repo.
 
 ---
 

@@ -87,7 +87,7 @@ export const emptyEntities: Entities = {
   actionPlans: [],
   services: [],
   scheduleTemplates: [],
-  weather: { tempC: 0, condition: '' },
+  weather: { tempC: 0, tempLowC: 0, condition: '' },
 };
 
 export const initialUi: Ui = {
