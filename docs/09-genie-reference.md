@@ -3,35 +3,8 @@
 Source: screen recording of the running Genie build, 2026-08-10, 2:31, iPad
 landscape. Scrubbed at 1-3 second intervals across the whole runtime.
 
-Video source (consult only when this file is ambiguous about a specific
-interaction — don't watch it wholesale, this file is the distilled version):
-https://crossbo-my.sharepoint.com/personal/annie_david_crossbo_com/_layouts/15/stream.aspx?id=%2Fpersonal%2Fannie%5Fdavid%5Fcrossbo%5Fcom%2FDocuments%2FMicrosoft%20Teams%20Chat%20Files%2FScreen%20Recording%202026%2D08%2D10%20at%205%2E49%2E41%E2%80%AFPM%2Emov
-
 **This file outranks 03-screens.md wherever the two disagree on Genie.** 03 was
 written from Figma frames and prose; this is the shipped product.
-
-## Definition of done for a Genie screen
-
-Genie screens were being fixed reactively, one defect at a time, and the same
-defects kept recurring. This is the standard instead. Every Genie screen must
-satisfy all seven before its task is ticked:
-
-1. **Every colour, size, spacing, radius and shadow comes from the `genie`
-   namespace in `tokens.ts`.** No Luna tokens on a Genie screen, ever.
-2. **Photographs are real, pulled via `download_assets` from that screen's
-   Figma node.** If an element is a photo in Figma, it is a photo here. No
-   icon standing in for a photograph, no flat tinted circle.
-3. **Content clears the floating rail.** The rail overlays content globally,
-   so clearance lives in the Genie shell, never per screen.
-4. **Card treatment, elevation and spacing match Genie's language** — soft
-   elevated surfaces, generous spacing. Not flat white boxes with thin grey
-   borders, which is Luna's language.
-5. **Type uses Genie's mixed scale, including the serif face where the
-   reference shows one.** Not Luna's four-size system.
-6. **Every interactive element carries a `data-id`.**
-7. **A side-by-side screenshot against a fresh Figma render of that screen's
-   node has been taken, looked at, and shows the same product.** Token values
-   matching is not sufficient evidence.
 
 ## How to use this with Figma
 
@@ -401,3 +374,197 @@ prices in euro, spa treatments, kayaking, in-hotel events. Per `00-brief.md`
 this build is a residential estate. Keep every structure, treatment and
 interaction above. Replace the content per `05-data-model.md` and the copy
 rules in `08-copy.md`.
+
+---
+
+# Addendum — Yosh-specific flows (Abu Dhabi Figma source)
+
+Source: `figma.com/design/C1ZiMoq2vDXGt9xILvVIQ2/Abu-Dhabi-app`, nodes `158:3930`,
+`414:16777`, `2033:9247`, `2033:9249`, `2033:9248`. Confirmed by the person
+directly against these exact screens — **this section is not inferred, it is
+confirmed spec.**
+
+This is the same base app as the rest of this document — same photo, same
+"Good Morning, Thomas" header, same weather widget, same rail chrome. Only the
+service flows differ. Everything above about the rail, the home hero, and the
+photographic treatment still applies. **What changes is which tiles exist and
+what they open.**
+
+## Home — Yosh tile set
+
+Replace the resort tile row (`Order Food` / `Book a Spa` / `Try Kayaking` /
+`Store`) with:
+
+`Food Order` · `Housekeeping Services` · `Maintenance Services` ·
+`Event Planning` · `Chauffeur Request`
+
+Same square card treatment as before — bold two-line label, circular arrow
+button bottom-right. For Yosh, drop `Food Order` (not in the RFI).
+
+### Status banner — one component, several fillings
+
+The `Your Orders` band at the top of home is not order-specific. It's a
+generic **active-request banner**:
+
+```
+[status pill] [detail line]                    [Chat with X]
+```
+
+Observed fillings:
+- Food: `Preparing` / `17 mins` / `Continental Breakfast (1), Oriental...` /
+  `Chat with Kitchen`
+- Event: `Planning` / `Royal Arabian wedding on 30th May` / `Chat with Events`
+
+Build one `StatusBanner` component. It reads whatever the resident's most
+recent active request is and fills accordingly. Tapping the chat button opens
+the Chat overlay scoped to that request's thread.
+
+## Housekeeping — and Maintenance, same component
+
+**Confirmed: Maintenance uses the identical UI as Housekeeping.** Category
+rail left, item grid right, cart on request. Do not build Maintenance as a
+separate report-with-photo form — that was my earlier guess and it's wrong.
+
+Structure:
+- Back arrow + page title left, `Place Request` pill right with a count badge
+- Left rail of category chips, one active (tinted fill): `Most Requested` /
+  `Laundry` / `Cleaning Service` / `Towels` / `Toiletries` / `Personal Care` /
+  `Electrical Appliances` / `Internet`
+- Right side: **2-column grid**, each row is item-photo-left,
+  name-and-Add-button-right. Photo is a small square, rounded.
+
+Maintenance's own category rail differs in content (`Plumbing`, `Electrical`,
+`AC/HVAC`, `Appliances`, `Structural` or similar Yosh-relevant categories) but
+the component is identical.
+
+### Cart / place-request screen
+
+Reached via `Place Request`:
+- Left: a light-tinted panel listing selected items, each with a pill qty
+  stepper `- 1 +`
+- Right: `Recommendations` — a row of suggested add-on items with photo, name,
+  `Add` button
+- `Special note:` — a row of suggestion chips (`Refresh these daily` /
+  `Leave at the door` / `Add matching body lotion`) above a text field with a
+  **trailing mic icon**
+- `Schedule For` — `Now` / `Later` toggle pills
+- `Delivery At` — property and room/area chips, each with an edit pencil
+- Footer: `Back to menu` outlined pill left, `Place Request` filled pill right
+
+## Chat — with voice bolted on
+
+**Structural source**: node `2033:9247`. Overlay, same position and chrome as
+the Casa Cook confirm-card overlay documented above (home icon top-left,
+X top-right).
+
+Layout, top to bottom:
+- Sent message: right-aligned, filled pill, e.g. `Order Coffee` with a
+  timestamp
+- Genie response: left-aligned, light card, body text, `GENIE | {time}` byline
+  beneath
+- **Quick-reply chip row** — outlined pills matching options in the response,
+  e.g. `Add Nescafe` `Add Cappuccino` `Add Iced Mocha` `American Cuisine`
+- **Input row** at the foot: a rounded field `Type here`, with a **trailing
+  mic icon inside the field**, and a separate leading-edge send arrow inside
+  the field on the left
+
+### Voice behaviour — confirmed, this is the spec
+
+Not shown as a distinct visual state in Figma — the person specified this
+behaviour directly:
+
+1. Idle: field shows placeholder `Type here`, mic icon visible trailing
+2. Tap the mic: field enters a **listening/transcribing** state — text
+   populates live as the person speaks, replacing the placeholder. Use the
+   same live-transcript-builds-word-by-word treatment as elsewhere in this doc
+3. On the person finishing speaking (silence-detected or explicit stop): the
+   transcribed text **auto-sends**, exactly as if Enter had been pressed
+4. Conversation continues in the same thread — Genie's next response and any
+   new quick-reply chips render below
+
+Typed input still works identically alongside voice — same field, same send
+behaviour, just no transcription step.
+
+This chat is reached two ways: tapping a `Chat with X` button on the status
+banner (scoped to that request), or tapping `Need Help?` on a card in
+Requests (see below). This is also where **custom/ad-hoc requests** and
+**follow-ups on an open request** happen — there is no separate composer
+screen for those; it's this same chat.
+
+## Chauffeur / transport — confirmed structure
+
+Right-side panel, `Bookings` pill top-left, X top-right. Three steps, same
+panel chrome pattern as the booking flow described earlier in this document
+(back arrow appears from step 2, sticky footer CTA):
+
+1. **Destination** — search field `Where are you going?`, then a row of
+   destination chips (property/site names for Yosh, replacing
+   `Downtown Bazaar` etc.)
+2. **Time** — `You are going to {destination}`, `Select time to leave`, chosen
+   value in bold, then a native scrolling time wheel (day/hour/minute/AMPM
+   columns, centre row highlighted), then `Recommended times` outlined pill
+   row. Footer `Confirm`.
+3. **Vehicle** — `Choice of Vehicle`, vehicle cards each with a name, one line
+   of description, a capacity row (person icon + count), vehicle image right,
+   and a `SELECT` pill or a qty stepper on the suggested one. Footer becomes a
+   summary strip on the right showing destination / time / vehicle each with
+   a `Change` link, then `Confirm Booking`.
+4. On confirm — a text field `Add a special request` sits above the confirm
+   button on the summary step.
+
+## Requests — filterable list
+
+Reached from the rail's `My Requests`. **Overlay**, not a route change —
+title `Requests`, X top-right.
+
+- Filter pills across the top: `All` `Dining` `Housekeeping` `Store` `Taxi` —
+  for Yosh, replace with the actual type set (Housekeeping, Maintenance,
+  Event, Transport, Warehouse, Art, Access)
+- Each request is a card: a small type icon and label top-left (`STORE`),
+  a `REQUESTED` status badge top-right, item summary line, a divider, then
+  `Request placed at: {time}` and `Order total: {amount}` (amount only
+  applies where relevant — drop for non-priced request types), and a footer
+  row with **two actions**: `Cancel Request` (outlined) and `Need Help?`
+  (filled, tinted)
+
+**`Need Help?` opens the Chat overlay**, scoped to that specific request's
+thread. This is the follow-up mechanism — confirmed.
+
+## Profile
+
+Overlay, `Profile` title, X top-right.
+- Large room/property number, language selector top-right
+- `Dates of stay` (for Yosh: length of current arrangement, if relevant, or
+  drop this field — residents aren't transient guests)
+- `Name`, with an edit pencil
+- `Email`
+- `Preferences` section: labelled rows (`Dietary Preferences`,
+  `Allergies`, `Occasion of stay`), each showing the current values as plain
+  text, with a single `Edit Preferences` action for the whole section
+- Destructive action (`Log Out`) styled as a filled red pill, isolated at the
+  bottom
+
+## What this supersedes
+
+Everything in the main body of this document above about **Spa, Activities,
+Restaurant, In-room Dining, and Store is superseded for the Yosh build.**
+Those flows do not appear in the Yosh product at all. Do not build them, do
+not reference their screens in `03-screens.md`.
+
+What is **not** superseded and still applies exactly as documented above: the
+rail (three states, floating, vertically centred), the home hero band and
+weather widget, the photographic idle/welcome screens, the general
+confirmation-modal pattern (still used, see Housekeeping's request placement
+and Chauffeur's booking confirmation), and the overlay chrome pattern (home
+icon top-left, X top-right, dimmed background).
+
+## Genie catalogue browsing — inventory, warehouse, art
+
+Genie-side inventory/warehouse/art browsing reuses the **same catalogue
+pattern** documented in `03-screens.md` for Luna's Registry (category rail
+left, item grid right with photo/qty/View), sourced from Figma node
+`419:19544`. On Genie, `View` leads to a **request action** (raise a warehouse
+or art request for that item) rather than Luna's admin `Add item` action.
+This is reached contextually — from within Event Planning when selecting
+items for a gathering, per the flow documented in `03-screens.md` `G-11` — not
+as its own rail destination on Genie.

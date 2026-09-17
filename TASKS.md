@@ -15,15 +15,15 @@ serve a step in it.
 
 ## Phase 0 - foundation
 
-- [x] `0.1` Scaffold Vite + React + TS + Tailwind. Tailwind reads
+- [ ] `0.1` Scaffold Vite + React + TS + Tailwind. Tailwind reads
       `src/tokens.ts`. Routes `/genie/*` `/luna/*` `/demo` `/kitchen-sink`.
-- [x] `0.2` Store: one context + reducer per `docs/02-ia.md`.
-- [x] `0.3` Seed data per `docs/05-data-model.md`. Timestamps relative to load.
+- [ ] `0.2` Store: one context + reducer per `docs/02-ia.md`.
+- [ ] `0.3` Seed data per `docs/05-data-model.md`. Timestamps relative to load.
       Copy follows `docs/08-copy.md`.
-- [x] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
-- [x] `0.5` Component library per `docs/04-components.md`.
-- [x] `0.6` `/kitchen-sink` - every component, every state, both backgrounds.
-- [x] `0.7` `/demo` harness - Genie in a 1280x800 frame left, Luna right,
+- [ ] `0.4` Demo engine per `docs/06-demo-engine.md`. Engine only, no steps yet.
+- [ ] `0.5` Component library per `docs/04-components.md`.
+- [ ] `0.6` `/kitchen-sink` - every component, every state, both backgrounds.
+- [ ] `0.7` `/demo` harness - Genie in a 1280x800 frame left, Luna right,
       one store.
 
 ### REVIEW GATE - screenshot `/kitchen-sink` and the empty `/demo`
@@ -35,17 +35,14 @@ serve a step in it.
 Build this first. If the shared store doesn't drive Genie from a Luna action,
 everything after it is a lie.
 
-- [x] `1.1` `L-01` Requests board. Property chips, filters with counts, SLA
+- [ ] `1.1` `L-01` Requests board. Property chips, filters with counts, SLA
       clocks, escalation, type icons, external badges.
-- [x] `1.2` `L-02` Request detail. Thread, ETA, assign, status, timeline.
-- [x] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.
-- [x] `1.4` `G-05` My requests, `G-06` Request detail on Genie.
-- [x] `1.5` Wire B2: assign on Luna, watch Genie update with no Genie-side code.
-      Verified against the real `G-05`/`G-06` through the product switcher, one
-      tab, one store. Still to do at 2.6: retarget `b2-assign` from `#0A4` to
-      `#0BE` once Beat 1 raises that request.
-- [x] `1.6` `L-11` Workload.
-- [x] `1.7` `L-12` Schedule, recurring tasks that create real requests.
+- [ ] `1.2` `L-02` Request detail. Thread, ETA, assign, status, timeline.
+- [ ] `1.3` `L-03` Nav panel and command bar. Action card, toast, undo.
+- [ ] `1.4` `G-05` My requests, `G-06` Request detail on Genie.
+- [ ] `1.5` Wire B2: assign on Luna, watch Genie update with no Genie-side code.
+- [ ] `1.6` `L-11` Workload.
+- [ ] `1.7` `L-12` Schedule, recurring tasks that create real requests.
 - [ ] `1.8` `L-13` Rotas.
 
 ### REVIEW GATE - walk Section B end to end
@@ -54,30 +51,8 @@ everything after it is a lie.
 
 ## Phase 2 - the resident side (Section A)
 
-- [x] `2.1` `G-02` Home. Figma `534:9809`, rail `534:10120`.
-- [x] `2.2` `G-07` Service browse. Figma `534:11085`.
-
-## Inserted — Genie reference corrections
-
-Read `docs/09-genie-reference.md` before any remaining Genie task. It is
-derived from a recording of the shipped product and outranks `03-screens.md`
-for Genie.
-
-- [x] `R.1` Rebuild `GenieRail` to three states — collapsed sliver, icon
-      column, expanded with labels. Floating, vertically centred, not
-      full-height. Scroll indicator when expanded.
-- [ ] `R.2` Build `ConfirmationModal` as a shared component and add it to the
-      kitchen sink.
-- [ ] `R.3` Build `OrderPanel` as a shared component and add it to the kitchen
-      sink.
-- [ ] `R.4` Build `BookingPanel` as a shared component — advancing panel,
-      accumulating summary card, changing footer CTA. Add to the kitchen sink.
-- [ ] `R.5` Add the bottom-right two-button cluster to every Genie screen.
-
-These replace nothing already ticked.
-
----
-
+- [ ] `2.1` `G-02` Home. Figma `534:9809`, rail `534:10120`.
+- [ ] `2.2` `G-07` Service browse. Figma `534:11085`.
 - [ ] `2.3` `G-08` Booking stepper, four steps, one component.
       Figma `534:13171` `534:13414` `534:13657` `534:13925`.
 - [ ] `2.4` `G-09` Confirmed. Figma `534:14216`.
@@ -151,3 +126,24 @@ menus, filters or seed data.
 Auth flows, tests, README files, error boundaries, loading skeletons, responsive
 layouts, portrait, dark mode, stub screens behind menu items that aren't in the
 script.
+
+---
+
+## Inserted — Genie reference corrections
+
+Read `docs/09-genie-reference.md` before any remaining Genie task. It is
+derived from a recording of the shipped product and outranks `03-screens.md`
+for Genie.
+
+- [ ] `R.1` Rebuild `GenieRail` to three states — collapsed sliver, icon
+      column, expanded with labels. Floating, vertically centred, not
+      full-height. Scroll indicator when expanded.
+- [ ] `R.2` Build `ConfirmationModal` as a shared component and add it to the
+      kitchen sink.
+- [ ] `R.3` Build `OrderPanel` as a shared component and add it to the kitchen
+      sink.
+- [ ] `R.4` Build `BookingPanel` as a shared component — advancing panel,
+      accumulating summary card, changing footer CTA. Add to the kitchen sink.
+- [ ] `R.5` Add the bottom-right two-button cluster to every Genie screen.
+
+These replace nothing already ticked. Insert them before task 2.3.

@@ -24,58 +24,65 @@ things people ask for constantly, not the way the product works.
 
 ---
 
-# Section A · The resident side
-**~8 min · Genie**
+# Section A - The resident side
+**~8 min - Genie**
 
-### A1 · Home and services
-Open on the home screen. Show the rail, the service categories, what a resident
-sees when they walk in.
+Confirmed against the Abu Dhabi Figma source in `09-genie-reference.md`. No
+spa, dining, activities or store anywhere in this section.
 
-*Covers: service catalogue browsing*
+### A1 - Home
+Open on home. Rail, status banner (idle if nothing active yet), the four
+tiles - Housekeeping, Maintenance, Event Planning, Chauffeur.
 
-### A2 · Towels, by voice
-Tap the voice button. "Can we get some more towels for the main bathroom."
-Transcript builds, a card comes back with the item, quantity and location.
-Confirm.
+*Covers: service catalogue browsing, request tracking entry point*
 
-*Covers: ad-hoc requests, voice input, housekeeping*
+### A2 - Housekeeping, then a follow-up by voice
+Open Housekeeping. Browse categories, add a couple of items, place the
+request. Then reopen it from My Requests and tap Need Help - this opens
+Chat. Speak a follow-up: "can you also send extra pillows." Watch the field
+transcribe live and auto-send.
 
-### A3 · Coffee, by voice
-Same again, shorter. "Two cappuccinos to the terrace." Card, confirm, done.
-Show it landing in My Requests.
+*Covers: housekeeping catalogue, cart, ad-hoc follow-up via voice, chat*
 
-*Covers: food ordering, repeat quick actions*
+### A3 - Maintenance
+Same catalogue-and-cart component as A2, different categories. Report a
+plumbing or AC issue, add it, place the request. No voice here - shows the
+pattern working identically without it.
 
-### A4 · Booking something properly
-No voice here. Tap through a full booking - browse by category, pick a service,
-choose options, pick a time, confirm. Four taps.
+*Covers: maintenance requests*
 
-*Covers: service selection, scheduling, standard request flow*
+### A4 - Chauffeur, by voice
+Tap Chauffeur. Say a destination and time by voice into the destination
+search field, or type it. Walk the three steps - destination, time wheel,
+vehicle - to Confirm Booking.
 
-### A5 · Reporting a problem
-Open maintenance. Describe the issue, attach a photo, pick the location, send.
+*Covers: travel and transport requests*
 
-*Covers: maintenance requests with attachments*
+### A5 - Event Planning
+Tap Event Planning. Fill the form - type, date, guest count, theme, a
+reference link in special notes. Submit. Show the home status banner switch
+to Planning with a Chat with Events button.
 
-### A6 · Planning a gathering
-Open gatherings. Set the date and number of guests. Pick crockery and linen
-from what's available. Add menu items. Add the guest list. Send it to the team.
+*Covers: event and gathering planning intake*
 
-*Covers: event and gathering planning, inventory selection, menu planning,
-guest lists*
+### A6 - Gathering follow-through, in chat
+Open Chat with Events. Continue the conversation - Genie offers the
+inventory catalogue inline (chairs, floral, linen). Pick a couple of items
+by tapping through the catalogue link. This is the same catalogue component
+Luna's Registry uses.
 
-### A7 · Tracking what you asked for
-My Requests. Show the towels from A2 - it has a status and an ETA now. Open it,
-add a follow-up message, show the thread. Cancel a different one.
+*Covers: inventory selection for gatherings, catalogue access*
 
-*Covers: request tracking, follow-ups, two-way messaging, cancellation*
+### A7 - Requests
+Open My Requests. Filter by type. Show one card fully - status, item
+summary, timestamp - with Cancel Request and Need Help actions.
 
-### A8 · Profile
-Preferences, important dates, household details.
+*Covers: request tracking, cancellation, follow-up entry point*
 
-*Covers: client profile management, resident preferences*
+### A8 - Profile
+Room number, name, email, preferences summary with a single edit action.
 
----
+*Covers: client profile management*
 
 # Section B · Intake and dispatch
 **~10 min · Luna**

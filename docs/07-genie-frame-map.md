@@ -95,3 +95,29 @@ assuming they're duplicates — one of them is likely the request-tracking view.
 No voice capture, listening, transcript, or waveform layers anywhere. No
 gathering/event planner. Maintenance exists only as a tab label. These are new
 design, not extraction.
+
+---
+
+## Yosh-specific flows — second Figma file
+
+File key: `C1ZiMoq2vDXGt9xILvVIQ2` (`Abu-Dhabi-app`). Different file from the
+Casa Cook one above. These are **confirmed nodes**, verified two ways: the
+person supplied direct screenshots, and I independently pulled
+`get_screenshot` on each node and matched it against what was sent — both
+agree.
+
+| Node | Screen | Reference screenshot in repo |
+|---|---|---|
+| `2033:9247` | Chat, with two states shown (idle quick-replies / mid-voice-transcription) | `docs/assets/genie-yosh/chat-voice-states.png` |
+| `2033:9249` | Chauffeur — 4-panel flow: destination search, time wheel, vehicle choice, confirm summary | `docs/assets/genie-yosh/chauffeur-flow.png` |
+| `2033:9248` | Requests (filterable list) and Profile, side by side | `docs/assets/genie-yosh/requests-and-profile.png` |
+| `158:3930` | Home variants with Event Planning banner active, and Housekeeping catalogue/cart | `docs/assets/genie-yosh/home-orders-banner.png`, `housekeeping-catalogue.png`, `housekeeping-cart.png`, `home-room-controls.png` |
+| `414:16777` | Event request form, states from empty to filled | (see `get_design_context` directly — not separately screenshotted) |
+| `419:19544` | Inventory catalogue — category rail + item grid, the pattern Genie's `G-10` and Luna's `L-07` both use | (see `get_design_context` directly) |
+
+**When building any Yosh-specific Genie screen** (`G-02` through `G-11` in
+`03-screens.md`), do both: pull `get_design_context` on the node above for
+exact pixel values, and open the matching PNG in `docs/assets/genie-yosh/` to
+confirm structure and states before writing code. The PNG is the fallback if
+Figma access has an issue mid-build; the Figma pull is the source for exact
+values. Do not build from memory of this document's prose alone.
